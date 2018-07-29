@@ -3,11 +3,15 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { LineChartComponent } from './lineChart/line-chart-component';
+import { PieChartComponent } from './pieChart/pie-chart-component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LineChartComponent,
+    PieChartComponent
   ],
   imports: [
     BrowserModule

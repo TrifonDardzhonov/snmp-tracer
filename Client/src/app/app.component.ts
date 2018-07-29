@@ -1,14 +1,20 @@
-import { Component, AfterViewInit } from '@angular/core';
-import * as Highcharts from 'highcharts';
+import { Component } from '@angular/core';
+import { ChartSettings } from './models/chartSettings';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent {
+
+  public lineChartSettings: ChartSettings = {
+    title: 'SNMP Chart',
+    subtitle: 'Test'
+  };
+
   // Data generated from http://www.bikeforums.net/professional-cycling-fans/1113087-2017-tour-de-france-gpx-tcx-files.html
-  private elevationData = [
+  public lineChartData = [
     [0.0, 225],
     [0.1, 226],
     [0.2, 228],
@@ -1890,195 +1896,34 @@ export class AppComponent implements AfterViewInit {
     [187.8, 1170]
   ];
 
-  // Now create the chart
-  private options = {
-
-    chart: {
-      type: 'area',
-      zoomType: 'x',
-      panning: true,
-      panKey: 'shift',
-      scrollablePlotArea: {
-        minWidth: 600
-      }
-    },
-
-    title: {
-      text: '2017 Tour de France Stage 8: Dole - Station des Rousses'
-    },
-
-    subtitle: {
-      text: 'An annotated chart in Highcharts'
-    },
-
-    annotations: [{
-      labelOptions: {
-        backgroundColor: 'rgba(255,255,255,0.5)',
-        verticalAlign: 'top',
-        y: 15
-      },
-      labels: [{
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 27.98,
-          y: 255
-        },
-        text: 'Arbois'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 45.5,
-          y: 611
-        },
-        text: 'Montrond'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 63,
-          y: 651
-        },
-        text: 'Mont-sur-Monnet'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 84,
-          y: 789
-        },
-        x: -10,
-        text: 'Bonlieu'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 129.5,
-          y: 382
-        },
-        text: 'Chassal'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 159,
-          y: 443
-        },
-        text: 'Saint-Claude'
-      }]
-    }, {
-      labels: [{
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 101.44,
-          y: 1026
-        },
-        x: -30,
-        text: 'Col de la Joux'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 138.5,
-          y: 748
-        },
-        text: 'Côte de Viry'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 176.4,
-          y: 1202
-        },
-        text: 'Montée de la Combe<br>de Laisia Les Molunes'
-      }]
-    }, {
-      labelOptions: {
-        shape: 'connector',
-        align: 'right',
-        justify: false,
-        crop: true,
-        style: {
-          fontSize: '0.8em',
-          textOutline: '1px white'
-        }
-      },
-      labels: [{
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 96.2,
-          y: 783
-        },
-        text: '6.1 km climb<br>4.6% on avg.'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 134.5,
-          y: 540
-        },
-        text: '7.6 km climb<br>5.2% on avg.'
-      }, {
-        point: {
-          xAxis: 0,
-          yAxis: 0,
-          x: 172.2,
-          y: 925
-        },
-        text: '11.7 km climb<br>6.4% on avg.'
-      }]
-    }],
-
-    xAxis: {
-      labels: {
-        format: '{value} km'
-      },
-      minRange: 5,
-      title: {
-        text: 'Distance'
-      }
-    },
-
-    yAxis: {
-      startOnTick: true,
-      endOnTick: false,
-      maxPadding: 0.35,
-      title: {
-        text: null
-      },
-      labels: {
-        format: '{value} m'
-      }
-    },
-
-    tooltip: {
-      headerFormat: 'Distance: {point.x:.1f} km<br>',
-      pointFormat: '{point.y} m a. s. l.',
-      shared: true
-    },
-
-    legend: {
-      enabled: false
-    },
-
-    series: [{
-      data: this.elevationData,
-      lineColor: Highcharts.getOptions().colors[1],
-      color: Highcharts.getOptions().colors[2],
-      fillOpacity: 0.5,
-      name: 'Elevation',
-      marker: {
-        enabled: false
-      },
-      threshold: null
-    }]
-
-  };
-
-  ngAfterViewInit() {
-    Highcharts.chart('container', this.options);
-  }
+  public pieChartData = [{
+    name: 'Chrome',
+    y: 61.41,
+    sliced: true,
+    selected: true
+  }, {
+    name: 'Internet Explorer',
+    y: 11.84
+  }, {
+    name: 'Firefox',
+    y: 10.85
+  }, {
+    name: 'Edge',
+    y: 4.67
+  }, {
+    name: 'Safari',
+    y: 4.18
+  }, {
+    name: 'Sogou Explorer',
+    y: 1.64
+  }, {
+    name: 'Opera',
+    y: 1.6
+  }, {
+    name: 'QQ',
+    y: 1.2
+  }, {
+    name: 'Other',
+    y: 2.61
+  }];
 }
