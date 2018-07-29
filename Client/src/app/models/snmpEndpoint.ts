@@ -1,4 +1,5 @@
 export class SNMPEndpoint {
+    friendlyName: string;
     oid: string;
     host: string;
     port: number;

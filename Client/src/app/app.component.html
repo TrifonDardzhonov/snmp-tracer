@@ -1,16 +1,31 @@
 <div class="row">
   <div class="menu no-hor-padding" [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}">
-    <div *ngIf="isMenuOpen" (click)="isMenuOpen = false" class="nav-toggler">Hide</div>
-    <div *ngIf="!isMenuOpen" (click)="isMenuOpen = true" class="nav-toggler">Show</div>
+    <div *ngIf="isMenuOpen" (click)="isMenuOpen = false" class="nav-toggler special-color">Hide</div>
+    <div *ngIf="!isMenuOpen" (click)="isMenuOpen = true" class="nav-toggler special-color">Show</div>
     <div class="endpoint" (click)="select(endpoint)" *ngFor="let endpoint of endpoints" [ngClass]="{'selected-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid }">
-      <div>{{endpoint.host}}:{{endpoint.port}}</div>
-      <div>({{endpoint.oid}})</div>
+      <div *ngIf="!isMenuOpen">
+        {{endpoint.friendlyName}}
+      </div>
+      <div *ngIf="isMenuOpen">
+        <div>
+          <strong>{{endpoint.friendlyName}}</strong>
+        </div>
+        <div>{{endpoint.host}}:{{endpoint.port}}</div>
+        <div>({{endpoint.oid}})</div>
+      </div>
     </div>
   </div>
   <div class="no-hor-padding" [ngClass]="{'col-md-10' : isMenuOpen, 'col-md-11' : !isMenuOpen}">
     <div *ngIf="selectedEndpoint" class="col-md-12 title">
-      <h3>{{selectedEndpoint.host}}:{{selectedEndpoint.port}}</h3>
-      <h4>({{selectedEndpoint.oid}})</h4>
+      <h4>
+        <strong class="special-color">HOST: </strong>{{selectedEndpoint.host}}
+      </h4>
+      <h4>
+        <strong class="special-color">PORT: </strong>{{selectedEndpoint.port}}
+      </h4>
+      <h4>
+        <strong class="special-color">OID: </strong>({{selectedEndpoint.oid}})
+      </h4>
     </div>
     <div class="col-md-12 node-result" *ngFor="let node of nodes; let i = index">
       <div class="row">

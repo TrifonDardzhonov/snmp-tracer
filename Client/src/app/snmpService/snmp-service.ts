@@ -7,11 +7,13 @@ export class SNMPService {
     snmpEndpoints(): Observable<SNMPEndpoint[]> {
         return new Observable<SNMPEndpoint[]>(obs => {
             obs.next([{
+                'friendlyName': 'Ping',
                 'oid': '1, 3, 6, 1, 2, 1, 1, 3, 0',
                 'host': 'demo.snmplabs.com',
                 'port': 161,
                 'community': 'public'
             }, {
+                'friendlyName': 'Ping 2',
                 'oid': '1, 3, 6, 1, 2, 1, 1',
                 'host': 'demo.snmplabs.com',
                 'port': 161,

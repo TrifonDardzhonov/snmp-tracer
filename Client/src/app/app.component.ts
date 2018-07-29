@@ -14,7 +14,11 @@ export class AppComponent {
   public selectedEndpoint: SNMPEndpoint;
 
   constructor(private snmpService: SNMPService) {
-    this.snmpService.snmpEndpoints().subscribe(endpoints => this.endpoints = endpoints);
+    this.snmpService.snmpEndpoints().subscribe(endpoints => {
+      this.endpoints = endpoints;
+      this.select(this.endpoints[this.endpoints.length - 1]);
+      this.isMenuOpen = false;
+    });
   }
 
   public isMenuOpen = false;
@@ -78,4 +82,11 @@ export class AppComponent {
       subtitle: 'Details by date'
     };
   }
+
+  // test OID button
+  // form for adding new endpoint
+  // check if this is subtree
+  // after adding a new endpoint -> choose it by default
+  // add checkbox for "Support grouping"
+  // add key value pairs -> value between -> GROUP
 }
