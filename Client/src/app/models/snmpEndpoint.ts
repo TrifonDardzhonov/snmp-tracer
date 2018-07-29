@@ -4,6 +4,7 @@ export class SNMPEndpoint {
     host: string;
     port: number;
     community: string;
+    supportGrouping: boolean;
 }
 
 export class SNMPNode {

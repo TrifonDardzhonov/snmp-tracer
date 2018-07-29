@@ -12,6 +12,7 @@ export class SNMPEndpointFormComponent {
         oid: '',
         host: '',
         port: null,
-        community: ''
+        community: '',
+        supportGrouping: false
     };
 }

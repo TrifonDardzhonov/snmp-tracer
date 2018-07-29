@@ -11,13 +11,15 @@ export class SNMPService {
                 'oid': '1, 3, 6, 1, 2, 1, 1, 3, 0',
                 'host': 'demo.snmplabs.com',
                 'port': 161,
-                'community': 'public'
+                'community': 'public',
+                'supportGrouping': true
             }, {
                 'friendlyName': 'Ping 2',
                 'oid': '1, 3, 6, 1, 2, 1, 1',
                 'host': 'demo.snmplabs.com',
                 'port': 161,
-                'community': 'public'
+                'community': 'public',
+                'supportGrouping': false
             }]);
             obs.complete();
         });
@@ -40,22 +42,7 @@ export class SNMPService {
                         { value: '200', group: 'slow', dateticks: this.ticks() + 800000 },
                         { value: '30', group: 'slow', dateticks: this.ticks() + 900000 }
                     ]
-                },
-                {
-                    type: 'bandwith',
-                    responses: [
-                        { value: '300', group: 'slow', dateticks: this.ticks() },
-                        { value: '301', group: 'slow', dateticks: this.ticks() + 10000 },
-                        { value: '500', group: 'good', dateticks: this.ticks() + 20000 },
-                        { value: '200', group: 'slow', dateticks: this.ticks() + 30000 },
-                        { value: '30', group: 'slow', dateticks: this.ticks() + 60000 },
-                        { value: '300', group: 'slow', dateticks: this.ticks() + 100000 },
-                        { value: '301', group: 'slow', dateticks: this.ticks() + 600000 },
-                        { value: '500', group: 'good', dateticks: this.ticks() + 700000 },
-                        { value: '200', group: 'slow', dateticks: this.ticks() + 800000 },
-                        { value: '30', group: 'slow', dateticks: this.ticks() + 900000 }
-                    ]
-                },
+                }
             ];
 
             obs.next(data);
