@@ -4,3 +4,13 @@ export class SNMPEndpoint {
     port: number;
     community: string;
 }
+
+export class SNMPNode {
+    type: string;
+    responses: NodeResponse[];
+}
+
+export class NodeResponse {
+    value: string;
+    dateticks: number;
+}

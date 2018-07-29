@@ -4,7 +4,7 @@ import { ChartSettings } from '../models/chartSettings';
 
 @Component({
     selector: 'app-line-chart',
-    template: '<div id="line-container"></div>'
+    template: `<div [attr.id]="'line-container-' + settings.index"></div>`
 })
 export class LineChartComponent implements AfterViewInit {
 
@@ -154,12 +154,13 @@ export class LineChartComponent implements AfterViewInit {
         }],
 
         xAxis: {
-            labels: {
-                format: '{value} km'
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                month: '%e. %b',
+                year: '%b'
             },
-            minRange: 5,
             title: {
-                text: 'Distance'
+                text: 'Date'
             }
         },
 
@@ -196,13 +197,12 @@ export class LineChartComponent implements AfterViewInit {
             },
             threshold: null
         }]
-
     };
 
     ngAfterViewInit() {
         this.options.title.text = this.settings.title;
         this.options.subtitle.text = this.settings.subtitle;
         this.options.series[0].data = this.set;
-        Highcharts.chart('line-container', this.options);
+        Highcharts.chart('line-container-' + this.settings.index, this.options);
     }
 }
