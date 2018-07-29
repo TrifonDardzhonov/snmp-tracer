@@ -11,6 +11,7 @@ export class SNMPNode {
 }
 
 export class NodeResponse {
+    group: string;
     value: string;
     dateticks: number;
 }

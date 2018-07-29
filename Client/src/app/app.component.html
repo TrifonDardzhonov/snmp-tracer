@@ -13,6 +13,6 @@
       <h4>({{selectedEndpoint.oid}})</h4>
     </div>
     <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapSettings(node, i)" *ngFor="let node of nodes; let i = index"></app-line-chart>
-    <!-- <app-pie-chart [set]="pieChartData" [settings]="lineChartSettings"></app-pie-chart> -->
+    <app-pie-chart [set]="mapToPieChart(node.responses)" [settings]="mapSettings(node, i)" *ngFor="let node of nodes; let i = index"></app-pie-chart>
   </div>
 </div>

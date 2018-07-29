@@ -4,7 +4,7 @@ import { ChartSettings } from '../models/chartSettings';
 
 @Component({
     selector: 'app-pie-chart',
-    template: '<div id="pie-container"></div>'
+    template: `<div [attr.id]="'pie-container-' + settings.index"></div>`
 })
 export class PieChartComponent implements AfterViewInit {
 
@@ -52,6 +52,6 @@ export class PieChartComponent implements AfterViewInit {
         this.options.title.text = this.settings.title;
         this.options.subtitle.text = this.settings.subtitle;
         this.options.series[0].data = this.set;
-        Highcharts.chart('pie-container', this.options);
+        Highcharts.chart('pie-container-' + this.settings.index, this.options);
     }
 }

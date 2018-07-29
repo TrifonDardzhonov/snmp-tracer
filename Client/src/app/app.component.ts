@@ -85,6 +85,29 @@ export class AppComponent {
     });
   }
 
+  public mapToPieChart(responses: NodeResponse[]) {
+    const pie = {};
+    responses.forEach((r) => {
+      if (!pie[r.group]) {
+        pie[r.group] = 0;
+      }
+
+      pie[r.group]++;
+    });
+
+    const pieData = [];
+    for (const sl in pie) {
+      if (pie[sl]) {
+        pieData.push({
+          name: sl,
+          y: (pie[sl] / responses.length) * 100
+        });
+      }
+    }
+
+    return pieData;
+  }
+
   public mapToLineChart(responses: NodeResponse[]) {
     return responses.map((r) => {
       return [new Date(r.dateticks), parseInt(r.value, 0)];
