@@ -83,10 +83,6 @@ export class AppComponent {
     };
   }
 
-  // test OID button
-  // form for adding new endpoint
-  // check if this is subtree
-  // after adding a new endpoint -> choose it by default
   // add checkbox for "Support grouping"
   // add key value pairs -> value between -> GROUP
 }

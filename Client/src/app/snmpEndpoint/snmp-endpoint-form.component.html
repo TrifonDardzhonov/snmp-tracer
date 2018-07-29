@@ -1,0 +1,27 @@
+<div id="endpoint-form" class="col-md-12">
+  <div>
+    <h5>Add new endpoint</h5>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="friendlyName">Friendly Name</label>
+    <input id="friendlyName" class="col-md-12" [(ngModel)]="endpoint.friendlyName" />
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="host">Host</label>
+    <input id="host" class="col-md-12" [(ngModel)]="endpoint.host" />
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="port">Port</label>
+    <input id="port" class="col-md-12" [(ngModel)]="endpoint.port" />
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="oid">OID</label>
+    <input id="oid" class="col-md-12" [(ngModel)]="endpoint.oid" />
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="community">Community</label>
+    <input id="community" class="col-md-12" [(ngModel)]="endpoint.community" />
+  </div>
+  <button class="btn btn-primary col-md-12">Test</button>
+  <button class="btn btn-success col-md-12">Add</button>
+</div>

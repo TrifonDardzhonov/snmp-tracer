@@ -1,0 +1,12 @@
+#endpoint-form {
+  text-align: left;
+}
+
+.no-hor-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+button {
+  margin-top: 5px;
+}

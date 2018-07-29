@@ -19,7 +19,7 @@
 }
 
 .nav-toggler {
-  font-size: 2em;
+  font-size: 70px;
   font-weight: bold;
   cursor: pointer;
   background-color: gray
@@ -44,4 +44,9 @@
 
 .special-color {
   color: cornflowerblue;
+}
+
+#snmp-endpoint-form {
+  background-color: cadetblue;
+  padding: 10px;
 }
