@@ -11,6 +11,7 @@ import { SNMPEndpoint } from './models/snmpEndpoint';
 export class AppComponent {
 
   private endpoints: SNMPEndpoint[] = [];
+  public selectedEndpoint: SNMPEndpoint;
 
   constructor(private snmpService: SNMPService) {
     this.snmpService.snmpEndpoints().subscribe(endpoints => this.endpoints = endpoints);
@@ -1936,4 +1937,8 @@ export class AppComponent {
     name: 'Other',
     y: 2.61
   }];
+
+  public select(endpoint: SNMPEndpoint): void {
+    this.selectedEndpoint = endpoint;
+  }
 }
