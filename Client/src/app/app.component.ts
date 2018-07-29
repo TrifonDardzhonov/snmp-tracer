@@ -108,17 +108,25 @@ export class AppComponent {
     return pieData;
   }
 
+  public mapPieSettings(node: SNMPNode, index: number): ChartSettings {
+    return {
+      index: index,
+      title: node.type,
+      subtitle: 'Grouped by slices'
+    };
+  }
+
   public mapToLineChart(responses: NodeResponse[]) {
     return responses.map((r) => {
       return [new Date(r.dateticks), parseInt(r.value, 0)];
     });
   }
 
-  public mapSettings(node: SNMPNode, index: number): ChartSettings {
+  public mapLineSettings(node: SNMPNode, index: number): ChartSettings {
     return {
       index: index,
       title: node.type,
-      subtitle: 'details'
+      subtitle: 'Details by date'
     };
   }
 }

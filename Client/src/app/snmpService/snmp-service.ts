@@ -40,7 +40,7 @@ export class SNMPService {
                     ]
                 },
                 {
-                    type: 'ping',
+                    type: 'bandwith',
                     responses: [
                         { value: '300', group: 'slow', dateticks: this.ticks() },
                         { value: '301', group: 'slow', dateticks: this.ticks() + 10000 },
