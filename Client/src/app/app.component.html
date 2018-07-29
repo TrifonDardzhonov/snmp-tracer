@@ -1,4 +1,12 @@
-<div style="text-align:center">
-  <app-line-chart [set]="lineChartData" [settings]="lineChartSettings"></app-line-chart>
-  <app-pie-chart [set]="pieChartData" [settings]="lineChartSettings"></app-pie-chart>
+<div class="row">
+  <div class="menu" [ngClass]="{'col-md-e' : isMenuOpen, 'col-md-1' : !isMenuOpen}" (click)="isMenuOpen = !isMenuOpen">
+    <div class="endpoint" *ngFor="let endpoint of endpoints">
+      <div>{{endpoint.host}}:{{endpoint.port}}</div>
+      <div>({{endpoint.oid}})</div>
+    </div>
+  </div>
+  <div [ngClass]="{'col-md-9' : isMenuOpen, 'col-md-11' : !isMenuOpen}" class="col-md-8">
+    <app-line-chart [set]="lineChartData" [settings]="lineChartSettings"></app-line-chart>
+    <app-pie-chart [set]="pieChartData" [settings]="lineChartSettings"></app-pie-chart>
+  </div>
 </div>

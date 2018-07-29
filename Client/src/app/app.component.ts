@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ChartSettings } from './models/chartSettings';
+import { SNMPService } from './snmpService/snmp-service';
+import { SNMPEndpoint } from './models/snmpEndpoint';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +9,14 @@ import { ChartSettings } from './models/chartSettings';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  private endpoints: SNMPEndpoint[] = [];
+
+  constructor(private snmpService: SNMPService) {
+    this.snmpService.snmpEndpoints().subscribe(endpoints => this.endpoints = endpoints);
+  }
+
+  public isMenuOpen = false;
 
   public lineChartSettings: ChartSettings = {
     title: 'SNMP Chart',

@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LineChartComponent } from './lineChart/line-chart-component';
 import { PieChartComponent } from './pieChart/pie-chart-component';
+import { SNMPService } from './snmpService/snmp-service';
+import { AlertModule } from 'ngx-bootstrap';
 
 
 @NgModule({
@@ -14,9 +16,10 @@ import { PieChartComponent } from './pieChart/pie-chart-component';
     PieChartComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AlertModule.forRoot()
   ],
-  providers: [],
+  providers: [SNMPService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
