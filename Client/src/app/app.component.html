@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="menu" [ngClass]="{'col-md-e' : isMenuOpen, 'col-md-1' : !isMenuOpen}">
+  <div class="menu no-hor-padding" [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}">
     <div *ngIf="isMenuOpen" (click)="isMenuOpen = false" class="nav-toggler">Hide</div>
     <div *ngIf="!isMenuOpen" (click)="isMenuOpen = true" class="nav-toggler">Show</div>
     <div class="endpoint" (click)="select(endpoint)" *ngFor="let endpoint of endpoints" [ngClass]="{'selected-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid }">
@@ -7,17 +7,19 @@
       <div>({{endpoint.oid}})</div>
     </div>
   </div>
-  <div [ngClass]="{'col-md-9' : isMenuOpen, 'col-md-11' : !isMenuOpen}" class="col-md-8">
+  <div class="no-hor-padding" [ngClass]="{'col-md-10' : isMenuOpen, 'col-md-11' : !isMenuOpen}">
     <div *ngIf="selectedEndpoint" class="col-md-12 title">
       <h3>{{selectedEndpoint.host}}:{{selectedEndpoint.port}}</h3>
       <h4>({{selectedEndpoint.oid}})</h4>
     </div>
-    <div class="row" *ngFor="let node of nodes; let i = index">
-      <div class="col-md-8">
-        <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapLineSettings(node, i)"></app-line-chart>
-      </div>
-      <div class="col-md-4">
-        <app-pie-chart [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)"></app-pie-chart>
+    <div class="col-md-12 node-result" *ngFor="let node of nodes; let i = index">
+      <div class="row">
+        <div class="col-md-8">
+          <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapLineSettings(node, i)"></app-line-chart>
+        </div>
+        <div class="col-md-4">
+          <app-pie-chart [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)"></app-pie-chart>
+        </div>
       </div>
     </div>
   </div>
