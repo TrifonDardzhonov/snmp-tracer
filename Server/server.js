@@ -35,9 +35,10 @@ app.route('/snmpEndpoints/test')
             port: Number(req.body.port),
             community: req.body.community
         }
-        res.json({
-            result: worker.test(endPoint)
-        });
+
+        worker.test(endPoint).then((varbinds) => {
+            res.json(varbinds);
+        })
     });
 
-snmpWorker.start();
+//snmpWorker.start();

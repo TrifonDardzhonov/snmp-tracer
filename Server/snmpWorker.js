@@ -20,13 +20,14 @@ function visitEachNode() {
         if (err) throw err;
         config = JSON.parse(data);
         config.nodex.forEach((node) => {
-            const varbinds = extractSubtree(node);
-            if (varbinds) {
-                varbinds.forEach(bind => {
-                    var snmpResponse = SNMPResponse(node.oid, node.host, node.port, node.community, bind.value);
-                    snmpRepository.write(snmpResponse);
-                });
-            }
+            extractSubtree(node).then(varbinds => {
+                if (varbinds) {
+                    varbinds.forEach(bind => {
+                        var snmpResponse = SNMPResponse(node.oid, node.host, node.port, node.community, bind.value);
+                        snmpRepository.write(snmpResponse);
+                    });
+                }
+            });
         })
     });
 }
@@ -38,16 +39,18 @@ function extractSubtree(node) {
         community: node.community
     });
 
-    session.getSubtree({
-        oid: node.oid
-    }, function (error, varbinds) {
-        if (error) {
-            console.log('Fail :(');
-        } else {
-            console.log(varbinds, ' for ', node);
-            return varbinds;
-        }
-    });
+    return new Promise((resolve, reject) => {
+        session.getSubtree({
+            oid: node.oid
+        }, function (error, varbinds) {
+            if (error) {
+                console.log('Fail :(');
+            } else {
+                console.log(varbinds, ' for ', node);
+                resolve(varbinds);
+            }
+        });
+    })
 }
 
 var snmpWorker = function () {

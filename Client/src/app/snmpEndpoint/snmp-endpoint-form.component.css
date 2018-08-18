@@ -10,3 +10,8 @@
 button {
   margin-top: 5px;
 }
+
+.test-results-box {
+  height: 300px;
+  overflow-y: scroll;
+}

@@ -29,7 +29,10 @@
   <button class="btn btn-primary col-md-12" (click)="test()">Test</button>
   <button class="btn btn-success col-md-12" (click)="addEndpoint()">Add</button>
 
-  <p *ngIf="endpointData">
-    {{endpointData | json}}
-  </p>
+  <div class="test-results-box" *ngIf="endpointData">
+    <p *ngFor="let node of endpointData">
+      <span style="display: block;"><strong>OID</strong> {{node.oid}}</span>
+      <span style="display: block;"><strong>Value</strong> {{node.value}}</span>
+    </p>
+  </div>
 </div>
