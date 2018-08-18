@@ -1,10 +1,10 @@
 var express = require("express")
 var snmpController = require("./snmpController");
-var snmpWorker = require("./snmpWorker");
+var snmpListener = require("./snmpListener");
 var bodyParser = require('body-parser');
 
 var controller = new snmpController();
-var snmpListener = new snmpWorker();
+var listener = new snmpListener();
 
 function mapSNMPEndpointModel(req) {
     return {
@@ -58,9 +58,9 @@ app.route('/snmpEndpoints/test')
     .post(function (req, res) {
         // send one snmp request and return the data
         var endPoint = mapSNMPEndpointModel(req);
-        snmpListener.test(endPoint).then((varbinds) => {
+        listener.endpointData(endPoint).then((varbinds) => {
             res.json(varbinds);
         });
     });
 
-snmpListener.start();
+listener.start();

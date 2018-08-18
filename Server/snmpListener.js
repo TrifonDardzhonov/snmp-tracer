@@ -2,7 +2,7 @@ var SNMPResponse = require('./snmpResponse');
 var snmpRepository = require('./snmpRepository');
 var snmp = require('snmp-native');
 
-var snmpRepository = snmpRepository();
+const snmpStore = new snmpRepository();
 
 function visitNodes() {
     visitEachNode();
@@ -14,17 +14,13 @@ function seconds(sec) {
 }
 
 function visitEachNode() {
-    var fs = require('fs');
-    var config;
-    fs.readFile('config.json', 'utf8', function (err, data) {
-        if (err) throw err;
-        config = JSON.parse(data);
-        config.nodes.forEach((node) => {
+    snmpStore.endpoints().then(endpoints => {
+        endpoints.forEach((node) => {
             extractSubtree(node).then(varbinds => {
                 if (varbinds) {
                     varbinds.forEach(bind => {
                         var snmpResponse = SNMPResponse(node.oid, node.host, node.port, node.community, bind.value, '');
-                        snmpRepository.write(snmpResponse);
+                        snmpStore.write(snmpResponse);
                     });
                 }
             });
@@ -52,11 +48,11 @@ function extractSubtree(node) {
     })
 }
 
-var snmpWorker = function () {
+var snmpListener = function () {
     return {
         start: visitNodes,
-        test: extractSubtree
+        endpointData: extractSubtree
     }
 }
 
-module.exports = snmpWorker;
+module.exports = snmpListener;
