@@ -26,10 +26,10 @@
     <label class="col-md-12 no-hor-padding" for="supportGrouping">Support Grouping</label>
     <input id="supportGrouping" type="checkbox" [checked]="endpoint.supportGrouping" (change)="endpoint.supportGrouping = !endpoint.supportGrouping"/>
   </div>
-  <button class="btn btn-primary col-md-12" (click)="test()">Test</button>
+  <button class="btn btn-primary col-md-12" (click)="test()">Extract Subtree</button>
   <button class="btn btn-success col-md-12" (click)="addEndpoint()">Add</button>
 
-  <div id="test-results-box" *ngIf="endpointData">
+  <div id="test-results-box" *ngIf="endpointData.length">
     <p *ngFor="let node of endpointData">
       <span style="display: block;"><strong>OID</strong> {{node.oid}}</span>
       <span style="display: block;"><strong>Value</strong> {{node.value}}</span>
