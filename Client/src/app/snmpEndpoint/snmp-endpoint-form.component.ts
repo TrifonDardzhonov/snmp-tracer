@@ -23,6 +23,7 @@ export class SNMPEndpointFormComponent {
     };
 
     public endpointData: any;
+    public loading = false;
 
     addEndpoint() {
         this.snmpService.addSNMPEndpoint(this.endpoint).subscribe(success => {
@@ -31,8 +32,10 @@ export class SNMPEndpointFormComponent {
     }
 
     test() {
+        this.loading = true;
         this.snmpService.testSNMPEndpoint(this.endpoint).subscribe(endpointData => {
             this.endpointData = endpointData;
+            this.loading = false;
         });
     }
 }
