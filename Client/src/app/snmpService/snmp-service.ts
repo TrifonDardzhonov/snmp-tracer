@@ -1,28 +1,15 @@
 import { Injectable } from '../../../node_modules/@angular/core';
 import { SNMPEndpoint, SNMPNode } from '../models/snmpEndpoint';
 import { Observable } from '../../../node_modules/rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class SNMPService {
+
+    constructor(private http: HttpClient) { }
+
     snmpEndpoints(): Observable<SNMPEndpoint[]> {
-        return new Observable<SNMPEndpoint[]>(obs => {
-            obs.next([{
-                'friendlyName': 'Ping',
-                'oid': '1, 3, 6, 1, 2, 1, 1, 3, 0',
-                'host': 'demo.snmplabs.com',
-                'port': 161,
-                'community': 'public',
-                'supportGrouping': true
-            }, {
-                'friendlyName': 'Ping 2',
-                'oid': '1, 3, 6, 1, 2, 1, 1',
-                'host': 'demo.snmplabs.com',
-                'port': 161,
-                'community': 'public',
-                'supportGrouping': false
-            }]);
-            obs.complete();
-        });
+        return this.http.get<SNMPEndpoint[]>('http://localhost:3000/snmpEndpoints');
     }
 
     snmpEndPointDetails(endpoint: SNMPEndpoint): Observable<SNMPNode[]> {

@@ -8,6 +8,7 @@ import { PieChartComponent } from './pieChart/pie-chart-component';
 import { SNMPService } from './snmpService/snmp-service';
 import { AlertModule } from 'ngx-bootstrap';
 import { SNMPEndpointFormComponent } from './snmpEndpoint/snmp-endpoint-form.component';
+import { HttpClientModule } from '../../node_modules/@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SNMPEndpointFormComponent } from './snmpEndpoint/snmp-endpoint-form.com
   imports: [
     BrowserModule,
     AlertModule.forRoot(),
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [SNMPService],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
 var fs = require('fs');
+var snmpEndpoint = require("./snmpEndpoint");
 
 var snmpRepository = function () {
     const filePath = 'db.json';
@@ -11,8 +12,25 @@ var snmpRepository = function () {
             });
         },
         endpoints() {
-            console.log("repository")
-            return ['aaa', 'bbb'];
+            var endpoints = [
+                new snmpEndpoint(
+                    'Ping',
+                    '1, 3, 6, 1, 2, 1, 1, 3, 0',
+                    'demo.snmplabs.com',
+                    161,
+                    'public',
+                    true
+                ),
+                new snmpEndpoint(
+                    'Ping 2',
+                    '1, 3, 6, 1, 2, 1, 1',
+                    'demo.snmplabs.com',
+                    161,
+                    'public',
+                    false
+                )
+            ];
+            return endpoints;
         }
     }
 }
