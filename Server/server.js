@@ -1,7 +1,10 @@
 var express = require("express")
 var snmpController = require("./snmpController");
-var controller = new snmpController();
+var snmpWorker = require("./snmpWorker");
 var bodyParser = require('body-parser');
+
+var controller = new snmpController();
+var worker = new snmpWorker();
 
 app = express();
 app.use(function (req, res, next) {
@@ -26,7 +29,15 @@ app.route('/snmpEndpoints')
 
 app.route('/snmpEndpoints/test')
     .post(function (req, res) {
+        var endPoint = {
+            oid: req.body.oid.split(',').map(id => Number(id)),
+            host: req.body.host,
+            port: Number(req.body.port),
+            community: req.body.community
+        }
         res.json({
-            result: "cisco"
+            result: worker.test(endPoint)
         });
     });
+
+snmpWorker.start();

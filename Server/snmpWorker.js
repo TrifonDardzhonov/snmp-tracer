@@ -20,7 +20,13 @@ function visitEachNode() {
         if (err) throw err;
         config = JSON.parse(data);
         config.nodex.forEach((node) => {
-            extractSubtree(node);
+            const varbinds = extractSubtree(node);
+            if (varbinds) {
+                varbinds.forEach(bind => {
+                    var snmpResponse = SNMPResponse(node.oid, node.host, node.port, node.community, bind.value);
+                    snmpRepository.write(snmpResponse);
+                });
+            }
         })
     });
 }
@@ -38,12 +44,17 @@ function extractSubtree(node) {
         if (error) {
             console.log('Fail :(');
         } else {
-            varbinds.forEach(bind => {
-                var snmpResponse = SNMPResponse(node.oid, node.host, node.port, node.community, bind.value);
-                snmpRepository.write(snmpResponse);
-            });
+            console.log(varbinds, ' for ', node);
+            return varbinds;
         }
     });
 }
 
-visitNodes();
+var snmpWorker = function () {
+    return {
+        start: visitNodes,
+        test: extractSubtree
+    }
+}
+
+module.exports = snmpWorker;
