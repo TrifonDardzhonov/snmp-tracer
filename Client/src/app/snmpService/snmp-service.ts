@@ -6,10 +6,20 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class SNMPService {
 
+    private baseUrl = 'http://localhost:3000';
+
     constructor(private http: HttpClient) { }
 
     snmpEndpoints(): Observable<SNMPEndpoint[]> {
-        return this.http.get<SNMPEndpoint[]>('http://localhost:3000/snmpEndpoints');
+        return this.http.get<SNMPEndpoint[]>(this.baseUrl + '/snmpEndpoints');
+    }
+
+    addSNMPEndpoint(endpoint: SNMPEndpoint): Observable<boolean> {
+        return this.http.post<boolean>(this.baseUrl + '/snmpEndpoints', endpoint);
+    }
+
+    testSNMPEndpoint(endpoint: SNMPEndpoint): Observable<any> {
+        return this.http.post<boolean>(this.baseUrl + '/snmpEndpoints/test', endpoint);
     }
 
     snmpEndPointDetails(endpoint: SNMPEndpoint): Observable<SNMPNode[]> {

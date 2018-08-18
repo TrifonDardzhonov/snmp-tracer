@@ -5,6 +5,9 @@ var snmpController = function () {
     return {
         snmpEndpoints: function () {
             return snmpRepo.endpoints();
+        },
+        addSNMPEndpoint: function (endpoint) {
+            return snmpRepo.addSNMPEndpoint(endpoint);
         }
     }
 };

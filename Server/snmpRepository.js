@@ -31,6 +31,9 @@ var snmpRepository = function () {
                 )
             ];
             return endpoints;
+        },
+        addSNMPEndpoint(endpoint) {
+            return true;
         }
     }
 }

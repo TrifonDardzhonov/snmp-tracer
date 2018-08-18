@@ -26,6 +26,10 @@
     <label class="col-md-12 no-hor-padding" for="supportGrouping">Support Grouping</label>
     <input id="supportGrouping" type="checkbox" [checked]="endpoint.supportGrouping" (change)="endpoint.supportGrouping = !endpoint.supportGrouping"/>
   </div>
-  <button class="btn btn-primary col-md-12">Test</button>
-  <button class="btn btn-success col-md-12">Add</button>
+  <button class="btn btn-primary col-md-12" (click)="test()">Test</button>
+  <button class="btn btn-success col-md-12" (click)="addEndpoint()">Add</button>
+
+  <p *ngIf="endpointData">
+    {{endpointData | json}}
+  </p>
 </div>

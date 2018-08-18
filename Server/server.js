@@ -21,8 +21,12 @@ app.route('/snmpEndpoints')
         res.json(controller.snmpEndpoints());
     })
     .post(function (req, res) {
-        console.log(req);
-        res.json(req.body + "haha");
+        res.json(controller.addSNMPEndpoint(req.body));
     });
 
-console.log("listening on port: " + port);
+app.route('/snmpEndpoints/test')
+    .post(function (req, res) {
+        res.json({
+            result: "cisco"
+        });
+    });

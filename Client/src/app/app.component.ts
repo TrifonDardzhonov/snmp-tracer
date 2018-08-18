@@ -25,6 +25,11 @@ export class AppComponent {
   public nodes: SNMPNode[] = [];
   public loading = false;
 
+  public addedSNMPEndpoint(endpoint: SNMPEndpoint): void {
+    this.endpoints.push(endpoint);
+    this.select(endpoint);
+  }
+
   public select(endpoint: SNMPEndpoint): void {
     this.selectedEndpoint = endpoint;
     if (!this.isMenuOpen) {
