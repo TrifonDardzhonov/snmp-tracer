@@ -9,6 +9,10 @@ var snmpRepository = function () {
                     return console.log(err);
                 }
             });
+        },
+        endpoints() {
+            console.log("repository")
+            return ['aaa', 'bbb'];
         }
     }
 }
