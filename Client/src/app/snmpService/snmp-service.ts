@@ -23,31 +23,6 @@ export class SNMPService {
     }
 
     snmpEndPointDetails(endpoint: SNMPEndpoint): Observable<SNMPNode[]> {
-        return new Observable<SNMPNode[]>(obs => {
-            const data = [
-                {
-                    type: 'ping',
-                    responses: [
-                        { value: '300', group: 'slow', dateticks: this.ticks() },
-                        { value: '301', group: 'slow', dateticks: this.ticks() + 10000 },
-                        { value: '500', group: 'good', dateticks: this.ticks() + 20000 },
-                        { value: '200', group: 'slow', dateticks: this.ticks() + 30000 },
-                        { value: '30', group: 'slow', dateticks: this.ticks() + 60000 },
-                        { value: '300', group: 'slow', dateticks: this.ticks() + 100000 },
-                        { value: '301', group: 'slow', dateticks: this.ticks() + 600000 },
-                        { value: '500', group: 'good', dateticks: this.ticks() + 700000 },
-                        { value: '200', group: 'slow', dateticks: this.ticks() + 800000 },
-                        { value: '30', group: 'slow', dateticks: this.ticks() + 900000 }
-                    ]
-                }
-            ];
-
-            obs.next(data);
-            obs.complete();
-        });
-    }
-
-    private ticks() {
-        return new Date().getTime();
+        return this.http.post<SNMPNode[]>(this.baseUrl + '/snmpEndpoint/data', endpoint);
     }
 }

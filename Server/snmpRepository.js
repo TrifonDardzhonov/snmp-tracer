@@ -1,66 +1,74 @@
 var fs = require('fs');
-var readline = require('readline');
 var snmpEndpoint = require("./snmpEndpoint");
 
 var snmpRepository = function () {
     const filePath = 'db.json';
 
     var isSameEndpoint = function (e1, e2) {
-        return e1.friendlyName === e2.friendlyName &&
-            e1.oid !== undefined &&
+        return e1.oid !== undefined &&
             e1.oid.every(function (u, i) {
                 return u === e2.oid[i];
             }) &&
             e1.host === e2.host &&
-            e1.port === e2.port &&
-            e1.community === e2.community &&
-            e1.supportGrouping === e2.supportGrouping;
+            e1.port === e2.port;
     }
 
     return {
         write: function (jsonData) {
             fs.appendFile(filePath, JSON.stringify(jsonData) + '\r\n', function (err) {
                 if (err) {
-                    return console.log(err);
+                    // return console.log(err);
                 }
             });
         },
         read: function (endpoint) {
-            var rd = readline.createInterface({
-                input: fs.createReadStream(filePath),
-                output: process.stdout,
-                console: false
-            });
+            return new Promise((resolve, reject) => {
+                const data = {
+                    type: endpoint.friendlyName,
+                    responses: []
+                };
 
-            rd.on('line', function (endpointResult) {
-                if (endpointResult && isSameEndpoint(endpointResult, endpoint)) {
-                    console.log(endpointResult);
-                }
-            });
+                fs.readFile(filePath, 'utf8', function (err, r) {
+                    if (err) throw err;
+                    results = JSON.parse(r);
+                    results.data.forEach(endpointResult => {
+                        if (isSameEndpoint(endpointResult, endpoint)) {
+                            data.responses.push({
+                                value: endpointResult.value,
+                                group: endpointResult.group,
+                                dateticks: endpointResult.dateticks //new Date().getTime()
+                            });
+
+                            if (data.responses.length === 10) {
+                                resolve(data)
+                            }
+                        }
+                    });
+
+                });
+            })
         },
         endpoints() {
-            var endpoints = [
-                new snmpEndpoint(
-                    'Ping',
-                    '1, 3, 6, 1, 2, 1, 1, 3, 0',
-                    'demo.snmplabs.com',
-                    161,
-                    'public',
-                    true
-                ),
-                new snmpEndpoint(
-                    'Ping 2',
-                    '1, 3, 6, 1, 2, 1, 1',
-                    'demo.snmplabs.com',
-                    161,
-                    'public',
-                    false
-                )
-            ];
-            return endpoints;
+            return new Promise((resolve, reject) => {
+                fs.readFile('config.json', 'utf8', function (err, data) {
+                    console.log(data);
+                    if (err) throw err;
+                    config = JSON.parse(data);
+                    console.log(config.nodes)
+                    resolve(config.nodes);
+                });
+            });
         },
         addSNMPEndpoint(endpoint) {
-            return true;
+            return new Promise((resolve, reject) => {
+                fs.readFile('config.json', 'utf8', function (err, data) {
+                    if (err) throw err;
+                    config = JSON.parse(data);
+                    config.nodes.push(endpoint);
+                    fs.writeFile('config.json', JSON.stringify(config), 'utf8'); // write it back
+                    resolve(true);
+                });
+            });
         }
     }
 }

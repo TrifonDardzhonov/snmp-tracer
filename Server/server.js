@@ -21,24 +21,42 @@ app.listen(3000);
 
 app.route('/snmpEndpoints')
     .get(function (req, res) {
-        res.json(controller.snmpEndpoints());
+        controller.snmpEndpoints().then(endpoints => {
+            res.json(endpoints);
+        });
     })
     .post(function (req, res) {
-        res.json(controller.addSNMPEndpoint(req.body));
+        var endPoint = mapSNMPEndpointModel(req);
+        controller.addSNMPEndpoint(endPoint).then(result => {
+            res.json(result);
+        });
     });
+
+app.route('/snmpEndpoint/data')
+    .post(function (req, res) {
+        var endPoint = mapSNMPEndpointModel(req);
+        controller.snmpEndpointData(endPoint).then((data) => {
+            res.json([data]);
+        });
+    })
 
 app.route('/snmpEndpoints/test')
     .post(function (req, res) {
-        var endPoint = {
-            oid: req.body.oid.split(',').map(id => Number(id)),
-            host: req.body.host,
-            port: Number(req.body.port),
-            community: req.body.community
-        }
-
+        var endPoint = mapSNMPEndpointModel(req);
         worker.test(endPoint).then((varbinds) => {
             res.json(varbinds);
-        })
+        });
     });
+
+function mapSNMPEndpointModel(req) {
+    return {
+        friendlyName: req.body.friendlyName,
+        oid: req.body.oid.split(',').map(id => Number(id)),
+        host: req.body.host,
+        port: Number(req.body.port),
+        community: req.body.community,
+        supportGrouping: req.body.supportGrouping
+    }
+}
 
 //snmpWorker.start();

@@ -46,7 +46,6 @@ function extractSubtree(node) {
             if (error) {
                 console.log('Fail :(');
             } else {
-                console.log(varbinds, ' for ', node);
                 resolve(varbinds);
             }
         });
