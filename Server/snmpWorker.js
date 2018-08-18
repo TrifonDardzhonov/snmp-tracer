@@ -19,7 +19,7 @@ function visitEachNode() {
     fs.readFile('config.json', 'utf8', function (err, data) {
         if (err) throw err;
         config = JSON.parse(data);
-        config.nodex.forEach((node) => {
+        config.nodes.forEach((node) => {
             extractSubtree(node).then(varbinds => {
                 if (varbinds) {
                     varbinds.forEach(bind => {
