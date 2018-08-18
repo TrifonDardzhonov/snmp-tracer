@@ -1,4 +1,5 @@
 var fs = require('fs');
+var os = require("os");
 
 var snmpRepository = function () {
     const dataFilePath = 'db.json';
@@ -16,7 +17,7 @@ var snmpRepository = function () {
 
     return {
         write: function (jsonData) {
-            fs.appendFile(dataFilePath, JSON.stringify(jsonData) + '\r\n', function (err) {});
+            fs.appendFile(dataFilePath, JSON.stringify(jsonData) + os.EOL, function (err) {});
         },
         read: function (endpoint) {
             return new Promise((resolve, reject) => {
@@ -60,7 +61,7 @@ var snmpRepository = function () {
                     if (err) throw err;
                     config = JSON.parse(data);
                     config.nodes.push(endpoint);
-                    fs.writeFile(configFilePath, JSON.stringify(config), 'utf8'); // write it back
+                    fs.writeFile(configFilePath, JSON.stringify(config), 'utf8');
                     resolve(true);
                 });
             });

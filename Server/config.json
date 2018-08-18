@@ -1,1 +1,1 @@
-{"nodes":[{"friendlyName":"Ping","oid":[1,3,6,1,2,1,1],"host":"demo.snmplabs.com","port":161,"community":"public","supportGrouping":false},{"friendlyName":"test","oid":[1,4,6,8,9],"host":"test.com","port":144,"community":"private","supportGrouping":false},{"friendlyName":"alabala","oid":[1,1,1,1,1,1,1,1],"host":"alabala.com","port":111,"community":"private","supportGrouping":false}]}
+{"nodes":[{"friendlyName":"Ping","oid":[1,3,6,1,2,1,1],"host":"demo.snmplabs.com","port":161,"community":"public","supportGrouping":false}]}

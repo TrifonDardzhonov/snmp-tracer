@@ -4,7 +4,18 @@ var snmpWorker = require("./snmpWorker");
 var bodyParser = require('body-parser');
 
 var controller = new snmpController();
-var worker = new snmpWorker();
+var snmpListener = new snmpWorker();
+
+function mapSNMPEndpointModel(req) {
+    return {
+        friendlyName: req.body.friendlyName,
+        oid: req.body.oid.split(',').map(id => Number(id)),
+        host: req.body.host,
+        port: Number(req.body.port),
+        community: req.body.community,
+        supportGrouping: req.body.supportGrouping
+    }
+}
 
 app = express();
 app.use(function (req, res, next) {
@@ -47,20 +58,9 @@ app.route('/snmpEndpoints/test')
     .post(function (req, res) {
         // send one snmp request and return the data
         var endPoint = mapSNMPEndpointModel(req);
-        worker.test(endPoint).then((varbinds) => {
+        snmpListener.test(endPoint).then((varbinds) => {
             res.json(varbinds);
         });
     });
 
-function mapSNMPEndpointModel(req) {
-    return {
-        friendlyName: req.body.friendlyName,
-        oid: req.body.oid.split(',').map(id => Number(id)),
-        host: req.body.host,
-        port: Number(req.body.port),
-        community: req.body.community,
-        supportGrouping: req.body.supportGrouping
-    }
-}
-
-//snmpWorker.start();
+snmpListener.start();
