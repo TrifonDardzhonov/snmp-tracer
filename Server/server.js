@@ -21,11 +21,13 @@ app.listen(3000);
 
 app.route('/snmpEndpoints')
     .get(function (req, res) {
+        // get all snmp endpoints
         controller.snmpEndpoints().then(endpoints => {
             res.json(endpoints);
         });
     })
     .post(function (req, res) {
+        // add new snmp endpoint
         var endPoint = mapSNMPEndpointModel(req);
         controller.addSNMPEndpoint(endPoint).then(result => {
             res.json(result);
@@ -34,6 +36,7 @@ app.route('/snmpEndpoints')
 
 app.route('/snmpEndpoint/data')
     .post(function (req, res) {
+        // get last 100 data records for requested endpoint
         var endPoint = mapSNMPEndpointModel(req);
         controller.snmpEndpointData(endPoint).then((data) => {
             res.json([data]);
@@ -42,6 +45,7 @@ app.route('/snmpEndpoint/data')
 
 app.route('/snmpEndpoints/test')
     .post(function (req, res) {
+        // send one snmp request and return the data
         var endPoint = mapSNMPEndpointModel(req);
         worker.test(endPoint).then((varbinds) => {
             res.json(varbinds);

@@ -1,8 +1,8 @@
 var fs = require('fs');
-var snmpEndpoint = require("./snmpEndpoint");
 
 var snmpRepository = function () {
-    const filePath = 'db.json';
+    const dataFilePath = 'db.json';
+    const configFilePath = 'config.json';
 
     var isSameEndpoint = function (e1, e2) {
         return e1.oid !== undefined &&
@@ -10,16 +10,13 @@ var snmpRepository = function () {
                 return u === e2.oid[i];
             }) &&
             e1.host === e2.host &&
-            e1.port === e2.port;
+            e1.port === e2.port &&
+            e1.community === e2.community;
     }
 
     return {
         write: function (jsonData) {
-            fs.appendFile(filePath, JSON.stringify(jsonData) + '\r\n', function (err) {
-                if (err) {
-                    // return console.log(err);
-                }
-            });
+            fs.appendFile(dataFilePath, JSON.stringify(jsonData) + '\r\n', function (err) {});
         },
         read: function (endpoint) {
             return new Promise((resolve, reject) => {
@@ -28,7 +25,7 @@ var snmpRepository = function () {
                     responses: []
                 };
 
-                fs.readFile(filePath, 'utf8', function (err, r) {
+                fs.readFile(dataFilePath, 'utf8', function (err, r) {
                     if (err) throw err;
                     results = JSON.parse(r);
                     results.data.forEach(endpointResult => {
@@ -50,22 +47,20 @@ var snmpRepository = function () {
         },
         endpoints() {
             return new Promise((resolve, reject) => {
-                fs.readFile('config.json', 'utf8', function (err, data) {
-                    console.log(data);
+                fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
                     config = JSON.parse(data);
-                    console.log(config.nodes)
                     resolve(config.nodes);
                 });
             });
         },
-        addSNMPEndpoint(endpoint) {
+        addEndpoint(endpoint) {
             return new Promise((resolve, reject) => {
-                fs.readFile('config.json', 'utf8', function (err, data) {
+                fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
                     config = JSON.parse(data);
                     config.nodes.push(endpoint);
-                    fs.writeFile('config.json', JSON.stringify(config), 'utf8'); // write it back
+                    fs.writeFile(configFilePath, JSON.stringify(config), 'utf8'); // write it back
                     resolve(true);
                 });
             });
