@@ -11,7 +11,28 @@
           <strong>{{endpoint.friendlyName}}</strong>
         </div>
         <div>{{endpoint.host}}:{{endpoint.port}}</div>
-        <div>({{endpoint.oid}})</div>
+        <div>{{endpoint.oid}}</div>
+        <div class="groups-preview" *ngIf="endpoint.supportGrouping">
+          <div class="group-preview" *ngFor="let match of endpoint.groupingMatch">
+            <div>
+              <strong>original: </strong>{{match.original}}
+            </div>
+            <div>
+              <strong>result: </strong>{{match.result}}
+            </div>
+          </div>
+          <div class="group-preview" *ngFor="let between of endpoint.groupingBetween">
+            <div>
+              <strong>from: </strong>{{between.from}}
+            </div>
+            <div>
+              <strong>to: </strong>{{between.to}}
+            </div>
+            <div>
+              <strong>result: </strong>{{between.result}}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id="snmp-endpoint-form" class="col-md-12" *ngIf="isMenuOpen">
@@ -27,7 +48,7 @@
         <strong class="special-color">PORT: </strong>{{selectedEndpoint.port}}
       </h4>
       <h4>
-        <strong class="special-color">OID: </strong>({{selectedEndpoint.oid}})
+        <strong class="special-color">OID: </strong>{{selectedEndpoint.oid}}
       </h4>
     </div>
     <div class="col-md-12 node-result" *ngFor="let node of nodes; let i = index">

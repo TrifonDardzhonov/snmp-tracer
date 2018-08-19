@@ -64,7 +64,10 @@ var snmpRepository = function () {
                         result.responses.push(endpointResult);
                     })
                     .on("end", function () {
-                        resolve(result);
+                        resolve({
+                            type: result.type,
+                            responses: result.responses.splice(result.responses.length - 1001, result.responses.length - 1)
+                        });
                     });
             })
         },

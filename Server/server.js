@@ -13,7 +13,9 @@ function mapSNMPEndpointModel(req) {
         host: req.body.host,
         port: Number(req.body.port),
         community: req.body.community,
-        supportGrouping: req.body.supportGrouping
+        supportGrouping: req.body.supportGrouping,
+        groupingMatch: req.body.groupingMatch,
+        groupingBetween: req.body.groupingBetween
     }
 }
 

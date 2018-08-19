@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { SNMPEndpoint } from '../models/snmpEndpoint';
+import { SNMPEndpoint, GroupMatch, GroupBetween } from '../models/snmpEndpoint';
 import { SNMPService } from '../snmpService/snmp-service';
 
 @Component({
@@ -20,11 +20,28 @@ export class SNMPEndpointFormComponent {
         port: null,
         community: '',
         supportGrouping: false,
-        grouping: []
+        groupingMatch: [],
+        groupingBetween: []
     };
 
     public endpointData: any[] = [];
     public loading = false;
+
+    addMatchingGroup() {
+        this.endpoint.groupingMatch.push(new GroupMatch());
+    }
+
+    removeMatchingGroup(index: number) {
+        this.endpoint.groupingMatch.splice(index, 1);
+    }
+
+    addBetweenGroup() {
+        this.endpoint.groupingBetween.push(new GroupBetween());
+    }
+
+    removeBetweenGroup(index: number) {
+        this.endpoint.groupingBetween.splice(index, 1);
+    }
 
     addEndpoint() {
         this.snmpService.addSNMPEndpoint(this.endpoint).subscribe(success => {

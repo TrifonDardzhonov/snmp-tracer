@@ -11,6 +11,22 @@ button {
   margin-top: 5px;
 }
 
+#grouping-box {
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.grouping {
+  margin-top: 10px;
+  position: relative;
+}
+
+.removeGroup {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
 #test-results-box {
   max-height: 300px;
   overflow-y: scroll;

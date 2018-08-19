@@ -50,3 +50,13 @@
   background-color: cadetblue;
   padding: 10px;
 }
+
+.groups-preview {
+  text-align: left;
+}
+
+.group-preview {
+  border: 1px solid darkblue;
+  padding: 5px;
+  margin-top: 5px;
+}

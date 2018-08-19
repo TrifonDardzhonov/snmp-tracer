@@ -5,12 +5,19 @@ export class SNMPEndpoint {
     port: number;
     community: string;
     supportGrouping: boolean;
-    grouping: Group[];
+    groupingMatch: GroupMatch[];
+    groupingBetween: GroupBetween[];
 }
 
-export class Group {
+export class GroupMatch {
     original: string;
-    mapped: string;
+    result: string;
+}
+
+export class GroupBetween {
+    from: number;
+    to: number;
+    result: string;
 }
 
 export class SNMPNode {
