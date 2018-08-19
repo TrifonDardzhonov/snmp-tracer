@@ -5,6 +5,12 @@ export class SNMPEndpoint {
     port: number;
     community: string;
     supportGrouping: boolean;
+    grouping: Group[];
+}
+
+export class Group {
+    original: string;
+    mapped: string;
 }
 
 export class SNMPNode {

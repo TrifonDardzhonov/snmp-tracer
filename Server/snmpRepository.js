@@ -1,8 +1,14 @@
 var fs = require('fs');
-var os = require("os");
+var csv = require('fast-csv');
+
+var csvStream = csv.createWriteStream({
+    headers: true
+});
+writableStream = fs.createWriteStream('db.csv');
+csvStream.pipe(writableStream);
 
 var snmpRepository = function () {
-    const dataFilePath = 'db.json';
+    const dataFilePath = 'db.csv';
     const configFilePath = 'config.json';
 
     var isSameEndpoint = function (e1, e2) {
@@ -16,34 +22,49 @@ var snmpRepository = function () {
     }
 
     return {
-        write: function (jsonData) {
-            fs.appendFile(dataFilePath, JSON.stringify(jsonData) + os.EOL, function (err) {});
+        write: function (snmp) {
+            csvStream.write({
+                oid: snmp.oid,
+                host: snmp.host,
+                port: snmp.port,
+                community: snmp.community,
+                value: snmp.value,
+                group: snmp.group,
+                dateticks: snmp.dateticks
+            }, {
+                headers: true
+            });
         },
         read: function (endpoint) {
             return new Promise((resolve, reject) => {
-                const data = {
+                const result = {
                     type: endpoint.friendlyName,
                     responses: []
                 };
 
-                fs.readFile(dataFilePath, 'utf8', function (err, r) {
-                    if (err) throw err;
-                    results = JSON.parse(r);
-                    results.data.forEach(endpointResult => {
-                        if (isSameEndpoint(endpointResult, endpoint)) {
-                            data.responses.push({
-                                value: endpointResult.value,
-                                group: endpointResult.group,
-                                dateticks: endpointResult.dateticks //new Date().getTime()
-                            });
-
-                            if (data.responses.length === 10) {
-                                resolve(data)
-                            }
+                csv.fromPath(dataFilePath, {
+                        headers: true
+                    })
+                    .transform(function (data) {
+                        return {
+                            oid: Array.isArray(data.oid) ? data.oid : data.oid.split(',').map(id => Number(id)),
+                            host: data.host,
+                            port: Number(data.port),
+                            community: data.community,
+                            value: data.value,
+                            group: data.group,
+                            dateticks: data.dateticks
                         }
+                    })
+                    .validate(function (endpointResult) {
+                        return isSameEndpoint(endpointResult, endpoint);
+                    })
+                    .on("data", function (endpointResult) {
+                        result.responses.push(endpointResult);
+                    })
+                    .on("end", function () {
+                        resolve(result);
                     });
-
-                });
             })
         },
         endpoints() {

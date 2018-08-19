@@ -19,7 +19,8 @@ export class SNMPEndpointFormComponent {
         host: '',
         port: null,
         community: '',
-        supportGrouping: false
+        supportGrouping: false,
+        grouping: []
     };
 
     public endpointData: any[] = [];

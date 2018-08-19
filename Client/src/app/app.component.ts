@@ -31,21 +31,13 @@ export class AppComponent {
   }
 
   public select(endpoint: SNMPEndpoint): void {
-    debugger;
     this.selectedEndpoint = endpoint;
     if (!this.isMenuOpen) {
       this.isMenuOpen = true;
     }
 
     this.loading = true;
-    this.snmpService.snmpEndPointDetails({
-      friendlyName: '',
-      oid: '1, 3, 6, 1, 2, 1, 1',
-      host: 'demo.snmplabs.com',
-      port: 161,
-      community: 'public',
-      supportGrouping: false
-    }).subscribe(n => {
+    this.snmpService.snmpEndPointDetails(endpoint).subscribe(n => {
       this.nodes = n;
       this.loading = false;
     });
