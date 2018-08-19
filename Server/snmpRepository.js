@@ -13,6 +13,7 @@ var snmpRepository = function () {
 
     var isSameEndpoint = function (e1, e2) {
         return e1.oid !== undefined &&
+            e1.oid.length === e2.oid.length &&
             e1.oid.every(function (u, i) {
                 return u === e2.oid[i];
             }) &&
