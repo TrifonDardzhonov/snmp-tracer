@@ -60,7 +60,7 @@
           <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapLineSettings(node, i)"></app-line-chart>
         </div>
         <div class="col-md-4">
-          <app-pie-chart *ngIf="selectedEndpoint.supportGrouping" [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)"></app-pie-chart>
+          <app-pie-chart *ngIf="selectedEndpoint.supportGrouping" [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)" (selectGroup)="selectGroup($event)"></app-pie-chart>
         </div>
       </div>
     </div>

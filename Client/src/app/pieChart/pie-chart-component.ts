@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { ChartSettings } from '../models/chartSettings';
 
@@ -10,6 +10,7 @@ export class PieChartComponent implements AfterViewInit {
 
     @Input() set: any;
     @Input() settings: ChartSettings;
+    @Output() selectGroup: EventEmitter<string> = new EventEmitter();
 
     // Now create the chart
     private options = {
@@ -39,18 +40,27 @@ export class PieChartComponent implements AfterViewInit {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
                 }
+            },
+            series: {
+                events: {
+                    click: function () {
+                        this.userOptions.selectGroupEmitter.emit(this.chart.hoverPoint.name);
+                    }
+                }
             }
         },
         series: [{
-            name: 'Brands',
+            name: 'SNMP',
             colorByPoint: true,
-            data: []
+            data: [],
+            selectGroupEmitter: null
         }]
     };
 
     ngAfterViewInit() {
         this.options.subtitle.text = this.settings.subtitle;
         this.options.series[0].data = this.set;
+        this.options.series[0].selectGroupEmitter = this.selectGroup;
         Highcharts.chart('pie-container-' + this.settings.index, this.options);
     }
 }

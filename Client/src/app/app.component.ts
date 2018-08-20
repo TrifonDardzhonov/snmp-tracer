@@ -37,8 +37,8 @@ export class AppComponent {
     }
 
     this.loading = true;
-    this.snmpService.snmpEndPointDetails(endpoint).subscribe(n => {
-      this.nodes = n;
+    this.snmpService.snmpEndPointDetails(endpoint).subscribe(nodes => {
+      this.nodes = nodes;
       this.loading = false;
     });
   }
@@ -73,6 +73,14 @@ export class AppComponent {
     };
   }
 
+  public selectGroup(group: string): void {
+    const responsesPerGroup = this.nodes[0].responses.filter(response => {
+      return response.group === group;
+    });
+
+    console.log(responsesPerGroup);
+  }
+
   public mapToLineChart(responses: NodeResponse[]) {
     return responses.map((r) => {
       return [new Date(r.dateticks), parseInt(r.value, 0)];
@@ -88,6 +96,5 @@ export class AppComponent {
 
   // validations.....
   // on click on pie chart group -> show data in table ->
-  // extracting the csv file -> just an idea
   // store the correct date for dateticks
 }
