@@ -64,3 +64,8 @@
 .endpoint-description {
   padding: 20px;
 }
+
+.group-data-grid {
+  height: 300px;
+  overflow-y: scroll;
+}

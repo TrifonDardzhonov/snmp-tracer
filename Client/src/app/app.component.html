@@ -64,5 +64,29 @@
         </div>
       </div>
     </div>
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3">
+          <strong>OID</strong>
+        </div>
+        <div class="col-md-3">
+          <strong>Date</strong>
+        </div>
+        <div class="col-md-3">
+          <strong>Group</strong>
+        </div>
+        <div class="col-md-3">
+          <strong>Value</strong>
+        </div>
+      </div>
+      <div class="col-md-12 group-data-grid">
+        <div class="row" *ngFor="let response of responsesPerGroup">
+          <div class="col-md-3">{{response.oid}}</div>
+          <div class="col-md-3">{{response.dateticks}}</div>
+          <div class="col-md-3">{{response.group}}</div>
+          <div class="col-md-3">{{response.value}}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
