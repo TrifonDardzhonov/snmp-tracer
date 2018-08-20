@@ -89,7 +89,5 @@ export class AppComponent {
   // validations.....
   // on click on pie chart group -> show data in table ->
   // extracting the csv file -> just an idea
-  // remove button for each group
-  // remove button for endpoint
   // store the correct date for dateticks
 }

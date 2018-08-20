@@ -35,12 +35,14 @@
     <div class="grouping" *ngFor="let group of endpoint.groupingMatch; let i = index">
       <input class="col-md-12" placeholder="Original" type="text" [(ngModel)]="group.original"/>
       <input class="col-md-12" placeholder="Result" type="text" [(ngModel)]="group.result"/>
+      <div class="remove-btn" (click)="removeMatchingGroup(i)">X</div>
     </div>
     <button class="btn btn-primary col-md-12" (click)="addBetweenGroup()">Add Between Group</button>
     <div class="grouping" *ngFor="let group of endpoint.groupingBetween; let i = index">
       <input class="col-md-12" placeholder="From" type="number" [(ngModel)]="group.from"/>
       <input class="col-md-12" placeholder="To" type="number" [(ngModel)]="group.to"/>
       <input class="col-md-12" placeholder="Result" type="text" [(ngModel)]="group.result"/>
+      <div class="remove-btn" (click)="removeBetweenGroup(i)">X</div>
     </div>
   </div>
   <button class="btn btn-primary col-md-12" (click)="test()">Extract Subtree</button>

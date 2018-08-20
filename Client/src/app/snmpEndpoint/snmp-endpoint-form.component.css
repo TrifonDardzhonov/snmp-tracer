@@ -21,10 +21,12 @@ button {
   position: relative;
 }
 
-.removeGroup {
+.remove-btn {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: -4px;
+  right: -14px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #test-results-box {
