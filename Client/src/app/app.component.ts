@@ -23,7 +23,7 @@ export class AppComponent {
 
   public isMenuOpen = false;
   public nodes: SNMPNode[] = [];
-  public responsesPerGroup: NodeResponse[] = [];
+  public responsesForDetailReview: NodeResponse[] = [];
   public loading = false;
 
   public addedSNMPEndpoint(endpoint: SNMPEndpoint): void {
@@ -33,7 +33,7 @@ export class AppComponent {
 
   public select(endpoint: SNMPEndpoint): void {
     this.selectedEndpoint = endpoint;
-    this.responsesPerGroup.length = 0;
+    this.responsesForDetailReview.length = 0;
     if (!this.isMenuOpen) {
       this.isMenuOpen = true;
     }
@@ -76,7 +76,7 @@ export class AppComponent {
   }
 
   public selectGroup(group: string): void {
-    this.responsesPerGroup = this.nodes[0].responses.filter(response => {
+    this.responsesForDetailReview = this.nodes[0].responses.filter(response => {
       return response.group === group;
     });
   }
@@ -93,8 +93,4 @@ export class AppComponent {
       subtitle: 'Details by date'
     };
   }
-
-  // validations.....
-  // on click on pie chart group -> show data in table ->
-  // store the correct date for dateticks
 }

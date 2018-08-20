@@ -61,10 +61,11 @@
         </div>
         <div class="col-md-4">
           <app-pie-chart *ngIf="selectedEndpoint.supportGrouping" [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)" (selectGroup)="selectGroup($event)"></app-pie-chart>
+          <p>Click on a group to see details.</p>
         </div>
       </div>
     </div>
-    <div class="col-md-12">
+    <div *ngIf="responsesForDetailReview.length" class="col-md-12 detail-review-table">
       <div class="row">
         <div class="col-md-3">
           <strong>OID</strong>
@@ -80,9 +81,9 @@
         </div>
       </div>
       <div class="col-md-12 group-data-grid">
-        <div class="row" *ngFor="let response of responsesPerGroup">
+        <div class="row" *ngFor="let response of responsesForDetailReview">
           <div class="col-md-3">{{response.oid}}</div>
-          <div class="col-md-3">{{response.dateticks}}</div>
+          <div class="col-md-3">{{response.dateticks | date:'medium'}}</div>
           <div class="col-md-3">{{response.group}}</div>
           <div class="col-md-3">{{response.value}}</div>
         </div>

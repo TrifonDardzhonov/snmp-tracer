@@ -65,6 +65,10 @@
   padding: 20px;
 }
 
+.detail-review-table {
+  border: 3px solid black;
+}
+
 .group-data-grid {
   height: 300px;
   overflow-y: scroll;
