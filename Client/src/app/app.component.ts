@@ -88,6 +88,14 @@ export class AppComponent {
     };
   }
 
-  // add checkbox for "Support grouping"
-  // add key value pairs -> value between -> GROUP
+  // on disable grouping -> clean up grouping arrays
+  // validations.....
+  // on click on pie chart group -> show data in table ->
+  // add documentation how to run the project
+  // node serve.js -> ng serve --open
+  // extracting the csv file -> just an idea
+  // remove button for each group
+  // remove button for endpoint
+  // maybe add description field what this data mean
+  // store the correct date for dateticks
 }

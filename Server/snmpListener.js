@@ -1,7 +1,8 @@
-var SNMPResponse = require('./snmpResponse');
+var snmpClient = require('./snmpClient');
 var snmpRepository = require('./snmpRepository');
-var snmp = require('snmp-native');
+var SNMPResponse = require('./snmpResponse');
 
+const client = new snmpClient();
 const snmpStore = new snmpRepository();
 
 function visitNodes() {
@@ -16,7 +17,7 @@ function seconds(sec) {
 function visitEachNode() {
     snmpStore.endpoints().then(endpoints => {
         endpoints.forEach((node) => {
-            extractSubtree(node).then(varbinds => {
+            client.extractSubtree(node).then(varbinds => {
                 if (varbinds) {
                     varbinds.forEach(bind => {
                         var snmpResponse = SNMPResponse(node.oid, node.host, node.port, node.community, bind.value, group(node, bind));
@@ -50,30 +51,10 @@ function group(node, bind) {
     return "N/A"
 }
 
-function extractSubtree(node) {
-    var session = new snmp.Session({
-        host: node.host,
-        port: node.port,
-        community: node.community
-    });
-
-    return new Promise((resolve, reject) => {
-        session.getSubtree({
-            oid: node.oid
-        }, function (error, varbinds) {
-            if (error) {
-                console.log('Fail :(');
-            } else {
-                resolve(varbinds);
-            }
-        });
-    })
-}
-
 var snmpListener = function () {
     return {
         start: visitNodes,
-        endpointData: extractSubtree
+        endpointData: client.extractSubtree
     }
 }
 
