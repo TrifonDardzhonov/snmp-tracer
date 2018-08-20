@@ -9,6 +9,7 @@ var listener = new snmpListener();
 function mapSNMPEndpointModel(req) {
     return {
         friendlyName: req.body.friendlyName,
+        description: req.body.description,
         oid: Array.isArray(req.body.oid) ? req.body.oid : req.body.oid.split(',').map(id => Number(id)),
         host: req.body.host,
         port: Number(req.body.port),

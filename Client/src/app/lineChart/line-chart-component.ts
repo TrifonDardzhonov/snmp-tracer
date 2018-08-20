@@ -200,7 +200,6 @@ export class LineChartComponent implements AfterViewInit {
     };
 
     ngAfterViewInit() {
-        this.options.title.text = this.settings.title;
         this.options.subtitle.text = this.settings.subtitle;
         this.options.series[0].data = this.set;
         Highcharts.chart('line-container-' + this.settings.index, this.options);

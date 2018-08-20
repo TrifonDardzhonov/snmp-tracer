@@ -15,6 +15,7 @@ export class SNMPEndpointFormComponent {
 
     public endpoint: SNMPEndpoint = {
         friendlyName: '',
+        description: '',
         oid: '',
         host: '',
         port: null,
@@ -26,6 +27,12 @@ export class SNMPEndpointFormComponent {
 
     public endpointData: any[] = [];
     public loading = false;
+
+    toggleGrouping() {
+        this.endpoint.supportGrouping = !this.endpoint.supportGrouping;
+        this.endpoint.groupingMatch.length = 0;
+        this.endpoint.groupingBetween.length = 0;
+    }
 
     addMatchingGroup() {
         this.endpoint.groupingMatch.push(new GroupMatch());

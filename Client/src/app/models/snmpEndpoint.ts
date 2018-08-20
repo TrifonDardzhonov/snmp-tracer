@@ -1,5 +1,6 @@
 export class SNMPEndpoint {
     friendlyName: string;
+    description: string;
     oid: string;
     host: string;
     port: number;
@@ -21,7 +22,6 @@ export class GroupBetween {
 }
 
 export class SNMPNode {
-    type: string;
     responses: NodeResponse[];
 }
 

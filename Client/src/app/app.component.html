@@ -53,6 +53,9 @@
     </div>
     <div class="col-md-12 node-result" *ngFor="let node of nodes; let i = index">
       <div class="row">
+        <div class="col-md-12">
+          <h4 class="endpoint-description">{{selectedEndpoint.description}}</h4>
+        </div>
         <div class="col-md-8">
           <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapLineSettings(node, i)"></app-line-chart>
         </div>

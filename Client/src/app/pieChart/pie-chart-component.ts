@@ -49,7 +49,6 @@ export class PieChartComponent implements AfterViewInit {
     };
 
     ngAfterViewInit() {
-        this.options.title.text = this.settings.title;
         this.options.subtitle.text = this.settings.subtitle;
         this.options.series[0].data = this.set;
         Highcharts.chart('pie-container-' + this.settings.index, this.options);

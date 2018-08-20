@@ -69,7 +69,6 @@ export class AppComponent {
   public mapPieSettings(node: SNMPNode, index: number): ChartSettings {
     return {
       index: index,
-      title: node.type,
       subtitle: 'Grouped by slices'
     };
   }
@@ -83,19 +82,14 @@ export class AppComponent {
   public mapLineSettings(node: SNMPNode, index: number): ChartSettings {
     return {
       index: index,
-      title: node.type,
       subtitle: 'Details by date'
     };
   }
 
-  // on disable grouping -> clean up grouping arrays
   // validations.....
   // on click on pie chart group -> show data in table ->
-  // add documentation how to run the project
-  // node serve.js -> ng serve --open
   // extracting the csv file -> just an idea
   // remove button for each group
   // remove button for endpoint
-  // maybe add description field what this data mean
   // store the correct date for dateticks
 }
