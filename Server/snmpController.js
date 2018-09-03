@@ -19,7 +19,7 @@ var snmpController = function () {
         },
         snmpEndpointData: function (endpoint) {
             return new Promise((resolve, reject) => {
-                snmpStore.read(endpoint).then(data => {
+                snmpStore.read(endpoint, 1000).then(data => {
                     resolve(data);
                 });
             });

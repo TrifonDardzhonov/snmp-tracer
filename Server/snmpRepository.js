@@ -26,12 +26,9 @@ var snmpRepository = function () {
                 headers: true
             });
         },
-        read: function (endpoint) {
+        read: function (endpoint, nRecords) {
             return new Promise((resolve, reject) => {
-                const result = {
-                    type: endpoint.friendlyName,
-                    responses: []
-                };
+                const responses = [];
 
                 csv.fromPath(dataFilePath, {
                         headers: true
@@ -52,12 +49,11 @@ var snmpRepository = function () {
                         return endpointResult.id === endpoint.id;
                     })
                     .on("data", function (endpointResult) {
-                        result.responses.push(endpointResult);
+                        responses.push(endpointResult);
                     })
                     .on("end", function () {
                         resolve({
-                            type: result.type,
-                            responses: result.responses.splice(result.responses.length - 1001, result.responses.length - 1)
+                            responses: responses.splice(responses.length - nRecords, responses.length - 1)
                         });
                     });
             })

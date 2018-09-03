@@ -4,10 +4,11 @@ var SNMPResponse = require('./snmpResponse');
 
 const client = new snmpClient();
 const snmpStore = new snmpRepository();
+const intervalInSeconds = 20;
 
 function visitNodes() {
     visitEachNode();
-    setTimeout(visitNodes, seconds(20));
+    setTimeout(visitNodes, seconds(intervalInSeconds));
 }
 
 function seconds(sec) {
