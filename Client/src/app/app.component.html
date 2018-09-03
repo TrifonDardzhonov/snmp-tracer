@@ -19,13 +19,13 @@
         <div>{{endpoint.host}}:{{endpoint.port}}</div>
         <div>{{endpoint.oid}}</div>
         <div class="dropdown col-md-12">
-          <button class="btn btn-secondary col-md-12" (click)="toggleShowStatuses(endpoint)">
+          <button class="btn btn-secondary col-md-12" (click)="toggleShowStatuses(endpoint);$event.stopPropagation()">
             {{endpoint.status.name}}
           </button>
           <div [ngClass]="{'dropdown-menu': !endpoint.showStatuses === true}">
-            <a *ngIf="endpoint.status.id !== status.Active.id" class="dropdown-item" (click)="setStatus(endpoint, status.Active)">Activate</a>
-            <a *ngIf="endpoint.status.id !== status.Deactivated.id" class="dropdown-item" (click)="setStatus(endpoint, status.Deactivated)">Deactivate</a>
-            <a *ngIf="endpoint.status.id !== status.Deleted.id" class="dropdown-item" (click)="setStatus(endpoint, status.Deleted)">Delete</a>
+            <a *ngIf="endpoint.status.id !== status.Active.id" class="dropdown-item" (click)="setStatus(endpoint, status.Active);$event.stopPropagation()">Activate</a>
+            <a *ngIf="endpoint.status.id !== status.Deactivated.id" class="dropdown-item" (click)="setStatus(endpoint, status.Deactivated);$event.stopPropagation()">Deactivate</a>
+            <a *ngIf="endpoint.status.id !== status.Deleted.id" class="dropdown-item" (click)="setStatus(endpoint, status.Deleted);$event.stopPropagation()">Delete</a>
           </div>
         </div>
         <div class="groups-preview" *ngIf="endpoint.supportGrouping">
