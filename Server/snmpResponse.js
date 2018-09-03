@@ -1,4 +1,5 @@
-function SNMPResponse(oid, host, port, community, value, group) {
+function SNMPResponse(id, oid, host, port, community, value, group) {
+    this.id = id;
     this.oid = oid;
     this.host = host;
     this.port = port;
@@ -8,6 +9,7 @@ function SNMPResponse(oid, host, port, community, value, group) {
     this.dateticks = new Date().getTime();
 
     return {
+        id: this.id,
         oid: this.oid,
         host: this.host,
         port: this.port,

@@ -11,20 +11,10 @@ var snmpRepository = function () {
     const dataFilePath = 'db.csv';
     const configFilePath = 'config.json';
 
-    var isSameEndpoint = function (e1, e2) {
-        return e1.oid !== undefined &&
-            e1.oid.length === e2.oid.length &&
-            e1.oid.every(function (u, i) {
-                return u === e2.oid[i];
-            }) &&
-            e1.host === e2.host &&
-            e1.port === e2.port &&
-            e1.community === e2.community;
-    }
-
     return {
         write: function (snmp) {
             csvStream.write({
+                id: snmp.id,
                 oid: snmp.oid,
                 host: snmp.host,
                 port: snmp.port,
@@ -48,6 +38,7 @@ var snmpRepository = function () {
                     })
                     .transform(function (data) {
                         return {
+                            id: Number(data.id),
                             oid: Array.isArray(data.oid) ? data.oid : data.oid.split(',').map(id => Number(id)),
                             host: data.host,
                             port: Number(data.port),
@@ -58,7 +49,7 @@ var snmpRepository = function () {
                         }
                     })
                     .validate(function (endpointResult) {
-                        return isSameEndpoint(endpointResult, endpoint);
+                        return endpointResult.id === endpoint.id;
                     })
                     .on("data", function (endpointResult) {
                         result.responses.push(endpointResult);
@@ -85,9 +76,10 @@ var snmpRepository = function () {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
                     config = JSON.parse(data);
+                    endpoint.id = config.nodes.length + 1;
                     config.nodes.push(endpoint);
                     fs.writeFile(configFilePath, JSON.stringify(config), 'utf8');
-                    resolve(true);
+                    resolve(endpoint);
                 });
             });
         }

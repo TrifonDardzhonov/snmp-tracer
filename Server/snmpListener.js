@@ -20,7 +20,16 @@ function visitEachNode() {
             client.extractSubtree(node).then(varbinds => {
                 if (varbinds) {
                     varbinds.forEach(bind => {
-                        var snmpResponse = SNMPResponse(node.oid, node.host, node.port, node.community, bind.value, group(node, bind));
+
+                        var snmpResponse = SNMPResponse(
+                            node.id,
+                            node.oid,
+                            node.host,
+                            node.port,
+                            node.community,
+                            bind.value,
+                            group(node, bind));
+
                         snmpStore.write(snmpResponse);
                     });
                 }

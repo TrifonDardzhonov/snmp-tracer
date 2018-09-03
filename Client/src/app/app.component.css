@@ -8,8 +8,16 @@
   word-wrap: break-word;
 }
 
-.selected-endpoint {
+.selected-active-endpoint {
   background-color: darkolivegreen;
+}
+
+.selected-deactivated-endpoint {
+  background-color: darkseagreen;
+}
+
+.deactivated-endpoint {
+  background-color: lightgray;
 }
 
 .menu {
@@ -72,4 +80,8 @@
 .group-data-grid {
   height: 300px;
   overflow-y: scroll;
+}
+
+.dropdown-item {
+  background-color: white;
 }

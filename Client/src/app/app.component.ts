@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChartSettings } from './models/chartSettings';
 import { SNMPService } from './snmpService/snmp-service';
-import { SNMPEndpoint, SNMPNode, NodeResponse } from './models/snmpEndpoint';
+import { SNMPEndpoint, SNMPNode, NodeResponse, Status } from './models/snmpEndpoint';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +25,7 @@ export class AppComponent {
   public nodes: SNMPNode[] = [];
   public responsesForDetailReview: NodeResponse[] = [];
   public loading = false;
+  public status = Status;
 
   public addedSNMPEndpoint(endpoint: SNMPEndpoint): void {
     this.endpoints.push(endpoint);
@@ -43,6 +44,15 @@ export class AppComponent {
       this.nodes = nodes;
       this.loading = false;
     });
+  }
+
+  public toggleShowStatuses(endpoint: any): void {
+    endpoint.showStatuses = !endpoint.showStatuses;
+  }
+
+  public setStatus(endpoint: any, status: Status): void {
+    endpoint.status = status;
+    endpoint.showStatuses = false;
   }
 
   public mapToPieChart(responses: NodeResponse[]) {

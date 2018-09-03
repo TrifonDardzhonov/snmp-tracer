@@ -8,12 +8,18 @@ var listener = new snmpListener();
 
 function mapSNMPEndpointModel(req) {
     return {
+        id: req.body.id 
+            ? Number(req.body.id) 
+            : null,
         friendlyName: req.body.friendlyName,
         description: req.body.description,
-        oid: Array.isArray(req.body.oid) ? req.body.oid : req.body.oid.split(',').map(id => Number(id)),
+        oid: Array.isArray(req.body.oid) 
+            ? req.body.oid 
+            : req.body.oid.split(',').map(id => Number(id)),
         host: req.body.host,
         port: Number(req.body.port),
         community: req.body.community,
+        status: req.body.status,
         supportGrouping: req.body.supportGrouping,
         groupingMatch: req.body.groupingMatch,
         groupingBetween: req.body.groupingBetween

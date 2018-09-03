@@ -14,8 +14,8 @@ export class SNMPService {
         return this.http.get<SNMPEndpoint[]>(this.baseUrl + '/snmpEndpoints');
     }
 
-    addSNMPEndpoint(endpoint: SNMPEndpoint): Observable<boolean> {
-        return this.http.post<boolean>(this.baseUrl + '/snmpEndpoints', endpoint);
+    addSNMPEndpoint(endpoint: SNMPEndpoint): Observable<SNMPEndpoint> {
+        return this.http.post<SNMPEndpoint>(this.baseUrl + '/snmpEndpoints', endpoint);
     }
 
     testSNMPEndpoint(endpoint: SNMPEndpoint): Observable<any> {
