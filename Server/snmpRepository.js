@@ -7,6 +7,12 @@ var csvStream = csv.createWriteStream({
 writableStream = fs.createWriteStream('db.csv');
 csvStream.pipe(writableStream);
 
+// const statusEnum = {
+//     Active = 1,
+//     Deactivated = 2,
+//     Deleted = 3
+// }
+
 var snmpRepository = function () {
     const dataFilePath = 'db.csv';
     const configFilePath = 'config.json';
@@ -76,6 +82,34 @@ var snmpRepository = function () {
                     config.nodes.push(endpoint);
                     fs.writeFile(configFilePath, JSON.stringify(config), 'utf8');
                     resolve(endpoint);
+                });
+            });
+        },
+        setStatus(endpoint, status) {
+            return new Promise((resolve, reject) => {
+                fs.readFile(configFilePath, 'utf8', function (err, data) {
+                    if (err) throw err;
+                    config = JSON.parse(data);
+                    const node = config.nodes.filter(n => n.id === endpoint.id)[0];
+
+                    if (!node) {
+                        // throw new Error("Endpoint does not exist!");
+                        resolve(false);
+                    } else if (node.status.id === statusEnum.Deleted) {
+                        // throw new Error("Endpoints with status deleted can not be modified!");
+                        resolve(false);
+                    } else {
+                        node.status = status;
+                        config.nodes = config.nodes.map(n => {
+                            if (n.id === node.id) {
+                                return node;
+                            } else {
+                                return n;
+                            }
+                        });
+                        fs.writeFile(configFilePath, JSON.stringify(config), 'utf8');
+                        resolve(true);
+                    }
                 });
             });
         }

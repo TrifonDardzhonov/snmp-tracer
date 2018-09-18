@@ -23,6 +23,13 @@ var snmpController = function () {
                     resolve(data);
                 });
             });
+        },
+        setSNMPEndpointStatus(endpoint, status) {
+            return new Promise((resolve, reject) => {
+                snmpStore.setSNMPEndpointStatus(endpoint, status).then(success => {
+                    resolve(success);
+                });
+            });
         }
     }
 };

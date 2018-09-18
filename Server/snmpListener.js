@@ -29,7 +29,7 @@ function visitEachNode() {
                             node.port,
                             node.community,
                             bind.value,
-                            group(node, bind));
+                            group(node, bind.value));
 
                         snmpStore.write(snmpResponse);
                     });
@@ -39,11 +39,13 @@ function visitEachNode() {
     });
 }
 
-function group(node, bind) {
+function group(node, value) {
     if (node.supportGrouping) {
         if (node.groupingBetween.length > 0) {
             for (let i = 0; i < node.groupingBetween.length; i++) {
-                if (Number(node.groupingBetween[i].from) >= bind.value && bind.value <= Number(node.groupingBetween[i].to)) {
+                const from = Number(node.groupingBetween[i].from);
+                const to = Number(node.groupingBetween[i].to);
+                if (from >= Number(value) && Number(value) <= to) {
                     return node.groupingBetween[i].result;
                 }
             }
@@ -51,7 +53,7 @@ function group(node, bind) {
 
         if (node.groupingMatch.length > 0) {
             for (let i = 0; i < node.groupingMatch.length; i++) {
-                if (node.groupingMatch[i].original == bind.value) {
+                if (node.groupingMatch[i].original == value) {
                     return node.groupingMatch[i].result;
                 }
             }
