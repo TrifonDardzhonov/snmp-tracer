@@ -1,0 +1,28 @@
+version: "3.3"
+services:
+    client:
+      container_name: client
+      image: centroida/angular-cli
+      volumes:
+        - ./Client:/app
+      working_dir: /app
+      ports:
+        - 4200:4200
+      networks:
+        - snmp-tracer
+      command: bash -c "npm install && ng serve -host 0.0.0.0"
+
+    server:
+      container_name: server
+      image: node
+      volumes:
+        - ./Server:/app
+      working_dir: /app
+      ports:
+        - 3000:3000
+      networks:
+        - snmp-tracer
+      command: bash -c "node server"
+
+networks:
+  snmp-tracer:
