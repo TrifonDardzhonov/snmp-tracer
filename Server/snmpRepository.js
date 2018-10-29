@@ -7,11 +7,11 @@ var csvStream = csv.createWriteStream({
 writableStream = fs.createWriteStream('db.csv');
 csvStream.pipe(writableStream);
 
-// const statusEnum = {
-//     Active = 1,
-//     Deactivated = 2,
-//     Deleted = 3
-// }
+const statusEnum = {
+    Active: 1,
+    Deactivated: 2,
+    Deleted: 3
+}
 
 var snmpRepository = function () {
     const dataFilePath = 'db.csv';
@@ -29,16 +29,16 @@ var snmpRepository = function () {
                 group: snmp.group,
                 dateticks: snmp.dateticks
             }, {
-                headers: true
-            });
+                    headers: true
+                });
         },
         read: function (endpoint, nRecords) {
             return new Promise((resolve, reject) => {
                 const responses = [];
 
                 csv.fromPath(dataFilePath, {
-                        headers: true
-                    })
+                    headers: true
+                })
                     .transform(function (data) {
                         return {
                             id: Number(data.id),

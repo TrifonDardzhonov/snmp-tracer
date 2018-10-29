@@ -26,7 +26,7 @@ var snmpController = function () {
         },
         setSNMPEndpointStatus(endpoint, status) {
             return new Promise((resolve, reject) => {
-                snmpStore.setSNMPEndpointStatus(endpoint, status).then(success => {
+                snmpStore.setStatus(endpoint, status).then(success => {
                     resolve(success);
                 });
             });

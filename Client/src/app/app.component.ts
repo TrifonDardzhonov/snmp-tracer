@@ -51,8 +51,12 @@ export class AppComponent {
   }
 
   public setStatus(endpoint: any, status: Status): void {
-    endpoint.status = status;
-    endpoint.showStatuses = false;
+    this.snmpService.setStatus(endpoint, status).subscribe((success) => {
+      if (success) {
+        endpoint.status = status;
+      }
+      endpoint.showStatuses = false;
+    });
   }
 
   public mapToPieChart(responses: NodeResponse[]) {

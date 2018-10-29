@@ -1,5 +1,5 @@
 import { Injectable } from '../../../node_modules/@angular/core';
-import { SNMPEndpoint, SNMPNode } from '../models/snmpEndpoint';
+import { SNMPEndpoint, SNMPNode, Status } from '../models/snmpEndpoint';
 import { Observable } from '../../../node_modules/rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 
@@ -24,5 +24,12 @@ export class SNMPService {
 
     snmpEndPointDetails(endpoint: SNMPEndpoint): Observable<SNMPNode[]> {
         return this.http.post<SNMPNode[]>(this.baseUrl + '/snmpEndpoint/data', endpoint);
+    }
+
+    setStatus(endpoint: SNMPEndpoint, status: Status): Observable<boolean> {
+        return this.http.post<boolean>(this.baseUrl + '/snmpEndpoint/setStatus', {
+            endpoint: endpoint,
+            status: status
+        });
     }
 }
