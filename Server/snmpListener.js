@@ -1,6 +1,7 @@
 var snmpClient = require('./snmpClient');
 var snmpRepository = require('./snmpRepository');
 var SNMPResponse = require('./snmpResponse');
+var endpointStatus = require('./enums/endpoint-status')
 
 const client = new snmpClient();
 const snmpStore = new snmpRepository();
@@ -17,7 +18,7 @@ function seconds(sec) {
 
 function visitEachNode() {
     snmpStore.endpoints().then(endpoints => {
-        endpoints.forEach((node) => {
+        endpoints.filter((node) => node.status.id === endpointStatus.Active).forEach((node) => {
             client.extractSubtree(node).then(varbinds => {
                 if (varbinds) {
                     varbinds.forEach(bind => {

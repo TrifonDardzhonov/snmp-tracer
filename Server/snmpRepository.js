@@ -1,17 +1,12 @@
 var fs = require('fs');
 var csv = require('fast-csv');
+var endpointStatus = require('./enums/endpoint-status')
 
 var csvStream = csv.createWriteStream({
     headers: true
 });
 writableStream = fs.createWriteStream('db.csv');
 csvStream.pipe(writableStream);
-
-const statusEnum = {
-    Active: 1,
-    Deactivated: 2,
-    Deleted: 3
-}
 
 var snmpRepository = function () {
     const dataFilePath = 'db.csv';
@@ -95,7 +90,7 @@ var snmpRepository = function () {
                     if (!node) {
                         // throw new Error("Endpoint does not exist!");
                         resolve(false);
-                    } else if (node.status.id === statusEnum.Deleted) {
+                    } else if (node.status.id === endpointStatus.Deleted) {
                         // throw new Error("Endpoints with status deleted can not be modified!");
                         resolve(false);
                     } else {
