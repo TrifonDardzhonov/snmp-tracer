@@ -9,6 +9,8 @@ import { SNMPService } from './snmpService/snmp-service';
 import { AlertModule } from 'ngx-bootstrap';
 import { SNMPEndpointFormComponent } from './snmpEndpoint/snmp-endpoint-form.component';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,10 @@ import { HttpClientModule } from '../../node_modules/@angular/common/http';
     BrowserModule,
     AlertModule.forRoot(),
     FormsModule,
-    HttpClientModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ],
   providers: [SNMPService],
   bootstrap: [AppComponent]

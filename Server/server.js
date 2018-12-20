@@ -67,8 +67,10 @@ app.route('/snmpEndpoints')
 app.route('/snmpEndpoint/data')
     .post(function (req, res) {
         // get last 100 data records for requested endpoint
-        var endPoint = mapSNMPEndpointModel(req.body);
-        controller.snmpEndpointData(endPoint).then((data) => {
+        var endPoint = mapSNMPEndpointModel(req.body.endpoint);
+        var startDate = req.body.startDate;
+        var endDate = req.body.endDate;
+        controller.snmpEndpointData(endPoint.id, startDate, endDate).then((data) => {
             res.json([data]);
         });
     });

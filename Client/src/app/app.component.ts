@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ChartSettings } from './models/chartSettings';
 import { SNMPService } from './snmpService/snmp-service';
 import { SNMPEndpoint, SNMPNode, NodeResponse, Status } from './models/snmpEndpoint';
@@ -6,14 +6,16 @@ import { SNMPEndpoint, SNMPNode, NodeResponse, Status } from './models/snmpEndpo
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 
   private endpoints: SNMPEndpoint[] = [];
   public selectedEndpoint: SNMPEndpoint;
 
-  constructor(private snmpService: SNMPService) {
+  constructor(private snmpService: SNMPService, private changeDetectorRef: ChangeDetectorRef) {
+    this.initDateRangeState();
     this.snmpService.snmpEndpoints().subscribe(endpoints => {
       this.endpoints = endpoints;
       this.select(this.endpoints[this.endpoints.length - 1]);
@@ -22,6 +24,8 @@ export class AppComponent {
   }
 
   public isMenuOpen = false;
+  public startDate: Date;
+  public endDate: Date;
   public nodes: SNMPNode[] = [];
   public responsesForDetailReview: NodeResponse[] = [];
   public loading = false;
@@ -38,12 +42,15 @@ export class AppComponent {
     if (!this.isMenuOpen) {
       this.isMenuOpen = true;
     }
+    this.reloadEndpointData();
+  }
 
-    this.loading = true;
-    this.snmpService.snmpEndPointDetails(endpoint).subscribe(nodes => {
-      this.nodes = nodes;
-      this.loading = false;
-    });
+  public dateRangeIsModified() {
+    this.reloadEndpointData();
+  }
+
+  public refresh() {
+    this.reloadEndpointData();
   }
 
   public toggleShowStatuses(endpoint: any): void {
@@ -106,5 +113,30 @@ export class AppComponent {
       index: index,
       subtitle: 'Details by date'
     };
+  }
+
+  private initDateRangeState() {
+    this.startDate = new Date();
+    this.startDate.setDate(this.startDate.getDate() - 1);
+  }
+
+  public removeEndDate() {
+    this.endDate = null;
+  }
+
+  private reloadEndpointData(): void {
+    this.loading = true;
+    this.snmpService.snmpEndPointDetails(
+      this.selectedEndpoint,
+      this.startDate.toISOString(),
+      this.endDateAsIso()).subscribe(nodes => {
+        this.nodes = nodes;
+        this.loading = false;
+        this.changeDetectorRef.detectChanges();
+      });
+  }
+
+  private endDateAsIso() {
+    return this.endDate ? this.endDate.toISOString() : (new Date()).toISOString();
   }
 }

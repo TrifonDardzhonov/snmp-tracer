@@ -27,7 +27,7 @@ var snmpRepository = function () {
                     headers: true
                 });
         },
-        read: function (endpoint, nRecords) {
+        read: function (endpointId, startDate, endDate, lastNRecords) {
             return new Promise((resolve, reject) => {
                 const responses = [];
 
@@ -47,14 +47,22 @@ var snmpRepository = function () {
                         }
                     })
                     .validate(function (endpointResult) {
-                        return endpointResult.id === endpoint.id;
+                        return endpointResult.id === endpointId;
                     })
                     .on("data", function (endpointResult) {
                         responses.push(endpointResult);
                     })
                     .on("end", function () {
+                        var startDateTicks = new Date(startDate).getTime();
+                        var endDateTicks = new Date(endDate).getTime();
+
+                        var filteredResponses = responses.filter(r => startDateTicks <= r.dateticks && r.dateticks <= endDateTicks);
+
+                        var spliceStart = lastNRecords < filteredResponses.length ? (filteredResponses.length - lastNRecords) : 0;
+                        var spliceEnd = filteredResponses.length - 1;
+
                         resolve({
-                            responses: responses.splice(responses.length - nRecords, responses.length - 1)
+                            responses: filteredResponses.splice(spliceStart, spliceEnd)
                         });
                     });
             })

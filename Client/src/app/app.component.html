@@ -69,19 +69,48 @@
     </div>
     <div class="col-md-12 node-result" *ngFor="let node of nodes; let i = index">
       <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-2">
+          <label>Start Date</label>
+          <input placeholder="Date Time:"
+                style="cursor: pointer;"
+                [(ngModel)]="startDate"
+                (ngModelChange)="dateRangeIsModified()"
+                [owlDateTimeTrigger]="sdt" 
+                [owlDateTime]="sdt">
+          <owl-date-time #sdt></owl-date-time>
+        </div>
+        <div class="col-md-2">
+          <label>End Date</label>
+          <input placeholder="Date Time:"
+                style="cursor: pointer;"
+                [(ngModel)]="endDate"
+                (ngModelChange)="dateRangeIsModified()"
+                [owlDateTimeTrigger]="edt" 
+                [owlDateTime]="edt">
+          <owl-date-time #edt></owl-date-time>
+          <div style="padding: 0px;cursor: pointer;" class="col-md-12">
+            <i (click)="removeEndDate()">Until now</i>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button style="margin-top: 25px;" class="btn btn-secondary col-md-12" (click)="refresh()">
+            Refresh
+          </button>
+        </div>
         <div class="col-md-12">
           <h4 class="endpoint-description">{{selectedEndpoint.description}}</h4>
         </div>
-        <div class="col-md-8">
+        <div *ngIf="!loading" class="col-md-8">
           <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapLineSettings(node, i)"></app-line-chart>
         </div>
-        <div class="col-md-4">
+        <div *ngIf="!loading" class="col-md-4">
           <app-pie-chart *ngIf="selectedEndpoint.supportGrouping" [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)" (selectGroup)="selectGroup($event)"></app-pie-chart>
           <p>Click on a group to see details.</p>
         </div>
       </div>
     </div>
-    <div *ngIf="responsesForDetailReview.length" class="col-md-12 detail-review-table">
+    <div *ngIf="responsesForDetailReview.length && !loading" class="col-md-12 detail-review-table">
       <div class="row">
         <div class="col-md-3">
           <strong>OID</strong>

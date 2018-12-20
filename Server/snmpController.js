@@ -17,9 +17,9 @@ var snmpController = function () {
                 });
             });
         },
-        snmpEndpointData: function (endpoint) {
+        snmpEndpointData: function (endpointId, startDate, endDate) {
             return new Promise((resolve, reject) => {
-                snmpStore.read(endpoint, 1000).then(data => {
+                snmpStore.read(endpointId, startDate, endDate, 1000).then(data => {
                     resolve(data);
                 });
             });
