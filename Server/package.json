@@ -12,12 +12,11 @@
   "author": "Trifon Dardzhonov",
   "license": "MIT",
   "dependencies": {
-    "cities": "^1.1.2",
-    "csv": "^3.1.0",
-    "dgram": "^1.0.1",
-    "express": "^4.16.3",
-    "fast-csv": "^2.4.1",
-    "shelljs": "^0.8.3",
-    "snmp-native": "^1.1.2"
+    "csv": "3.1.0",
+    "dgram": "1.0.1",
+    "express": "4.16.3",
+    "fast-csv": "2.4.1",
+    "shelljs": "0.8.3",
+    "snmp-native": "1.1.2"
   }
 }

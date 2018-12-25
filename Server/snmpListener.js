@@ -8,16 +8,18 @@ var swarmService = require('./swarmService');
 const client = new snmpClient();
 const snmpStore = new snmpRepository();
 const swarm = new swarmService();
-const intervalInSeconds = 20;
+
+const initialWaitingForSwarm = 60;
+const intervalBetweenSNMPRequests = 20;
 
 function start() {
     swarm.init();
-    visitNodes();
+    setTimeout(visitNodes, seconds(initialWaitingForSwarm));
 }
 
 function visitNodes() {
     visitEachNode();
-    setTimeout(visitNodes, seconds(intervalInSeconds));
+    setTimeout(visitNodes, seconds(intervalBetweenSNMPRequests));
 }
 
 function seconds(sec) {
@@ -27,7 +29,9 @@ function seconds(sec) {
 function visitEachNode() {
     snmpStore.swarmConfig().then((swarmConf) => {
         snmpStore.endpoints().then(endpoints => {
-            endpoints.filter((node) => node.status.id === endpointStatus.Active).forEach((node) => {
+            const activeEndpoints = endpoints.filter((node) => node.status.id === endpointStatus.Active);
+
+            activeEndpoints.forEach((node) => {
                 client.extractSubtree(node).then(varbinds => {
                     if (varbinds) {
                         varbinds.forEach(bind => {

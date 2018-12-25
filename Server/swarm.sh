@@ -1,1 +1,1 @@
-docker service scale snmp-client=1
+docker swarm init --advertise-addr 127.0.0.1:2377

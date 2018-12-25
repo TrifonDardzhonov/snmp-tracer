@@ -90,6 +90,6 @@
         }
     ],
     "swarm": {
-        "service": "snmp-client"
+        "service": "snmp-client-software"
     }
 }

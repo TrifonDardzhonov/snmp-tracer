@@ -5,7 +5,7 @@ const swarmFile = "swarm.sh";
 function swarmService() {
     return {
         init() {
-            shell.exec(`docker swarm init --advertise-addr localhost:2377`);
+            initSwarm();
         },
         scaleUp(service) {
             scaleServiceUp(service);
@@ -16,25 +16,22 @@ function swarmService() {
     }
 }
 
+function initSwarm() {
+    const command = swarmInitCommand();
+    runSwarmCommand(command);
+}
+
 function scaleServiceUp(service) {
     serviceInstances().then((instances) => {
-        const command = buildSwarmCommand(service, Number(instances) + 1);
-        fs.writeFile(swarmFile, command, 'utf8', (err) => {
-            if (!err) {
-                execSwarmFile();
-            }
-        });
+        const command = swarmScalingCommand(service, instances + 1);
+        runSwarmCommand(command);
     })
 }
 
 function scaleServiceDown(service) {
     serviceInstances().then((instances) => {
-        const command = buildSwarmCommand(service, Number(instances) - 1);
-        fs.writeFile(swarmFile, command, 'utf8', (err) => {
-            if (!err) {
-                execSwarmFile();
-            }
-        });
+        const command = swarmScalingCommand(service, instances - 1);
+        runSwarmCommand(command);
     })
 }
 
@@ -43,15 +40,30 @@ function serviceInstances() {
         fs.readFile(swarmFile, 'utf8', function (err, command) {
             if (err) throw err;
             const index = command.lastIndexOf("=");
-            const instances = command.slice(index + 1, command.length);
-            resolve(instances);
+            if (index !== -1) {
+                const instances = command.slice(index + 1, command.length);
+                resolve(Number(instances));
+            } else {
+                resolve(1);
+            }
         });
     });
 }
 
-function buildSwarmCommand(service, instances) {
-    const command = `docker service scale ${service}=${instances}`;
-    return command;
+function swarmInitCommand() {
+    return `docker swarm init --advertise-addr 127.0.0.1:2377`;
+}
+
+function swarmScalingCommand(service, instances) {
+    return `docker service scale ${service}=${instances}`;
+}
+
+function runSwarmCommand(command) {
+    fs.writeFile(swarmFile, command, 'utf8', (err) => {
+        if (!err) {
+            execSwarmFile();
+        }
+    });
 }
 
 function execSwarmFile() {

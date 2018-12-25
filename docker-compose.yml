@@ -24,14 +24,16 @@ services:
         - snmp-tracer
       command: bash -c "node server"
     
-    snmp-client:
-      container_name: snmp-client
+    snmp-client-software:
+      container_name: snmp-client-software
       image: node:9
       volumes:
         - ./Server:/app
       networks:
         - snmp-tracer
       command: bash -c "sleep 1h"
+      depends_on:
+        - server
 
 networks:
   snmp-tracer:
