@@ -1,11 +1,19 @@
 var snmpClient = require('./snmpClient');
 var snmpRepository = require('./snmpRepository');
 var SNMPResponse = require('./snmpResponse');
-var endpointStatus = require('./enums/endpoint-status')
+var endpointStatus = require('./enums/endpoint-status');
+var snmpGroup = require('./snmpGroup');
+var swarmService = require('./swarmService');
 
 const client = new snmpClient();
 const snmpStore = new snmpRepository();
+const swarm = new swarmService();
 const intervalInSeconds = 20;
+
+function start() {
+    swarm.init();
+    visitNodes();
+}
 
 function visitNodes() {
     visitEachNode();
@@ -17,56 +25,31 @@ function seconds(sec) {
 }
 
 function visitEachNode() {
-    snmpStore.endpoints().then(endpoints => {
-        endpoints.filter((node) => node.status.id === endpointStatus.Active).forEach((node) => {
-            client.extractSubtree(node).then(varbinds => {
-                if (varbinds) {
-                    varbinds.forEach(bind => {
-
-                        var snmpResponse = SNMPResponse(
-                            node.id,
-                            node.oid,
-                            node.host,
-                            node.port,
-                            node.community,
-                            bind.value,
-                            group(node, bind.value));
-
-                        snmpStore.write(snmpResponse);
-                    });
-                }
-            });
-        })
+    snmpStore.swarmConfig().then((swarmConf) => {
+        snmpStore.endpoints().then(endpoints => {
+            endpoints.filter((node) => node.status.id === endpointStatus.Active).forEach((node) => {
+                client.extractSubtree(node).then(varbinds => {
+                    if (varbinds) {
+                        varbinds.forEach(bind => {
+                            var group = snmpGroup.findGroup(node, bind.value);
+                            var snmpResponse = SNMPResponse(node.id, node.oid, node.host, node.port, node.community, bind.value, group.value);
+                            snmpStore.write(snmpResponse);
+                            if (group.scale) {
+                                if (group.scale.up) {
+                                    swarm.scaleUp(swarmConf.service);
+                                }
+                            }
+                        });
+                    }
+                });
+            })
+        });
     });
-}
-
-function group(node, value) {
-    if (node.supportGrouping) {
-        if (node.groupingBetween.length > 0) {
-            for (let i = 0; i < node.groupingBetween.length; i++) {
-                const from = Number(node.groupingBetween[i].from);
-                const to = Number(node.groupingBetween[i].to);
-                if (from >= Number(value) && Number(value) <= to) {
-                    return node.groupingBetween[i].result;
-                }
-            }
-        }
-
-        if (node.groupingMatch.length > 0) {
-            for (let i = 0; i < node.groupingMatch.length; i++) {
-                if (node.groupingMatch[i].original == value) {
-                    return node.groupingMatch[i].result;
-                }
-            }
-        }
-    }
-
-    return "N/A"
 }
 
 var snmpListener = function () {
     return {
-        start: visitNodes,
+        start: start,
         endpointData: client.extractSubtree
     }
 }

@@ -1,0 +1,1 @@
+docker service scale snmp-client=1
