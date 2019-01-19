@@ -1,6 +1,6 @@
 const fs = require('fs');
-const shell = require('shelljs');
-const swarmFile = "swarm.sh";
+const swarmCommandFile = "swarmCommand.sh";
+const swarmHistoryFile = "swarmHistory.txt";
 
 function swarmService() {
     return {
@@ -29,17 +29,17 @@ function scaleServiceUp(service) {
 }
 
 function scaleServiceDown(service) {
-    serviceInstances().then((instances) => {
+    serviceInstances(service).then((instances) => {
         const command = swarmScalingCommand(service, instances - 1);
         runSwarmCommand(command);
     })
 }
 
-function serviceInstances() {
+function serviceInstances(service) {
     return new Promise((resolve, reject) => {
-        fs.readFile(swarmFile, 'utf8', function (err, command) {
+        fs.readFile(swarmHistoryFile, 'utf8', function (err, command) {
             if (err) throw err;
-            const index = command.lastIndexOf("=");
+            const index = command.lastIndexOf(`${service}=`);
             if (index !== -1) {
                 const instances = command.slice(index + 1, command.length);
                 resolve(Number(instances));
@@ -51,7 +51,7 @@ function serviceInstances() {
 }
 
 function swarmInitCommand() {
-    return `docker swarm init --advertise-addr 127.0.0.1:2377`;
+    return `-c "docker swarm init --advertise-addr 127.0.0.1:2377"`;
 }
 
 function swarmScalingCommand(service, instances) {
@@ -59,16 +59,13 @@ function swarmScalingCommand(service, instances) {
 }
 
 function runSwarmCommand(command) {
-    fs.writeFile(swarmFile, command, 'utf8', (err) => {
+    fs.writeFile(swarmHistoryFile, command, 'utf8', (err) => {
         if (!err) {
-            execSwarmFile();
+            fs.writeFile(swarmCommandFile, command, 'utf8', (err) => { })
+            // chmod 755 swarmReader.sh
+            // sudo watch -n 5 ./Server/swarmReader.sh
         }
     });
-}
-
-function execSwarmFile() {
-    shell.exec(`chmod 755 ${swarmFile}`);
-    shell.exec(`./${swarmFile}`);
 }
 
 module.exports = swarmService;
