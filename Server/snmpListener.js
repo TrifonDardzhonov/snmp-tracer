@@ -4,6 +4,7 @@ var SNMPResponse = require('./snmpResponse');
 var endpointStatus = require('./enums/endpoint-status');
 var snmpGroup = require('./snmpGroup');
 var swarmService = require('./swarmService');
+var swarmScaling = require('./swarmScaling');
 
 const client = new snmpClient();
 const snmpStore = new snmpRepository();
@@ -39,9 +40,10 @@ function visitEachNode() {
                             var snmpResponse = SNMPResponse(node.id, node.oid, node.host, node.port, node.community, bind.value, group.value);
                             snmpStore.write(snmpResponse);
                             if (group.scale) {
-                                if (group.scale.up) {
+                                // For debugging purposes use swarmScaling.None because it's the default state
+                                if (group.scale.status === swarmScaling.Up) {
                                     swarm.scaleUp(swarmConf.service);
-                                } else if (group.scale.down) {
+                                } else if (group.scale.status === swarmScaling.Down) {
                                     swarm.scaleDown(swarmConf.service);
                                 }
                             }

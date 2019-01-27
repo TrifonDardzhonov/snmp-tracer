@@ -1,3 +1,5 @@
+var swarmScaling = require('./swarmScaling');
+
 function findGroup(node, value) {
     let group = {
         value: "N/A"
@@ -25,7 +27,9 @@ function searchInBetweenGroups(groupingBetween, value) {
                 return {
                     value: groupingBetween[i].result,
                     scale: {
-                        up: true
+                        status: groupingBetween[i].scaling 
+                            ? groupingBetween[i].scaling.state
+                            : swarmScaling.None
                     }
                 }
             }
@@ -41,7 +45,9 @@ function searchInMatchingGroups(groupingMatch, value) {
                 return {
                     value: groupingMatch[i].result,
                     scale: {
-                        up: true
+                        status: groupingMatch[i].scaling 
+                            ? groupingMatch[i].scaling.state
+                            : swarmScaling.None
                     }
                 }
             }

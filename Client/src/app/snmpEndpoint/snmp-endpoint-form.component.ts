@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { SNMPEndpoint, GroupMatch, GroupBetween, Status } from '../models/snmpEndpoint';
+import { SNMPEndpoint, GroupMatch, GroupBetween, Status, Scale } from '../models/snmpEndpoint';
 import { SNMPService } from '../snmpService/snmp-service';
 
 @Component({
@@ -13,6 +13,7 @@ export class SNMPEndpointFormComponent {
 
     constructor(private snmpService: SNMPService) { }
 
+    public scale = Scale;
     public endpoint: SNMPEndpoint = {
         id: null,
         friendlyName: '',
@@ -56,6 +57,14 @@ export class SNMPEndpointFormComponent {
         this.snmpService.addSNMPEndpoint(this.endpoint).subscribe(endpoint => {
             this.addedSNMPEndpoint.emit(endpoint);
         });
+    }
+
+    toggleShowScaling(group: any): void {
+        group.showStatuses = !group.showStatuses;
+    }
+
+    setScalingState(group: any, scaling: Scale) {
+        group.scaling.state = scaling;
     }
 
     test() {

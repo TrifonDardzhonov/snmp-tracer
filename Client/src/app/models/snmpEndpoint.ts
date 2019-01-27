@@ -12,15 +12,39 @@ export class SNMPEndpoint {
     groupingBetween: GroupBetween[];
 }
 
+export class Scaling {
+    constructor() {
+        this.state = Scale.None;
+    }
+
+    state: Scale;
+}
+
+export enum Scale {
+    Up = 1,
+    Down = 2,
+    None = 3
+}
+
 export class GroupMatch {
+    constructor() {
+        this.scaling = new Scaling();
+    }
+
     original: string;
     result: string;
+    scaling: Scaling;
 }
 
 export class GroupBetween {
+    constructor() {
+        this.scaling = new Scaling();
+    }
+
     from: number;
     to: number;
     result: string;
+    scaling: Scaling;
 }
 
 export class SNMPNode {
