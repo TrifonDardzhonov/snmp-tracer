@@ -41,6 +41,8 @@ function visitEachNode() {
                             if (group.scale) {
                                 if (group.scale.up) {
                                     swarm.scaleUp(swarmConf.service);
+                                } else if (group.scale.down) {
+                                    swarm.scaleDown(swarmConf.service);
                                 }
                             }
                         });

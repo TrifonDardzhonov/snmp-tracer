@@ -1,3 +1,7 @@
+// chmod 755 swarmReader.sh
+// sudo watch -n 5 ./Server/swarmReader.sh
+// docker swarm leave --force
+
 const fs = require('fs');
 const swarmCommandFile = "swarmCommand.sh";
 const swarmHistoryFile = "swarmHistory.txt";
@@ -36,12 +40,10 @@ function scaleServiceUp(service) {
 
 function scaleServiceDown(service) {
     serviceInstances(service).then((instances) => {
-        let command = '';
         if (instances > 1) {
-            command = swarmScalingCommand(service, instances - 1);
+            const command = swarmScalingCommand(service, instances - 1);
+            runSwarmCommand(command);
         }
-
-        runSwarmCommand(command);
     })
 }
 
@@ -68,7 +70,8 @@ function swarmInitCommand() {
 }
 
 function swarmAddServiceCommand(service) {
-    return `docker service create --name ${service} redis:3.0.6`
+    const dockerImage = "redis:3.0.6" // change this with another image
+    return `docker service create --name ${service} ${dockerImage}`
 }
 
 function swarmScalingCommand(service, instances) {
@@ -76,13 +79,10 @@ function swarmScalingCommand(service, instances) {
 }
 
 function runSwarmCommand(command) {
-    console.log("SWARM command: ", command);
+    console.log("SWARM COMMAND: ", command);
     fs.writeFile(swarmHistoryFile, command, 'utf8', (err) => {
         if (!err) {
             fs.writeFile(swarmCommandFile, command, 'utf8', (err) => { })
-            // chmod 755 swarmReader.sh
-            // sudo watch -n 5 ./Server/swarmReader.sh
-            // docker swarm leave --force
         }
     });
 }
