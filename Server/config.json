@@ -15,11 +15,30 @@
             "host": "demo.snmplabs.com",
             "port": 161,
             "community": "public",
-            "supportGrouping": false,
+            "supportGrouping": true,
             "status": {
                 "id": 1,
                 "name": "Active"
-            }
+            },
+            "groupingMatch": [],
+            "groupingBetween": [
+                {
+                    "from": 307610250,
+                    "to": 494669000,
+                    "result": "UP",
+                    "scaling": {
+                        "state": 1
+                    }
+                },
+                {
+                    "from": 0,
+                    "to": 5000000,
+                    "result": "DOWN",
+                    "scaling": {
+                        "state": 2
+                    }
+                }
+            ]
         },
         {
             "id": 2,

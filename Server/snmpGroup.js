@@ -23,7 +23,7 @@ function searchInBetweenGroups(groupingBetween, value) {
         for (let i = 0; i < groupingBetween.length; i++) {
             const from = Number(groupingBetween[i].from);
             const to = Number(groupingBetween[i].to);
-            if (from >= Number(value) && Number(value) <= to) {
+            if (from <= Number(value) && Number(value) <= to) {
                 return {
                     value: groupingBetween[i].result,
                     scale: {
