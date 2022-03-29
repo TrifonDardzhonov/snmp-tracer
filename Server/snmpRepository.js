@@ -12,6 +12,16 @@ var snmpRepository = function () {
     const dataFilePath = 'db.csv';
     const configFilePath = 'config.json';
 
+    function writeConfig(config) {
+       fs.writeFile(configFilePath, JSON.stringify(config), err => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            //file written successfully
+      });
+    }
+
     return {
         write: function (snmp) {
             csvStream.write({
@@ -83,7 +93,7 @@ var snmpRepository = function () {
                     config = JSON.parse(data);
                     endpoint.id = config.nodes.length + 1;
                     config.nodes.push(endpoint);
-                    fs.writeFile(configFilePath, JSON.stringify(config), 'utf8');
+                    writeConfig(config);
                     resolve(endpoint);
                 });
             });
@@ -110,7 +120,7 @@ var snmpRepository = function () {
                                 return n;
                             }
                         });
-                        fs.writeFile(configFilePath, JSON.stringify(config), 'utf8');
+                        writeConfig(config);
                         resolve(true);
                     }
                 });

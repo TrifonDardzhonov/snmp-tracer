@@ -12,7 +12,7 @@ function extractSubtree(node) {
             oid: node.oid
         }, function (error, varbinds) {
             if (error) {
-                console.log('Fail :(');
+                console.log('Fail :(', error);
             } else {
                 resolve(varbinds);
             }
