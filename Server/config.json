@@ -71,8 +71,5 @@
                 }
             ]
         }
-    ],
-    "swarm": {
-        "service": "snmp-client-software"
-    }
+    ]
 }

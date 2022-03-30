@@ -76,15 +76,6 @@ var snmpRepository = function () {
                 });
             });
         },
-        swarmConfig() {
-            return new Promise((resolve, reject) => {
-                fs.readFile(configFilePath, 'utf8', function (err, data) {
-                    if (err) throw err;
-                    config = JSON.parse(data);
-                    resolve(config.swarm);
-                });
-            });
-        },
         addEndpoint(endpoint) {
             return new Promise((resolve, reject) => {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {

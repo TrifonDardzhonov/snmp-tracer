@@ -1,21 +1,19 @@
-var swarmScaling = require('./swarmScaling');
-
 function findGroup(node, value) {
-    let group = {
-        value: "N/A"
-    };
+    let group;
 
     if (node.supportGrouping) {
-        const between = searchInBetweenGroups(node.groupingBetween, value);
-        const match = searchInMatchingGroups(node.groupingMatch, value);
-
-        if (between) {
-            group = between;
-        } else if (match) {
-            group = match;
+        if (!group) {
+            group = searchInBetweenGroups(node.groupingBetween, value);
+        }
+        if (!group) {
+            group = searchInMatchingGroups(node.groupingMatch, value);
         }
     }
-    return group;
+    if (!group) {
+        group = emptyGroup();
+    }
+
+    return group
 }
 
 function searchInBetweenGroups(groupingBetween, value) {
@@ -26,11 +24,7 @@ function searchInBetweenGroups(groupingBetween, value) {
             if (from <= Number(value) && Number(value) <= to) {
                 return {
                     value: groupingBetween[i].result,
-                    scale: {
-                        status: groupingBetween[i].scaling 
-                            ? groupingBetween[i].scaling.state
-                            : swarmScaling.None
-                    }
+                    // return additional group properties
                 }
             }
         }
@@ -44,16 +38,18 @@ function searchInMatchingGroups(groupingMatch, value) {
             if (groupingMatch[i].original == value) {
                 return {
                     value: groupingMatch[i].result,
-                    scale: {
-                        status: groupingMatch[i].scaling 
-                            ? groupingMatch[i].scaling.state
-                            : swarmScaling.None
-                    }
+                    // return additional group properties
                 }
             }
         }
     }
     return null;
+}
+
+function emptyGroup() {
+    return {
+        value: "N/A"
+    };
 }
 
 module.exports = {
