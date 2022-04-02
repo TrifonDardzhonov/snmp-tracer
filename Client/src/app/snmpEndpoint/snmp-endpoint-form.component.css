@@ -11,8 +11,8 @@
 }
 
 .no-hor-padding {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 button {
@@ -58,8 +58,6 @@ button {
   height: 0;
   margin: 6px;
   box-sizing: border-box;
-  border: 26px solid #fff;
-  border-color: #fff transparent #fff transparent;
   animation: lds-hourglass 1.2s infinite;
 }
 

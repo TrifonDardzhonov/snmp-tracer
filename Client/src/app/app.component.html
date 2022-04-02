@@ -1,14 +1,15 @@
 <div class="row" style="min-height: 1200px">
   <div [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}" class="menu no-hor-padding"
        style="background-color: gray;">
-    <div *ngIf="isMenuOpen" (click)="isMenuOpen = false" class="nav-toggler special-color">&larr;</div>
-    <div *ngIf="!isMenuOpen" (click)="isMenuOpen = true" class="nav-toggler special-color">&rarr;</div>
+    <div (click)="isMenuOpen = false" *ngIf="isMenuOpen" class="nav-toggler special-color">&larr;</div>
+    <div (click)="isMenuOpen = true" *ngIf="!isMenuOpen" class="nav-toggler special-color">&rarr;</div>
     <div
       (click)="select(endpoint)"
       *ngFor="let endpoint of endpoints"
-      [ngClass]="{'selected-active-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === status.Active.id,
-      'selected-deactivated-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === status.Deactivated.id,
-      'deactivated-endpoint': (!selectedEndpoint || endpoint.oid !== selectedEndpoint.oid) && endpoint.status.id === status.Deactivated.id}"
+      [ngClass]="{
+          'selected-active-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === status.Active.id,
+          'selected-deactivated-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === status.Deactivated.id,
+          'deactivated-endpoint': (!selectedEndpoint || endpoint.oid !== selectedEndpoint.oid) && endpoint.status.id === status.Deactivated.id}"
       class="endpoint">
       <div *ngIf="!isMenuOpen">
         {{endpoint.friendlyName}}
@@ -37,8 +38,8 @@
                class="dropdown-item">Delete</a>
           </div>
         </div>
-        <div class="groups-preview" *ngIf="endpoint.supportGrouping">
-          <div class="group-preview" *ngFor="let match of endpoint.groupingMatch">
+        <div *ngIf="endpoint.supportGrouping" class="groups-preview">
+          <div *ngFor="let match of endpoint.groupingMatch" class="group-preview">
             <div>
               <strong>Original: </strong>{{match.original}}
             </div>
@@ -46,7 +47,7 @@
               <strong>Result: </strong>{{match.result}}
             </div>
           </div>
-          <div class="group-preview" *ngFor="let between of endpoint.groupingBetween">
+          <div *ngFor="let between of endpoint.groupingBetween" class="group-preview">
             <div>
               <strong>From: </strong>{{between.from}}
             </div>
@@ -64,7 +65,7 @@
       <app-snmp-endpoint-form (addedSNMPEndpoint)="addedSNMPEndpoint($event)"></app-snmp-endpoint-form>
     </div>
   </div>
-  <div class="no-hor-padding" [ngClass]="{'col-md-10' : isMenuOpen, 'col-md-11' : !isMenuOpen}">
+  <div [ngClass]="{'col-md-10' : isMenuOpen, 'col-md-11' : !isMenuOpen}" class="no-hor-padding">
     <div *ngIf="selectedEndpoint" class="col-md-12 title">
       <h4>
         <strong class="special-color">HOST: </strong>{{selectedEndpoint.host}}
@@ -76,34 +77,34 @@
         <strong class="special-color">OID: </strong>{{selectedEndpoint.oid}}
       </h4>
     </div>
-    <div class="col-md-12 node-result" *ngFor="let node of nodes; let i = index">
+    <div *ngFor="let node of nodes; let i = index" class="col-md-12 node-result">
       <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-2">
           <label>Start Date</label>
-          <input placeholder="Date Time:"
-                 (ngModelChange)="dateRangeIsModified()"
+          <input (ngModelChange)="dateRangeIsModified()"
                  [(ngModel)]="startDate"
                  [owlDateTimeTrigger]="sdt"
                  [owlDateTime]="sdt"
+                 placeholder="Date Time:"
                  style="cursor: pointer;">
           <owl-date-time #sdt></owl-date-time>
         </div>
         <div class="col-md-2">
           <label>End Date</label>
-          <input placeholder="Date Time:"
-                 (ngModelChange)="dateRangeIsModified()"
+          <input (ngModelChange)="dateRangeIsModified()"
                  [(ngModel)]="endDate"
                  [owlDateTimeTrigger]="edt"
                  [owlDateTime]="edt"
+                 placeholder="Date Time:"
                  style="cursor: pointer;">
           <owl-date-time #edt></owl-date-time>
-          <div style="padding: 0px;cursor: pointer;" class="col-md-12">
+          <div class="col-md-12" style="padding: 0;cursor: pointer;">
             <i (click)="removeEndDate()">Until now</i>
           </div>
         </div>
         <div class="col-md-2">
-          <button style="margin-top: 25px;" class="btn btn-secondary col-md-12" (click)="refresh()">
+          <button (click)="refresh()" class="btn btn-secondary col-md-12" style="margin-top: 25px;">
             Refresh
           </button>
         </div>
@@ -114,7 +115,8 @@
           <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapLineSettings(node, i)"></app-line-chart>
         </div>
         <div *ngIf="!loading" class="col-md-4">
-          <app-pie-chart *ngIf="selectedEndpoint.supportGrouping" [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)" (selectGroup)="selectGroup($event)"></app-pie-chart>
+          <app-pie-chart (selectGroup)="selectGroup($event)" *ngIf="selectedEndpoint.supportGrouping"
+                         [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)"></app-pie-chart>
           <p>Click on a group to see details.</p>
         </div>
       </div>
@@ -135,7 +137,7 @@
         </div>
       </div>
       <div class="col-md-12 group-data-grid">
-        <div class="row" *ngFor="let response of responsesForDetailReview">
+        <div *ngFor="let response of responsesForDetailReview" class="row">
           <div class="col-md-3">{{response.oid}}</div>
           <div class="col-md-3">{{response.dateticks | date:'medium'}}</div>
           <div class="col-md-3">{{response.group}}</div>

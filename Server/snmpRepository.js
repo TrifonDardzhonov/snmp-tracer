@@ -1,25 +1,25 @@
-var fs = require('fs');
-var csv = require('fast-csv');
-var endpointStatus = require('./enums/endpoint-status')
+const fs = require('fs');
+const csv = require('fast-csv');
+const endpointStatus = require('./enums/endpoint-status');
 
-var csvStream = csv.createWriteStream({
+const csvStream = csv.createWriteStream({
     headers: true
 });
 writableStream = fs.createWriteStream('db.csv');
 csvStream.pipe(writableStream);
 
-var snmpRepository = function () {
+const snmpRepository = function () {
     const dataFilePath = 'db.csv';
     const configFilePath = 'config.json';
 
     function writeConfig(config) {
-       fs.writeFile(configFilePath, JSON.stringify(config), err => {
+        fs.writeFile(configFilePath, JSON.stringify(config), err => {
             if (err) {
                 console.error(err);
-                return;
+
             }
             //file written successfully
-      });
+        });
     }
 
     return {
@@ -34,11 +34,10 @@ var snmpRepository = function () {
                 group: snmp.group,
                 dateticks: snmp.dateticks
             }, {
-                    headers: true
-                });
-        },
-        read: function (endpointId, startDate, endDate, lastNRecords) {
-            return new Promise((resolve, reject) => {
+                headers: true
+            });
+        }, read: function (endpointId, startDate, endDate, lastNRecords) {
+            return new Promise((resolve) => {
                 const responses = [];
 
                 csv.fromPath(dataFilePath, {
@@ -76,18 +75,16 @@ var snmpRepository = function () {
                         });
                     });
             })
-        },
-        endpoints() {
-            return new Promise((resolve, reject) => {
+        }, endpoints() {
+            return new Promise((resolve) => {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
                     config = JSON.parse(data);
                     resolve(config.nodes);
                 });
             });
-        },
-        addEndpoint(endpoint) {
-            return new Promise((resolve, reject) => {
+        }, addEndpoint(endpoint) {
+            return new Promise((resolve) => {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
                     config = JSON.parse(data);
@@ -97,9 +94,8 @@ var snmpRepository = function () {
                     resolve(endpoint);
                 });
             });
-        },
-        setStatus(endpoint, status) {
-            return new Promise((resolve, reject) => {
+        }, setStatus(endpoint, status) {
+            return new Promise((resolve) => {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
                     config = JSON.parse(data);
@@ -127,6 +123,6 @@ var snmpRepository = function () {
             });
         }
     }
-}
+};
 
 module.exports = snmpRepository;

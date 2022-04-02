@@ -1,8 +1,8 @@
-var snmpClient = require('./snmpClient');
-var snmpRepository = require('./snmpRepository');
-var SNMPResponse = require('./snmpResponse');
-var endpointStatus = require('./enums/endpoint-status');
-var snmpGroup = require('./snmpGroup');
+const snmpClient = require('./snmpClient');
+const snmpRepository = require('./snmpRepository');
+const SNMPResponse = require('./snmpResponse');
+const endpointStatus = require('./enums/endpoint-status');
+const snmpGroup = require('./snmpGroup');
 
 const client = new snmpClient();
 const snmpStore = new snmpRepository();
@@ -41,11 +41,10 @@ function visitEachNode() {
     });
 }
 
-var snmpListener = function () {
+const snmpListener = function () {
     return {
-        start: start,
-        endpointData: client.extractSubtree
+        start: start, endpointData: client.extractSubtree
     }
-}
+};
 
 module.exports = snmpListener;

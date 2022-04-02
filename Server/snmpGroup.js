@@ -23,8 +23,7 @@ function searchInBetweenGroups(groupingBetween, value) {
             const to = Number(groupingBetween[i].to);
             if (from <= Number(value) && Number(value) <= to) {
                 return {
-                    value: groupingBetween[i].result,
-                    // return additional group properties
+                    value: groupingBetween[i].result, // return additional group properties
                 }
             }
         }
@@ -35,10 +34,9 @@ function searchInBetweenGroups(groupingBetween, value) {
 function searchInMatchingGroups(groupingMatch, value) {
     if (groupingMatch.length > 0) {
         for (let i = 0; i < groupingMatch.length; i++) {
-            if (groupingMatch[i].original == value) {
+            if (groupingMatch[i].original === value) {
                 return {
-                    value: groupingMatch[i].result,
-                    // return additional group properties
+                    value: groupingMatch[i].result, // return additional group properties
                 }
             }
         }

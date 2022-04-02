@@ -1,4 +1,4 @@
 export class ChartSettings {
-    index: number;
-    subtitle: string;
+  index: number;
+  subtitle: string;
 }

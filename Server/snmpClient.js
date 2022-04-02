@@ -1,13 +1,11 @@
-var snmp = require('snmp-native');
+const snmp = require('snmp-native');
 
 function extractSubtree(node) {
-    var session = new snmp.Session({
-        host: node.host,
-        port: node.port,
-        community: node.community
+    const session = new snmp.Session({
+        host: node.host, port: node.port, community: node.community
     });
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         session.getSubtree({
             oid: node.oid
         }, function (error, varbinds) {
@@ -20,10 +18,10 @@ function extractSubtree(node) {
     })
 }
 
-var snmpClient = function () {
+const snmpClient = function () {
     return {
         extractSubtree: extractSubtree
     }
-}
+};
 
 module.exports = snmpClient;

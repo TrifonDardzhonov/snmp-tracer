@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { ChartSettings } from './models/chartSettings';
-import { SNMPService } from './snmpService/snmp-service';
-import { SNMPEndpoint, SNMPNode, NodeResponse, Status } from './models/snmpEndpoint';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
+import {ChartSettings} from './models/chartSettings';
+import {SNMPService} from './snmpService/snmp-service';
+import {NodeResponse, SNMPEndpoint, SNMPNode, Status} from './models/snmpEndpoint';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +11,15 @@ import { SNMPEndpoint, SNMPNode, NodeResponse, Status } from './models/snmpEndpo
 })
 export class AppComponent {
 
-  private endpoints: SNMPEndpoint[] = [];
   public selectedEndpoint: SNMPEndpoint;
+  public isMenuOpen = true;
+  public startDate: Date;
+  public endDate: Date;
+  public nodes: SNMPNode[] = [];
+  public responsesForDetailReview: NodeResponse[] = [];
+  public loading = false;
+  public status = Status;
+  public endpoints: SNMPEndpoint[] = [];
 
   constructor(private snmpService: SNMPService, private changeDetectorRef: ChangeDetectorRef) {
     this.initDateRangeState();
@@ -22,14 +29,6 @@ export class AppComponent {
       this.isMenuOpen = true;
     });
   }
-
-  public isMenuOpen = true;
-  public startDate: Date;
-  public endDate: Date;
-  public nodes: SNMPNode[] = [];
-  public responsesForDetailReview: NodeResponse[] = [];
-  public loading = false;
-  public status = Status;
 
   public addedSNMPEndpoint(endpoint: SNMPEndpoint): void {
     this.endpoints.push(endpoint);
@@ -81,8 +80,7 @@ export class AppComponent {
     for (const sl in pie) {
       if (pie[sl]) {
         pieData.push({
-          name: sl,
-          y: (pie[sl] / responses.length) * 100
+          name: sl, y: (pie[sl] / responses.length) * 100
         });
       }
     }
@@ -92,8 +90,7 @@ export class AppComponent {
 
   public mapPieSettings(node: SNMPNode, index: number): ChartSettings {
     return {
-      index: index,
-      subtitle: 'Grouped by slices'
+      index: index, subtitle: 'Grouped by slices'
     };
   }
 
@@ -111,9 +108,12 @@ export class AppComponent {
 
   public mapLineSettings(node: SNMPNode, index: number): ChartSettings {
     return {
-      index: index,
-      subtitle: 'Details by date'
+      index: index, subtitle: 'Details by date'
     };
+  }
+
+  public removeEndDate() {
+    this.endDate = null;
   }
 
   private initDateRangeState() {
@@ -121,20 +121,13 @@ export class AppComponent {
     this.startDate.setDate(this.startDate.getDate() - 1);
   }
 
-  public removeEndDate() {
-    this.endDate = null;
-  }
-
   private reloadEndpointData(): void {
     this.loading = true;
-    this.snmpService.snmpEndPointDetails(
-      this.selectedEndpoint,
-      this.startDate.toISOString(),
-      this.endDateAsIso()).subscribe(nodes => {
-        this.nodes = nodes;
-        this.loading = false;
-        this.changeDetectorRef.detectChanges();
-      });
+    this.snmpService.snmpEndPointDetails(this.selectedEndpoint, this.startDate.toISOString(), this.endDateAsIso()).subscribe(nodes => {
+      this.nodes = nodes;
+      this.loading = false;
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   private endDateAsIso() {
