@@ -94,26 +94,14 @@ export class AppComponent {
 
   public mapPieSettings(node: SNMPNode, index: number): ChartSettings {
     return {
-      index: index, subtitle: 'Grouped by slices'
+      index: index, subtitle: 'SNMP responses'
     };
   }
 
-  public selectGroup(group: string): void {
+  public selectGroup(group?: string): void {
     this.responsesForDetailReview = this.nodes[0].responses.filter(response => {
-      return response.group === group;
-    });
-  }
-
-  public mapToLineChart(responses: NodeResponse[]) {
-    return responses.map((r) => {
-      return [new Date(r.dateticks), parseInt(r.value, 0)];
-    });
-  }
-
-  public mapLineSettings(node: SNMPNode, index: number): ChartSettings {
-    return {
-      index: index, subtitle: 'Details by date'
-    };
+      return !group || response.group === group;
+    }).sort((a, b) => b.dateticks - a.dateticks);
   }
 
   public removeEndDate() {

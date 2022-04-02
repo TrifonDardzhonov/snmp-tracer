@@ -1,6 +1,5 @@
 <div class="row" style="min-height: 1200px">
-  <div [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}" class="menu no-hor-padding"
-       style="background-color: gray;">
+  <div [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}" class="menu no-hor-padding">
     <div (click)="isMenuOpen = false" *ngIf="isMenuOpen" class="nav-toggler special-color">&larr;</div>
     <div (click)="isMenuOpen = true" *ngIf="!isMenuOpen" class="nav-toggler special-color">&rarr;</div>
     <div
@@ -77,7 +76,7 @@
         <strong class="special-color">OID: </strong>{{selectedEndpoint.oid}}
       </h4>
     </div>
-    <div *ngFor="let node of nodes; let i = index" class="col-md-12 node-result">
+    <div *ngFor="let node of nodes; let i = index" class="col-md-12 node-control-plane">
       <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-2">
@@ -104,44 +103,36 @@
           </div>
         </div>
         <div class="col-md-2">
-          <button (click)="refresh()" class="btn btn-secondary col-md-12" style="margin-top: 25px;">
+          <button (click)="refresh()" class="btn btn-primary col-md-12" style="margin-top: 25px;">
             Refresh
           </button>
         </div>
         <div class="col-md-12">
           <h4 class="endpoint-description">{{selectedEndpoint.description}}</h4>
         </div>
-        <div *ngIf="!loading" class="col-md-8">
-          <app-line-chart [set]="mapToLineChart(node.responses)" [settings]="mapLineSettings(node, i)"></app-line-chart>
-        </div>
-        <div *ngIf="!loading" class="col-md-4">
+        <div *ngIf="!loading" class="col-md-12 pie-chart">
           <app-pie-chart (selectGroup)="selectGroup($event)" *ngIf="selectedEndpoint.supportGrouping"
                          [set]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)"></app-pie-chart>
-          <p>Click on a group to see details.</p>
         </div>
       </div>
     </div>
     <div *ngIf="responsesForDetailReview.length && !loading" class="col-md-12 detail-review-table">
       <div class="row">
-        <div class="col-md-3">
-          <strong>OID</strong>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <strong>Date</strong>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <strong>Group</strong>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <strong>Value</strong>
         </div>
       </div>
-      <div class="col-md-12 group-data-grid">
+      <div class="col-md-12">
         <div *ngFor="let response of responsesForDetailReview" class="row">
-          <div class="col-md-3">{{response.oid}}</div>
-          <div class="col-md-3">{{response.dateticks | date:'medium'}}</div>
-          <div class="col-md-3">{{response.group}}</div>
-          <div class="col-md-3">{{response.value}}</div>
+          <div class="col-md-4">{{response.dateticks | date:'medium'}}</div>
+          <div class="col-md-4">{{response.group}}</div>
+          <div class="col-md-4">{{response.value}}</div>
         </div>
       </div>
     </div>

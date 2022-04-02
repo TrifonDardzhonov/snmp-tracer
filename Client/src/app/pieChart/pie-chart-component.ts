@@ -46,5 +46,6 @@ export class PieChartComponent implements AfterViewInit {
     this.options.series[0].data = this.set;
     this.options.series[0].selectGroupEmitter = this.selectGroup;
     Highcharts.chart('pie-container-' + this.settings.index, this.options);
+    this.selectGroup.emit();
   }
 }

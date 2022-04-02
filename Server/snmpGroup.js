@@ -3,10 +3,10 @@ function findGroup(node, value) {
 
     if (node.supportGrouping) {
         if (!group) {
-            group = searchInBetweenGroups(node.groupingBetween, value);
+            group = searchInMatchingGroups(node.groupingMatch, value);
         }
         if (!group) {
-            group = searchInMatchingGroups(node.groupingMatch, value);
+            group = searchInBetweenGroups(node.groupingBetween, value);
         }
     }
     if (!group) {
@@ -48,7 +48,7 @@ function searchInMatchingGroups(groupingMatch, value) {
 
 function emptyGroup() {
     return {
-        value: "N/A"
+        value: "Unknown"
     };
 }
 
