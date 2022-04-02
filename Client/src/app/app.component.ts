@@ -56,6 +56,10 @@ export class AppComponent {
     endpoint.showStatuses = !endpoint.showStatuses;
   }
 
+  public showStatuses(endpoint: any): boolean {
+    return endpoint.showStatuses === true;
+  }
+
   public setStatus(endpoint: any, status: Status): void {
     this.snmpService.setStatus(endpoint, status).subscribe((success) => {
       if (success) {

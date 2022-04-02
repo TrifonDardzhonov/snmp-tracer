@@ -10,7 +10,6 @@ export class SNMPEndpoint {
   supportGrouping: boolean;
   groupingMatch: GroupMatch[];
   groupingBetween: GroupBetween[];
-  showStatuses: boolean;
 }
 
 export class GroupMatch {

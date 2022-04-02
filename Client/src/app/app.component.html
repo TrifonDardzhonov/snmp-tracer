@@ -26,7 +26,7 @@
                   class="btn btn-secondary col-md-12 status">
             {{endpoint.status.name}}
           </button>
-          <div [ngClass]="{'dropdown-menu': !endpoint.showStatuses === true}">
+          <div [ngClass]="{'dropdown-menu': !showStatuses(endpoint)}">
             <a (click)="setStatus(endpoint, status.Active);$event.stopPropagation()"
                *ngIf="endpoint.status.id !== status.Active.id"
                class="dropdown-item">Activate</a>
