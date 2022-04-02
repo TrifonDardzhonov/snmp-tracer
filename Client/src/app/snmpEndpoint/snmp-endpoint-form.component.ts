@@ -11,21 +11,11 @@ export class SNMPEndpointFormComponent {
 
     @Output() addedSNMPEndpoint = new EventEmitter<SNMPEndpoint>();
 
-    constructor(private snmpService: SNMPService) { }
+    constructor(private snmpService: SNMPService) {
+      this.reset();
+    }
 
-    public endpoint: SNMPEndpoint = {
-        id: null,
-        friendlyName: '',
-        description: '',
-        oid: '',
-        host: '',
-        port: null,
-        community: '',
-        status: Status.Active,
-        supportGrouping: false,
-        groupingMatch: [],
-        groupingBetween: []
-    };
+    public endpoint: SNMPEndpoint;
 
     public endpointData: any[] = [];
     public loading = false;
@@ -55,6 +45,7 @@ export class SNMPEndpointFormComponent {
     addEndpoint() {
         this.snmpService.addSNMPEndpoint(this.endpoint).subscribe(endpoint => {
             this.addedSNMPEndpoint.emit(endpoint);
+            this.reset();
         });
     }
 
@@ -65,5 +56,21 @@ export class SNMPEndpointFormComponent {
             this.endpointData = endpointData;
             this.loading = false;
         });
+    }
+
+    private reset() {
+      this.endpoint =  {
+          id: null,
+          friendlyName: '',
+          description: '',
+          oid: '',
+          host: '',
+          port: null,
+          community: '',
+          status: Status.Active,
+          supportGrouping: false,
+          groupingMatch: [],
+          groupingBetween: []
+      };
     }
 }

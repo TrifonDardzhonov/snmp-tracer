@@ -1,14 +1,15 @@
-<div class="row">
-  <div class="menu no-hor-padding" [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}">
+<div class="row" style="min-height: 1200px">
+  <div [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}" class="menu no-hor-padding"
+       style="background-color: gray;">
     <div *ngIf="isMenuOpen" (click)="isMenuOpen = false" class="nav-toggler special-color">&larr;</div>
     <div *ngIf="!isMenuOpen" (click)="isMenuOpen = true" class="nav-toggler special-color">&rarr;</div>
-    <div 
-    class="endpoint" 
-    (click)="select(endpoint)" 
-    *ngFor="let endpoint of endpoints" 
-    [ngClass]="{'selected-active-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === status.Active.id, 
+    <div
+      (click)="select(endpoint)"
+      *ngFor="let endpoint of endpoints"
+      [ngClass]="{'selected-active-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === status.Active.id,
       'selected-deactivated-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === status.Deactivated.id,
-      'deactivated-endpoint': (!selectedEndpoint || endpoint.oid !== selectedEndpoint.oid) && endpoint.status.id === status.Deactivated.id}">
+      'deactivated-endpoint': (!selectedEndpoint || endpoint.oid !== selectedEndpoint.oid) && endpoint.status.id === status.Deactivated.id}"
+      class="endpoint">
       <div *ngIf="!isMenuOpen">
         {{endpoint.friendlyName}}
       </div>
@@ -19,39 +20,47 @@
         <div>{{endpoint.host}}:{{endpoint.port}}</div>
         <div>{{endpoint.oid}}</div>
         <div class="dropdown col-md-12">
-          <button class="btn btn-secondary col-md-12" (click)="toggleShowStatuses(endpoint);$event.stopPropagation()">
+          <button (click)="toggleShowStatuses(endpoint);$event.stopPropagation()"
+                  [ngClass]="{'active': endpoint.status.id === status.Active.id}"
+                  class="btn btn-secondary col-md-12 status">
             {{endpoint.status.name}}
           </button>
           <div [ngClass]="{'dropdown-menu': !endpoint.showStatuses === true}">
-            <a *ngIf="endpoint.status.id !== status.Active.id" class="dropdown-item" (click)="setStatus(endpoint, status.Active);$event.stopPropagation()">Activate</a>
-            <a *ngIf="endpoint.status.id !== status.Deactivated.id" class="dropdown-item" (click)="setStatus(endpoint, status.Deactivated);$event.stopPropagation()">Deactivate</a>
-            <a *ngIf="endpoint.status.id !== status.Deleted.id" class="dropdown-item" (click)="setStatus(endpoint, status.Deleted);$event.stopPropagation()">Delete</a>
+            <a (click)="setStatus(endpoint, status.Active);$event.stopPropagation()"
+               *ngIf="endpoint.status.id !== status.Active.id"
+               class="dropdown-item">Activate</a>
+            <a (click)="setStatus(endpoint, status.Deactivated);$event.stopPropagation()"
+               *ngIf="endpoint.status.id !== status.Deactivated.id"
+               class="dropdown-item">Deactivate</a>
+            <a (click)="setStatus(endpoint, status.Deleted);$event.stopPropagation()"
+               *ngIf="endpoint.status.id !== status.Deleted.id"
+               class="dropdown-item">Delete</a>
           </div>
         </div>
         <div class="groups-preview" *ngIf="endpoint.supportGrouping">
           <div class="group-preview" *ngFor="let match of endpoint.groupingMatch">
             <div>
-              <strong>original: </strong>{{match.original}}
+              <strong>Original: </strong>{{match.original}}
             </div>
             <div>
-              <strong>result: </strong>{{match.result}}
+              <strong>Result: </strong>{{match.result}}
             </div>
           </div>
           <div class="group-preview" *ngFor="let between of endpoint.groupingBetween">
             <div>
-              <strong>from: </strong>{{between.from}}
+              <strong>From: </strong>{{between.from}}
             </div>
             <div>
-              <strong>to: </strong>{{between.to}}
+              <strong>To: </strong>{{between.to}}
             </div>
             <div>
-              <strong>result: </strong>{{between.result}}
+              <strong>Result: </strong>{{between.result}}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="snmp-endpoint-form" class="col-md-12" *ngIf="isMenuOpen">
+    <div *ngIf="isMenuOpen" class="col-md-12" id="snmp-endpoint-form" style="min-height: 100%">
       <app-snmp-endpoint-form (addedSNMPEndpoint)="addedSNMPEndpoint($event)"></app-snmp-endpoint-form>
     </div>
   </div>
@@ -73,21 +82,21 @@
         <div class="col-md-2">
           <label>Start Date</label>
           <input placeholder="Date Time:"
-                style="cursor: pointer;"
-                [(ngModel)]="startDate"
-                (ngModelChange)="dateRangeIsModified()"
-                [owlDateTimeTrigger]="sdt" 
-                [owlDateTime]="sdt">
+                 (ngModelChange)="dateRangeIsModified()"
+                 [(ngModel)]="startDate"
+                 [owlDateTimeTrigger]="sdt"
+                 [owlDateTime]="sdt"
+                 style="cursor: pointer;">
           <owl-date-time #sdt></owl-date-time>
         </div>
         <div class="col-md-2">
           <label>End Date</label>
           <input placeholder="Date Time:"
-                style="cursor: pointer;"
-                [(ngModel)]="endDate"
-                (ngModelChange)="dateRangeIsModified()"
-                [owlDateTimeTrigger]="edt" 
-                [owlDateTime]="edt">
+                 (ngModelChange)="dateRangeIsModified()"
+                 [(ngModel)]="endDate"
+                 [owlDateTimeTrigger]="edt"
+                 [owlDateTime]="edt"
+                 style="cursor: pointer;">
           <owl-date-time #edt></owl-date-time>
           <div style="padding: 0px;cursor: pointer;" class="col-md-12">
             <i (click)="removeEndDate()">Until now</i>

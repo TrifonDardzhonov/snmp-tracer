@@ -55,7 +55,7 @@
 }
 
 #snmp-endpoint-form {
-  background-color: cadetblue;
+  background-color: steelblue;
   padding: 10px;
 }
 
@@ -85,4 +85,12 @@
 .dropdown-item {
   background-color: white;
   border: 1px solid slategray;
+}
+
+.status {
+  border: 1px solid darkblue;
+}
+
+.active {
+  background-color: #234f1e !important;
 }

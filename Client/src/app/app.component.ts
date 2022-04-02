@@ -19,11 +19,11 @@ export class AppComponent {
     this.snmpService.snmpEndpoints().subscribe(endpoints => {
       this.endpoints = endpoints;
       this.select(this.endpoints[this.endpoints.length - 1]);
-      this.isMenuOpen = false;
+      this.isMenuOpen = true;
     });
   }
 
-  public isMenuOpen = false;
+  public isMenuOpen = true;
   public startDate: Date;
   public endDate: Date;
   public nodes: SNMPNode[] = [];
@@ -63,6 +63,7 @@ export class AppComponent {
         endpoint.status = status;
       }
       endpoint.showStatuses = false;
+      this.changeDetectorRef.detectChanges();
     });
   }
 

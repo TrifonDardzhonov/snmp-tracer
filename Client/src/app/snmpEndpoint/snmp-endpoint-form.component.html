@@ -27,8 +27,9 @@
     <input placeholder="public" id="community" class="col-md-12" [(ngModel)]="endpoint.community" />
   </div>
   <div class="col-md-12">
-    <label class="col-md-12 no-hor-padding" for="supportGrouping">Support Grouping</label>
-    <input id="supportGrouping" type="checkbox" [checked]="endpoint.supportGrouping" (change)="toggleGrouping()"/>
+    <label class="col-md-10 no-hor-padding" for="supportGrouping">Support Grouping</label>
+    <input (change)="toggleGrouping()" [checked]="endpoint.supportGrouping" class="col-md-1 no-hor-padding"
+           id="supportGrouping" type="checkbox"/>
   </div>
   <div id="grouping-box" *ngIf="endpoint.supportGrouping" class="col-md-12">
     <button class="btn btn-primary col-md-12" (click)="addMatchingGroup()">Add Matching Group</button>
