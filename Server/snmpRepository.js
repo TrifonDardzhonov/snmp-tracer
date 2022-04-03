@@ -16,7 +16,6 @@ const snmpRepository = function () {
         fs.writeFile(configFilePath, JSON.stringify(config), err => {
             if (err) {
                 console.error(err);
-
             }
             //file written successfully
         });
@@ -62,13 +61,13 @@ const snmpRepository = function () {
                         responses.push(endpointResult);
                     })
                     .on("end", function () {
-                        var startDateTicks = new Date(startDate).getTime();
-                        var endDateTicks = new Date(endDate).getTime();
+                        const startDateTicks = new Date(startDate).getTime();
+                        const endDateTicks = new Date(endDate).getTime();
 
-                        var filteredResponses = responses.filter(r => startDateTicks <= r.dateticks && r.dateticks <= endDateTicks);
+                        const filteredResponses = responses.filter(r => startDateTicks <= r.dateticks && r.dateticks <= endDateTicks);
 
-                        var spliceStart = lastNRecords < filteredResponses.length ? (filteredResponses.length - lastNRecords) : 0;
-                        var spliceEnd = filteredResponses.length - 1;
+                        const spliceStart = lastNRecords < filteredResponses.length ? (filteredResponses.length - lastNRecords) : 0;
+                        const spliceEnd = filteredResponses.length - 1;
 
                         resolve({
                             responses: filteredResponses.splice(spliceStart, spliceEnd)
@@ -79,7 +78,7 @@ const snmpRepository = function () {
             return new Promise((resolve) => {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
-                    config = JSON.parse(data);
+                    const config = JSON.parse(data);
                     resolve(config.nodes);
                 });
             });
@@ -87,7 +86,7 @@ const snmpRepository = function () {
             return new Promise((resolve) => {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
-                    config = JSON.parse(data);
+                    const config = JSON.parse(data);
                     endpoint.id = config.nodes.length + 1;
                     config.nodes.push(endpoint);
                     writeConfig(config);
@@ -98,7 +97,7 @@ const snmpRepository = function () {
             return new Promise((resolve) => {
                 fs.readFile(configFilePath, 'utf8', function (err, data) {
                     if (err) throw err;
-                    config = JSON.parse(data);
+                    const config = JSON.parse(data);
                     const node = config.nodes.filter(n => n.id === endpoint.id)[0];
 
                     if (!node) {

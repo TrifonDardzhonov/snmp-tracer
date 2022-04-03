@@ -5,9 +5,7 @@ const endpointStatus = require('./enums/endpoint-status');
 const snmpGroup = require('./snmpGroup');
 
 const client = new snmpClient();
-const snmpStore = new snmpRepository();
-
-const intervalBetweenSNMPRequests = 20;
+const db = new snmpRepository();
 
 function start() {
     visitNodes();
@@ -15,7 +13,7 @@ function start() {
 
 function visitNodes() {
     visitEachNode();
-    setTimeout(visitNodes, seconds(intervalBetweenSNMPRequests));
+    setTimeout(visitNodes, seconds(60));
 }
 
 function seconds(sec) {
@@ -23,16 +21,16 @@ function seconds(sec) {
 }
 
 function visitEachNode() {
-    snmpStore.endpoints().then(endpoints => {
+    db.endpoints().then(endpoints => {
         const activeEndpoints = endpoints.filter((node) => node.status.id === endpointStatus.Active);
 
         activeEndpoints.forEach((node) => {
             client.extractSubtree(node).then(varbinds => {
                 if (varbinds) {
                     varbinds.forEach(bind => {
-                        var group = snmpGroup.findGroup(node, bind.value);
-                        var snmpResponse = SNMPResponse(node.id, node.oid, node.host, node.port, node.community, bind.value, group.value);
-                        snmpStore.write(snmpResponse);
+                        const group = snmpGroup.findGroup(node, bind.value);
+                        const snmpResponse = SNMPResponse(node.id, node.oid, node.host, node.port, node.community, bind.value, group.value);
+                        db.write(snmpResponse);
                         // add additional handling here
                     });
                 }
@@ -43,7 +41,8 @@ function visitEachNode() {
 
 const snmpListener = function () {
     return {
-        start: start, endpointData: client.extractSubtree
+        start: start,
+        endpointData: client.extractSubtree
     }
 };
 

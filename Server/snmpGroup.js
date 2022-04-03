@@ -1,6 +1,5 @@
 function findGroup(node, value) {
     let group;
-
     if (node.supportGrouping) {
         if (!group) {
             group = searchInMatchingGroups(node.groupingMatch, value);
@@ -12,7 +11,6 @@ function findGroup(node, value) {
     if (!group) {
         group = emptyGroup();
     }
-
     return group
 }
 

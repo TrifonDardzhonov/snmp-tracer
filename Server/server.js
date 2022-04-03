@@ -69,7 +69,7 @@ app.route('/snmpEndpoint/data')
         const startDate = req.body.startDate;
         const endDate = req.body.endDate;
         controller.snmpEndpointData(endPoint.id, startDate, endDate).then((data) => {
-            res.json([data]);
+            res.json(data);
         });
     });
 

@@ -23,8 +23,8 @@ export class SNMPService {
     return this.http.post<any>(this.baseUrl + '/snmpEndpoints/test', endpoint);
   }
 
-  snmpEndPointDetails(endpoint: SNMPEndpoint, startDate: string, endDate: string): Observable<SNMPNode[]> {
-    return this.http.post<SNMPNode[]>(this.baseUrl + '/snmpEndpoint/data', {
+  snmpEndPointDetails(endpoint: SNMPEndpoint, startDate: string, endDate: string): Observable<SNMPNode> {
+    return this.http.post<SNMPNode>(this.baseUrl + '/snmpEndpoint/data', {
       endpoint: endpoint, startDate: startDate, endDate: endDate
     });
   }

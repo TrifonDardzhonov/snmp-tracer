@@ -11,15 +11,20 @@ import {NodeResponse, SNMPEndpoint, SNMPNode, Status} from './models/snmpEndpoin
 })
 export class AppComponent {
 
+  public Status: typeof Status = Status;
+  public loading: boolean = false;
+
   public selectedEndpoint: SNMPEndpoint;
-  public isMenuOpen = true;
-  public startDate: Date;
-  public endDate: Date;
-  public nodes: SNMPNode[] = [];
-  public responsesForDetailReview: NodeResponse[] = [];
-  public loading = false;
-  public status = Status;
+  public selectedEndpointNode: SNMPNode;
+  public filteredResponses: NodeResponse[] = [];
+
   public endpoints: SNMPEndpoint[] = [];
+  public isMenuOpen: boolean = true;
+
+  public startDate: Date;
+  public startDateRequested: Date;
+  public endDate: Date;
+  public endDateRequested: Date;
 
   constructor(private snmpService: SNMPService, private changeDetectorRef: ChangeDetectorRef) {
     this.initDateRangeState();
@@ -30,36 +35,6 @@ export class AppComponent {
     });
   }
 
-  public addedSNMPEndpoint(endpoint: SNMPEndpoint): void {
-    this.endpoints.push(endpoint);
-    this.select(endpoint);
-  }
-
-  public select(endpoint: SNMPEndpoint): void {
-    this.selectedEndpoint = endpoint;
-    this.responsesForDetailReview.length = 0;
-    if (!this.isMenuOpen) {
-      this.isMenuOpen = true;
-    }
-    this.reloadEndpointData();
-  }
-
-  public dateRangeIsModified() {
-    this.reloadEndpointData();
-  }
-
-  public refresh() {
-    this.reloadEndpointData();
-  }
-
-  public toggleShowStatuses(endpoint: any): void {
-    endpoint.showStatuses = !endpoint.showStatuses;
-  }
-
-  public showStatuses(endpoint: any): boolean {
-    return endpoint.showStatuses === true;
-  }
-
   public setStatus(endpoint: any, status: Status): void {
     this.snmpService.setStatus(endpoint, status).subscribe((success) => {
       if (success) {
@@ -68,6 +43,32 @@ export class AppComponent {
       endpoint.showStatuses = false;
       this.changeDetectorRef.detectChanges();
     });
+  }
+
+  public addedSNMPEndpoint(endpoint: SNMPEndpoint): void {
+    this.endpoints.push(endpoint);
+    this.select(endpoint);
+  }
+
+  public select(endpoint: SNMPEndpoint): void {
+    this.selectedEndpoint = endpoint;
+    this.filteredResponses.length = 0;
+    if (!this.isMenuOpen) {
+      this.isMenuOpen = true;
+    }
+    this.reloadEndpointDetails();
+  }
+
+  public refresh(): void {
+    this.reloadEndpointDetails();
+  }
+
+  public toggleShowStatuses(endpoint: any): void {
+    endpoint.showStatuses = !endpoint.showStatuses;
+  }
+
+  public showStatuses(endpoint: any): boolean {
+    return endpoint.showStatuses === true;
   }
 
   public mapToPieChart(responses: NodeResponse[]) {
@@ -94,12 +95,13 @@ export class AppComponent {
 
   public mapPieSettings(node: SNMPNode, index: number): ChartSettings {
     return {
-      index: index, subtitle: 'SNMP responses'
+      index: index,
+      subtitle: `SNMP responses (${new Date(this.startDateRequested).toLocaleString()} - ${new Date(this.endDateRequested).toLocaleString()})`
     };
   }
 
   public selectGroup(group?: string): void {
-    this.responsesForDetailReview = this.nodes[0].responses.filter(response => {
+    this.filteredResponses = this.selectedEndpointNode.responses.filter(response => {
       return !group || response.group === group;
     }).sort((a, b) => b.dateticks - a.dateticks);
   }
@@ -113,10 +115,12 @@ export class AppComponent {
     this.startDate.setDate(this.startDate.getDate() - 1);
   }
 
-  private reloadEndpointData(): void {
+  private reloadEndpointDetails(): void {
     this.loading = true;
-    this.snmpService.snmpEndPointDetails(this.selectedEndpoint, this.startDate.toISOString(), this.endDateAsIso()).subscribe(nodes => {
-      this.nodes = nodes;
+    this.startDateRequested = this.startDate;
+    this.endDateRequested = this.endDate || new Date();
+    this.snmpService.snmpEndPointDetails(this.selectedEndpoint, this.startDate.toISOString(), this.endDateAsIso()).subscribe(node => {
+      this.selectedEndpointNode = node;
       this.loading = false;
       this.changeDetectorRef.detectChanges();
     });
