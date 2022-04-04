@@ -1,0 +1,21 @@
+{
+  "name": "university",
+  "version": "1.0.0",
+  "description": "snmp listener",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "snmp"
+  ],
+  "author": "Trifon Dardzhonov",
+  "license": "MIT",
+  "dependencies": {
+    "csv": "3.1.0",
+    "dgram": "1.0.1",
+    "express": "4.16.3",
+    "fast-csv": "2.4.1",
+    "snmp-native": "1.1.2"
+  }
+}

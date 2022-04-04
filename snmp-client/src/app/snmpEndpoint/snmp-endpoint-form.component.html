@@ -1,0 +1,59 @@
+<div class="col-md-12" id="endpoint-form">
+  <div>
+    <h5>Add new endpoint</h5>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="friendlyName">Friendly Name*</label>
+    <input [(ngModel)]="endpoint.friendlyName" class="col-md-12" id="friendlyName" placeholder="lorem ipsum"/>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="description">Description</label>
+    <input [(ngModel)]="endpoint.description" class="col-md-12" id="description" placeholder="this data is so cool"/>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="host">Host*</label>
+    <input [(ngModel)]="endpoint.host" class="col-md-12" id="host" placeholder="demo.snmplabs.com"/>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="port">Port*</label>
+    <input [(ngModel)]="endpoint.port" class="col-md-12" id="port" placeholder="161"/>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="oid">OID*</label>
+    <input [(ngModel)]="endpoint.oid" class="col-md-12" id="oid" placeholder="1,3,6,1,2,1,1"/>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-12 no-hor-padding" for="community">Community*</label>
+    <input [(ngModel)]="endpoint.community" class="col-md-12" id="community" placeholder="public"/>
+  </div>
+  <div class="col-md-12">
+    <label class="col-md-10 no-hor-padding" for="supportGrouping">Support Grouping</label>
+    <input (change)="toggleGrouping()" [checked]="endpoint.supportGrouping" class="col-md-1 no-hor-padding"
+           id="supportGrouping" type="checkbox"/>
+  </div>
+  <div *ngIf="endpoint.supportGrouping" class="col-md-12" id="grouping-box">
+    <button (click)="addMatchingGroup()" class="btn btn-primary col-md-12">Add Matching Group</button>
+    <div *ngFor="let group of endpoint.groupingMatch; let i = index" class="grouping">
+      <input [(ngModel)]="group.original" class="col-md-12" placeholder="Original" type="text"/>
+      <input [(ngModel)]="group.result" class="col-md-12" placeholder="Result" type="text"/>
+      <div (click)="removeMatchingGroup(i)" class="remove-btn">X</div>
+    </div>
+    <button (click)="addBetweenGroup()" class="btn btn-primary col-md-12">Add Between Group</button>
+    <div *ngFor="let group of endpoint.groupingBetween; let i = index" class="grouping">
+      <input [(ngModel)]="group.from" class="col-md-12" placeholder="From" type="number"/>
+      <input [(ngModel)]="group.to" class="col-md-12" placeholder="To" type="number"/>
+      <input [(ngModel)]="group.result" class="col-md-12" placeholder="Result" type="text"/>
+      <div (click)="removeBetweenGroup(i)" class="remove-btn">X</div>
+    </div>
+  </div>
+  <button (click)="test()" class="btn btn-primary col-md-12">Extract Subtree</button>
+  <button (click)="addEndpoint()" class="btn btn-primary col-md-12">Add</button>
+
+  <div *ngIf="endpointData.length" id="test-results-box">
+    <p *ngFor="let node of endpointData">
+      <span style="display: block;"><strong>OID</strong> {{node.oid}}</span>
+      <span style="display: block;"><strong>Value</strong> {{node.value}}</span>
+    </p>
+  </div>
+  <div *ngIf="loading" class="lds-hourglass"></div>
+</div>

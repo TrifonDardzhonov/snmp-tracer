@@ -1,0 +1,135 @@
+<div class="row">
+  <div [ngClass]="{'col-md-2' : isMenuOpen, 'col-md-1' : !isMenuOpen}" class="sidenav no-hor-padding">
+    <div (click)="isMenuOpen = false" *ngIf="isMenuOpen" class="nav-toggler">&larr;</div>
+    <div (click)="isMenuOpen = true" *ngIf="!isMenuOpen" class="nav-toggler">&rarr;</div>
+    <div
+      (click)="select(endpoint)"
+      *ngFor="let endpoint of endpoints"
+      [ngClass]="{
+          'selected-active-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && endpoint.status.id === Status.Active.id,
+          'selected-deactivated-endpoint': selectedEndpoint && endpoint.oid === selectedEndpoint.oid && (endpoint.status.id === Status.Deactivated.id || endpoint.status.id === Status.Deleted.id),
+          'deactivated-endpoint': (!selectedEndpoint || endpoint.oid !== selectedEndpoint.oid) &&  (endpoint.status.id === Status.Deactivated.id || endpoint.status.id === Status.Deleted.id)}"
+      class="endpoint">
+      <div *ngIf="!isMenuOpen">
+        {{endpoint.friendlyName}}
+      </div>
+      <div *ngIf="isMenuOpen">
+        <div>
+          <strong>{{endpoint.friendlyName}}</strong>
+        </div>
+        <div>{{endpoint.host}}:{{endpoint.port}}</div>
+        <div>{{endpoint.oid}}</div>
+        <div class="dropdown col-md-12">
+          <button (click)="toggleShowStatuses(endpoint);$event.stopPropagation()"
+                  [ngClass]="{'active': endpoint.status.id === Status.Active.id}"
+                  class="btn btn-secondary col-md-12 status">
+            {{endpoint.status.name}}
+          </button>
+          <div [ngClass]="{'dropdown-menu': !showStatuses(endpoint)}">
+            <a (click)="setStatus(endpoint, Status.Active);$event.stopPropagation()"
+               *ngIf="endpoint.status.id !== Status.Active.id"
+               class="dropdown-item">Activate</a>
+            <a (click)="setStatus(endpoint, Status.Deactivated);$event.stopPropagation()"
+               *ngIf="endpoint.status.id !== Status.Deactivated.id"
+               class="dropdown-item">Deactivate</a>
+            <a (click)="setStatus(endpoint, Status.Deleted);$event.stopPropagation()"
+               *ngIf="endpoint.status.id !== Status.Deleted.id"
+               class="dropdown-item">Delete</a>
+          </div>
+        </div>
+        <div *ngIf="endpoint.supportGrouping">
+          <div *ngFor="let match of endpoint.groupingMatch" class="new-group">
+            <div>
+              <strong>Original: </strong>{{match.original}}
+            </div>
+            <div>
+              <strong>Result: </strong>{{match.result}}
+            </div>
+          </div>
+          <div *ngFor="let between of endpoint.groupingBetween" class="new-group">
+            <div>
+              <strong>From: </strong>{{between.from}}
+            </div>
+            <div>
+              <strong>To: </strong>{{between.to}}
+            </div>
+            <div>
+              <strong>Result: </strong>{{between.result}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isMenuOpen" class="col-md-12" id="snmp-endpoint-form" style="min-height: 100%">
+      <app-snmp-endpoint-form (addedSNMPEndpoint)="addedSNMPEndpoint($event)"></app-snmp-endpoint-form>
+    </div>
+  </div>
+  <div [ngClass]="{'col-md-10' : isMenuOpen, 'col-md-11' : !isMenuOpen}" class="main no-hor-padding">
+    <div *ngIf="selectedEndpoint" class="col-md-12 title">
+      <h5>
+        <strong>HOST: </strong>{{selectedEndpoint.host}}
+      </h5>
+      <h5>
+        <strong>PORT: </strong>{{selectedEndpoint.port}}
+      </h5>
+      <h5>
+        <strong>OID: </strong>{{selectedEndpoint.oid}}
+      </h5>
+      <h5>
+        <strong>DESCRIPTION: </strong>{{selectedEndpoint.description}}
+      </h5>
+    </div>
+    <div *ngFor="let node of selectedEndpointNode ? [selectedEndpointNode] : []; let i = index" class="col-md-12 node-control-plane">
+      <div class="row">
+        <div class="filter">
+          <div>
+            <label><strong>From</strong></label>
+            <input [(ngModel)]="startDate"
+                   [owlDateTimeTrigger]="sdt"
+                   [owlDateTime]="sdt"
+                   placeholder="Date Time:"
+                   style="cursor: pointer;">
+            <owl-date-time #sdt></owl-date-time>
+          </div>
+          <div>
+            <label><strong>To</strong></label>
+            <input [(ngModel)]="endDate"
+                   [owlDateTimeTrigger]="edt"
+                   [owlDateTime]="edt"
+                   placeholder="Date Time:"
+                   style="cursor: pointer;">
+            <owl-date-time #edt></owl-date-time>
+            <i style="cursor: pointer;" (click)="removeEndDate()">Until now</i>
+          </div>
+          <button (click)="refresh()" class="btn btn-primary">
+            Refresh
+          </button>
+        </div>
+        <div *ngIf="!loading" class="col-md-12 pie-chart">
+          <app-pie-chart (selectGroup)="selectGroup($event)" *ngIf="selectedEndpoint?.supportGrouping"
+                         [data]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)"></app-pie-chart>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="filteredResponses.length && !loading" class="col-md-12 detail-review-table">
+      <div class="row">
+        <div class="col-md-4">
+          <strong>Date</strong>
+        </div>
+        <div class="col-md-4">
+          <strong>Group</strong>
+        </div>
+        <div class="col-md-4">
+          <strong>Value</strong>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div *ngFor="let response of filteredResponses" class="row">
+          <div class="col-md-4">{{response.dateticks | date:'medium'}}</div>
+          <div class="col-md-4">{{response.group}}</div>
+          <div class="col-md-4">{{response.value}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
