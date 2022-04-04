@@ -60,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="isMenuOpen" class="col-md-12" id="snmp-endpoint-form" style="min-height: 100%">
+    <div *ngIf="isMenuOpen" class="col-md-12" id="snmp-endpoint-form">
       <app-snmp-endpoint-form (addedSNMPEndpoint)="addedSNMPEndpoint($event)"></app-snmp-endpoint-form>
     </div>
   </div>
@@ -105,9 +105,12 @@
             Refresh
           </button>
         </div>
-        <div *ngIf="!loading" class="col-md-12 pie-chart">
+        <div *ngIf="!loading && node.responses.length" class="col-md-12 pie-chart">
           <app-pie-chart (selectGroup)="selectGroup($event)" *ngIf="selectedEndpoint?.supportGrouping"
                          [data]="mapToPieChart(node.responses)" [settings]="mapPieSettings(node, i)"></app-pie-chart>
+        </div>
+        <div *ngIf="!loading && !node.responses.length" class="col-md-12 pie-chart">
+          <h2>No data!</h2>
         </div>
       </div>
     </div>
