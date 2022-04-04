@@ -118,6 +118,10 @@ export class AppComponent {
   }
 
   private reloadEndpointDetails(): void {
+    if (!this.selectedEndpoint) {
+      return;
+    }
+
     this.loading = true;
     this.startDateRequested = this.startDate;
     this.endDateRequested = this.endDate || new Date();
