@@ -1,12 +1,12 @@
-const snmpClient = require('./snmpClient');
-const snmpEndpointRepository = require('../repository/json/snmpEndpointRepository');
-const snmpResponseRepository = require('../repository/csv/snmpResponseRepository');
-const scriptRunner = require('../scriptRunner');
-const scriptOutputRepository = require('../repository/csv/scriptOutputRepository');
-const SNMPResponse = require('../models/snmpResponse');
-const endpointStatus = require('../enums/endpoint-status');
-const groupFinder = require('./groupFinder');
-
+const snmpClient = require("./snmpClient");
+const snmpEndpointRepository = require("../repository/json/snmpEndpointRepository");
+const snmpResponseRepository = require("../repository/csv/snmpResponseRepository");
+const scriptRunner = require("../scriptRunner");
+const scriptOutputRepository = require("../repository/csv/scriptOutputRepository");
+const SNMPResponse = require("../models/snmpResponse");
+const ScriptOutput = require("../models/scriptOutput");
+const endpointStatus = require("../enums/endpoint-status");
+const groupFinder = require("./groupFinder");
 const snmp = new snmpClient();
 const endpoints = new snmpEndpointRepository();
 const responses = new snmpResponseRepository();
@@ -35,20 +35,30 @@ function visitEachNode() {
                 if (varbinds) {
                     varbinds.forEach(bind => {
                         const group = groupFinder.find(node, bind.value);
-                        const snmpResponse = SNMPResponse(node.id, node.oid, node.host, node.port, node.community, bind.value, group.value);
-                        responses.write(snmpResponse);
+                        const snmpResponse = SNMPResponse(
+                            node.id, 
+                            node.oid, 
+                            node.host, 
+                            node.port, 
+                            node.community, 
+                            bind.value,
+                            group.id,
+                            group.value
+                        );
+                        const snmpResponseId = responses.write(snmpResponse);
 
                         if (group.script) {
                             scripts.run(group.script).then((output) => {
-                                scriptsOutputs.write({
-                                    text: output,
-                                    endpointId: node.id,
-                                    groupId: group.id,
-                                    script: group.script,
-                                });
+                                const scriptOutput = ScriptOutput(
+                                    snmpResponseId,
+                                    node.id,
+                                    group.id,
+                                    group.script,
+                                    output 
+                                );
+                                scriptsOutputs.write(scriptOutput);
                             });
                         }
-                        // add additional handling here
                     });
                 }
             });

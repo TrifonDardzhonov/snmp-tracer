@@ -24,7 +24,6 @@ function searchInBetweenGroups(groupingBetween, value) {
                     id: groupingBetween[i].id,
                     value: groupingBetween[i].result,
                     script: groupingBetween[i].script,
-                    // return additional group properties
                 }
             }
         }
@@ -40,7 +39,6 @@ function searchInMatchingGroups(groupingMatch, value) {
                     id: groupingMatch[i].id,
                     value: groupingMatch[i].result,
                     script: groupingMatch[i].script,
-                    // return additional group properties
                 }
             }
         }
@@ -50,6 +48,7 @@ function searchInMatchingGroups(groupingMatch, value) {
 
 function emptyGroup() {
     return {
+        id: null,
         value: "Unknown"
     };
 }

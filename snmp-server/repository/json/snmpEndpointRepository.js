@@ -1,7 +1,7 @@
-const fs = require('fs');
-const endpointStatus = require('../../enums/endpoint-status');
+const fs = require("fs");
+const endpointStatus = require("../../enums/endpoint-status");
 
-const filePath = '~/../../snmp-server/database/json/snmpEndpoints.json';
+const filePath = "~/../../snmp-server/database/json/snmpEndpoints.json";
 
 const snmpEndpointRepository = function () {
     function writeConfig(config) {
@@ -16,7 +16,7 @@ const snmpEndpointRepository = function () {
     return {
         read() {
             return new Promise((resolve) => {
-                fs.readFile(filePath, 'utf8', function (err, data) {
+                fs.readFile(filePath, "utf8", function (err, data) {
                     if (err) throw err;
                     const config = JSON.parse(data);
                     resolve(config.nodes);
@@ -24,11 +24,11 @@ const snmpEndpointRepository = function () {
             });
         }, add(endpoint) {
             return new Promise((resolve) => {
-                fs.readFile(filePath, 'utf8', function (err, data) {
+                fs.readFile(filePath, "utf8", function (err, data) {
                     if (err) throw err;
                     let groupId = 1;
                     const config = JSON.parse(data);
-                    const script = 'versions.bat';
+                    const script = "versions.bat";
                     endpoint.id = config.nodes.length + 1;
                     if (endpoint.groupingMatch && endpoint.groupingMatch.length) {
                         endpoint.groupingMatch.forEach(group => group.id = groupId++);
@@ -45,7 +45,7 @@ const snmpEndpointRepository = function () {
             });
         }, setStatus(endpoint, status) {
             return new Promise((resolve) => {
-                fs.readFile(filePath, 'utf8', function (err, data) {
+                fs.readFile(filePath, "utf8", function (err, data) {
                     if (err) throw err;
                     const config = JSON.parse(data);
                     const node = config.nodes.filter(n => n.id === endpoint.id)[0];

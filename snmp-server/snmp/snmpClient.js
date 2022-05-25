@@ -1,4 +1,4 @@
-const snmp = require('snmp-native');
+const snmp = require("snmp-native");
 
 function extractSubtree(node) {
     const session = new snmp.Session({
@@ -10,7 +10,7 @@ function extractSubtree(node) {
             oid: node.oid
         }, function (error, varbinds) {
             if (error) {
-                console.log('Fail :(', error);
+                console.log("Fail :(", error);
             } else {
                 resolve(varbinds);
             }

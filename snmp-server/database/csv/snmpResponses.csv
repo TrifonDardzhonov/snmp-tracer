@@ -1,16 +1,4 @@
-id,oid,host,port,community,value,group,dateticks
-1,"1,3,4,1,2,5,2",demo.com,161,public,8,Unknown,1653509034731
-1,"1,3,4,1,2,5,2",demo.com,161,public,9,Unknown,1653509094741
-1,"1,3,4,1,2,5,2",demo.com,161,public,9,Unknown,1653509154747
-1,"1,3,4,1,2,5,2",demo.com,161,public,2,two,1653509214754
-1,"1,3,4,1,2,5,2",demo.com,161,public,6,four to six,1653509274757
-1,"1,3,4,1,2,5,2",demo.com,161,public,9,Unknown,1653509334759
-1,"1,3,4,1,2,5,2",demo.com,161,public,5,four to six,1653509394769
-1,"1,3,4,1,2,5,2",demo.com,161,public,0,Unknown,1653509454779
-1,"1,3,4,1,2,5,2",demo.com,161,public,2,two,1653509514791
-1,"1,3,4,1,2,5,2",demo.com,161,public,8,Unknown,1653509574806
-1,"1,3,4,1,2,5,2",demo.com,161,public,2,two,1653509634818
-1,"1,3,4,1,2,5,2",demo.com,161,public,5,four to six,1653509694826
-1,"1,3,4,1,2,5,2",demo.com,161,public,0,Unknown,1653509754836
-1,"1,3,4,1,2,5,2",demo.com,161,public,7,Unknown,1653509814837
-1,"1,3,4,1,2,5,2",demo.com,161,public,1,Unknown,1653509874850
+id,endpointId,oid,host,port,community,value,groupId,group,dateticks
+8e6a2a61b060c09569c5ad4e8845f804,1,"1,3,4,1,2,5,2",demo.com,161,public,9,,Unknown,1653514773958
+9d7ba65b5e151a005638a469dd80d2c2,1,"1,3,4,1,2,5,2",demo.com,161,public,2,1,two,1653514833975
+8827a46935d9f4f28132f2ed174154e4,1,"1,3,4,1,2,5,2",demo.com,161,public,0,,Unknown,1653514893985

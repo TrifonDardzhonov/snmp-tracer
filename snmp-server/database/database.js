@@ -1,5 +1,5 @@
-const snmpEndpointRepository = require('../repository/json/snmpEndpointRepository');
-const snmpResponseRepository = require('../repository/csv/snmpResponseRepository');
+const snmpEndpointRepository = require("../repository/json/snmpEndpointRepository");
+const snmpResponseRepository = require("../repository/csv/snmpResponseRepository");
 
 const database = function () {
     const endpoints = new snmpEndpointRepository();

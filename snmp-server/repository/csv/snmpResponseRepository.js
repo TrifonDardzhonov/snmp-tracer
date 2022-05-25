@@ -1,7 +1,8 @@
-const fs = require('fs');
-const csv = require('fast-csv');
+const fs = require("fs");
+const csv = require("fast-csv");
+const crypto = require("crypto");
 
-const filePath = '~/../../snmp-server/database/csv/snmpResponses.csv';
+const filePath = "~/../../snmp-server/database/csv/snmpResponses.csv";
 
 const csvStream = csv.createWriteStream({
     headers: true
@@ -11,19 +12,23 @@ csvStream.pipe(writableStream);
 
 const snmpResponseRepository = function () {
     return {
-        write: function (snmp) {
+        write: function (snmpResponse) {
+            const id = crypto.randomBytes(16).toString("hex");
             csvStream.write({
-                id: snmp.id,
-                oid: snmp.oid,
-                host: snmp.host,
-                port: snmp.port,
-                community: snmp.community,
-                value: snmp.value,
-                group: snmp.group,
-                dateticks: snmp.dateticks
+                id: id,
+                endpointId: snmpResponse.endpointId,
+                oid: snmpResponse.oid,
+                host: snmpResponse.host,
+                port: snmpResponse.port,
+                community: snmpResponse.community,
+                value: snmpResponse.value,
+                groupId: snmpResponse.groupId,
+                group: snmpResponse.group,
+                dateticks: snmpResponse.dateticks
             }, {
                 headers: true
             });
+            return id;
         }, read: function (endpointId, startDate, endDate, lastNRecords) {
             return new Promise((resolve) => {
                 const responses = [];
@@ -33,18 +38,20 @@ const snmpResponseRepository = function () {
                 })
                     .transform(function (data) {
                         return {
-                            id: Number(data.id),
+                            id: data.id,
+                            endpointId: Number(data.endpointId),
                             oid: Array.isArray(data.oid) ? data.oid : data.oid.split(',').map(id => Number(id)),
                             host: data.host,
                             port: Number(data.port),
                             community: data.community,
                             value: data.value,
+                            groupId: data.groupId,
                             group: data.group,
                             dateticks: data.dateticks
                         }
                     })
                     .validate(function (endpointResult) {
-                        return endpointResult.id === endpointId;
+                        return endpointResult.endpointId === endpointId;
                     })
                     .on("data", function (endpointResult) {
                         responses.push(endpointResult);

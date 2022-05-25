@@ -1,8 +1,7 @@
-const fs = require('fs');
-const csv = require('fast-csv');
-const crypto = require("crypto");
+const fs = require("fs");
+const csv = require("fast-csv");
 
-const filePath = '~/../../snmp-server/database/csv/scriptsOutputs.csv';
+const filePath = "~/../../snmp-server/database/csv/scriptsOutputs.csv";
 
 const csvStream = csv.createWriteStream({
     headers: true
@@ -17,7 +16,7 @@ const scriptOutputRepository = function () {
             console.log(`Output: ${output.text}`);
 
             csvStream.write({
-                id: crypto.randomBytes(16).toString("hex"),
+                snmpResponseId: output.snmpResponseId,
                 text: output.text,
                 endpointId: output.endpointId,
                 groupId: output.groupId,
@@ -26,7 +25,7 @@ const scriptOutputRepository = function () {
             }, {
                 headers: true
             });
-        }, read: function (startDate, endDate, endpointId, groupId, outputId) {
+        }, read: function (startDate, endDate, endpointId, groupId, snmpResponseId) {
             return new Promise((resolve) => {
                 const outputs = [];
 
@@ -35,7 +34,7 @@ const scriptOutputRepository = function () {
                 })
                     .transform(function (data) {
                         return {
-                            id: data.id,
+                            snmpResponseId: data.snmpResponseId,
                             text: data.text,
                             groupId: Number(data.groupId),
                             endpointId: Number(data.endpointId),
@@ -44,8 +43,8 @@ const scriptOutputRepository = function () {
                         }
                     })
                     .validate(function (output) {
-                        if (outputId) {
-                            return output.id === outputId;
+                        if (snmpResponseId) {
+                            return output.snmpResponseId === snmpResponseId;
                         } else if (groupId) {
                             return output.groupId === groupId;
                         } else if (endpointId) {
