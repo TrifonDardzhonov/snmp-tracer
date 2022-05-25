@@ -1,0 +1,7 @@
+id,text,endpointId,groupId,script,dateticks
+e85fed97ca3910f5331b162efdba02bd,C:\snmp-tracer\snmp-server\scripts>node --version;v12.21.0,1,1,1_1_versions.bat,1653509214836
+68d1492ae8e6aad01c2f4454e3aa0b9a,C:\snmp-tracer\snmp-server\scripts>npm --version;6.14.11,1,2,1_2_versions.bat,1653509275512
+397f77289acd346bd5ec49501e861b26,C:\snmp-tracer\snmp-server\scripts>npm --version;6.14.11,1,2,1_2_versions.bat,1653509395365
+abcbf1b72302e204d65838b7ea80295d,C:\snmp-tracer\snmp-server\scripts>node --version;v12.21.0,1,1,1_1_versions.bat,1653509514844
+a6bb448f47f49a1983268286e3f31827,C:\snmp-tracer\snmp-server\scripts>node --version;v12.21.0,1,1,1_1_versions.bat,1653509634912
+68693354207bcfa5c153e2e52bb5bfde,C:\snmp-tracer\snmp-server\scripts>npm --version;6.14.11,1,2,1_2_versions.bat,1653509695419

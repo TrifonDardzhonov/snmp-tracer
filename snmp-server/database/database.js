@@ -1,29 +1,32 @@
-const snmpRepository = require('./snmpRepository');
+const snmpEndpointRepository = require('../repository/json/snmpEndpointRepository');
+const snmpResponseRepository = require('../repository/csv/snmpResponseRepository');
 
-const snmpController = function () {
-    const db = new snmpRepository();
+const database = function () {
+    const endpoints = new snmpEndpointRepository();
+    const responses = new snmpResponseRepository();
+
     return {
         snmpEndpoints: function () {
             return new Promise((resolve) => {
-                db.endpoints().then(endpoints => {
+                endpoints.read().then(endpoints => {
                     resolve(endpoints);
                 });
             });
         }, addSNMPEndpoint: function (endpoint) {
             return new Promise((resolve) => {
-                db.addEndpoint(endpoint).then(result => {
+                endpoints.add(endpoint).then(result => {
                     resolve(result);
                 });
             });
         }, snmpEndpointData: function (endpointId, startDate, endDate) {
             return new Promise((resolve) => {
-                db.read(endpointId, startDate, endDate, 1000).then(data => {
-                    resolve(data);
+                responses.read(endpointId, startDate, endDate, 1000).then(responses => {
+                    resolve(responses);
                 });
             });
         }, setSNMPEndpointStatus(endpoint, status) {
             return new Promise((resolve) => {
-                db.setStatus(endpoint, status).then(success => {
+                endpoints.setStatus(endpoint, status).then(success => {
                     resolve(success);
                 });
             });
@@ -31,4 +34,4 @@ const snmpController = function () {
     }
 };
 
-module.exports = snmpController;
+module.exports = database;

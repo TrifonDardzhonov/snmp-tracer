@@ -1,4 +1,4 @@
-function findGroup(node, value) {
+function find(node, value) {
     let group;
     if (node.supportGrouping) {
         if (!group) {
@@ -21,7 +21,9 @@ function searchInBetweenGroups(groupingBetween, value) {
             const to = Number(groupingBetween[i].to);
             if (from <= Number(value) && Number(value) <= to) {
                 return {
+                    id: groupingBetween[i].id,
                     value: groupingBetween[i].result,
+                    script: groupingBetween[i].script,
                     // return additional group properties
                 }
             }
@@ -35,7 +37,9 @@ function searchInMatchingGroups(groupingMatch, value) {
         for (let i = 0; i < groupingMatch.length; i++) {
             if (groupingMatch[i].original == value) {
                 return {
+                    id: groupingMatch[i].id,
                     value: groupingMatch[i].result,
+                    script: groupingMatch[i].script,
                     // return additional group properties
                 }
             }
@@ -51,5 +55,5 @@ function emptyGroup() {
 }
 
 module.exports = {
-    findGroup: findGroup
+    find: find
 };

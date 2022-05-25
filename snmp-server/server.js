@@ -1,9 +1,9 @@
 const express = require("express")
-const snmpController = require("./snmpController");
-const snmpListener = require("./snmpListener");
+const database = require("./database/database");
+const snmpListener = require("./snmp/snmpListener");
 const bodyParser = require("body-parser");
 
-const controller = new snmpController();
+const db = new database();
 const listener = new snmpListener();
 
 function mapSNMPEndpointModel(endpoint) {
@@ -50,14 +50,14 @@ setUpPort(app);
 app.route('/snmpEndpoints')
     .get(function (req, res) {
         // get all snmp endpoints
-        controller.snmpEndpoints().then(endpoints => {
+        db.snmpEndpoints().then(endpoints => {
             res.json(endpoints);
         });
     })
     .post(function (req, res) {
         // add new snmp endpoint
         const endPoint = mapSNMPEndpointModel(req.body);
-        controller.addSNMPEndpoint(endPoint).then(result => {
+        db.addSNMPEndpoint(endPoint).then(result => {
             res.json(result);
         });
     });
@@ -68,7 +68,7 @@ app.route('/snmpEndpoint/data')
         const endPoint = mapSNMPEndpointModel(req.body.endpoint);
         const startDate = req.body.startDate;
         const endDate = req.body.endDate;
-        controller.snmpEndpointData(endPoint.id, startDate, endDate).then((data) => {
+        db.snmpEndpointData(endPoint.id, startDate, endDate).then((data) => {
             res.json(data);
         });
     });
@@ -77,7 +77,7 @@ app.route('/snmpEndpoint/setStatus')
     .post(function (req, res) {
         const endPoint = mapSNMPEndpointModel(req.body.endpoint);
         const status = req.body.status;
-        controller.setSNMPEndpointStatus(endPoint, status).then((success) => {
+        db.setSNMPEndpointStatus(endPoint, status).then((success) => {
             res.json(success);
         });
     });
