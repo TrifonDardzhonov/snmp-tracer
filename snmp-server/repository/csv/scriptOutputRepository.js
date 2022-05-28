@@ -57,13 +57,13 @@ const scriptOutputRepository = function () {
                         outputs.push(output);
                     })
                     .on("end", function () {
-                        const startDateTicks = new Date(startDate).getTime();
-                        const endDateTicks = new Date(endDate).getTime();
+                        // const startDateTicks = new Date(startDate).getTime();
+                        // const endDateTicks = new Date(endDate).getTime();
 
-                        const filteredOutputs = outputs.filter(r => startDateTicks <= r.dateticks && r.dateticks <= endDateTicks);
+                        // const filteredOutputs = outputs.filter(r => startDateTicks <= r.dateticks && r.dateticks <= endDateTicks);
 
                         resolve({
-                            outputs: filteredOutputs
+                            outputs: outputs
                         });
                     });
             })

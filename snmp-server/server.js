@@ -47,14 +47,14 @@ app.route("/snmpEndpoints")
         });
     });
 
-app.route("/snmpEndpoint/data")
+app.route("/snmpEndpoint/responses")
     .post(function (req, res) {
         // get last 100 data records for requested endpoint
         const endpoint = SNMPEndpoint(req.body.endpoint);
         const startDate = req.body.startDate;
         const endDate = req.body.endDate;
-        db.snmpEndpointData(endpoint.id, startDate, endDate).then((data) => {
-            res.json(data);
+        db.snmpEndpointResponses(endpoint.id, startDate, endDate).then((responses) => {
+            res.json(responses);
         });
     });
 
@@ -73,6 +73,16 @@ app.route("/snmpEndpoints/test")
         const endpoint = SNMPEndpoint(req.body);
         listener.endpointData(endpoint).then((varbinds) => {
             res.json(varbinds);
+        });
+    });
+
+app.route("/scriptsOutputs")
+    .post(function(req, res) {
+        const endpointId = req.body.endpointId;
+        const groupId = req.body.groupId;
+        const snmpResponseId = req.body.snmpResponseId;
+        db.scriptsOutputs(null, null, endpointId, groupId, snmpResponseId).then((outputs) => {
+            res.json(outputs);
         });
     });
 

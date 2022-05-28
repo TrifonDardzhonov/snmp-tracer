@@ -1,9 +1,11 @@
 const snmpEndpointRepository = require("../repository/json/snmpEndpointRepository");
 const snmpResponseRepository = require("../repository/csv/snmpResponseRepository");
+const scriptOutputRepository = require("../repository/csv/scriptOutputRepository");
 
 const database = function () {
     const endpoints = new snmpEndpointRepository();
     const responses = new snmpResponseRepository();
+    const scriptsOutputs = new scriptOutputRepository();
 
     return {
         snmpEndpoints: function () {
@@ -18,7 +20,7 @@ const database = function () {
                     resolve(result);
                 });
             });
-        }, snmpEndpointData: function (endpointId, startDate, endDate) {
+        }, snmpEndpointResponses: function (endpointId, startDate, endDate) {
             return new Promise((resolve) => {
                 responses.read(endpointId, startDate, endDate, 1000).then(responses => {
                     resolve(responses);
@@ -28,6 +30,12 @@ const database = function () {
             return new Promise((resolve) => {
                 endpoints.setStatus(endpoint, status).then(success => {
                     resolve(success);
+                });
+            });
+        }, scriptsOutputs(startDate, endDate, endpointId, groupId, snmpResponseId) {
+            return new Promise((resolve) => {
+                scriptsOutputs.read(startDate, endDate, endpointId, groupId, snmpResponseId).then(outputs => {
+                    resolve(outputs);
                 });
             });
         }

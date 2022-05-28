@@ -112,6 +112,20 @@ export class AppComponent {
     this.endDate = undefined;
   }
 
+  public hasScript(groupId: string): boolean {
+    return this.endpoints.some(endpoint =>
+      endpoint.groupingBetween?.some(group => group.id == groupId && group.script.length > 0) ||
+      endpoint.groupingMatch?.some(group => group.id == groupId && group.script.length > 0)
+    );
+  }
+
+  public viewScriptOutput(response: NodeResponse): void {
+    this.snmpService.scriptsOutputs(null, null, response.id).subscribe(scriptsOutputs => {
+      response.scriptOutput = scriptsOutputs.outputs[0].text;
+      this.changeDetectorRef.detectChanges();
+    });
+  }
+
   private initDateRangeState() {
     this.startDate = new Date();
     this.startDate.setDate(this.startDate.getDate() - 1);
@@ -125,7 +139,7 @@ export class AppComponent {
     this.loading = true;
     this.startDateRequested = this.startDate;
     this.endDateRequested = this.endDate || new Date();
-    this.snmpService.snmpEndPointDetails(this.selectedEndpoint as SNMPEndpoint, (this.startDate as Date).toISOString(), this.endDateAsIso()).subscribe(node => {
+    this.snmpService.snmpEndPointResponses(this.selectedEndpoint as SNMPEndpoint, (this.startDate as Date).toISOString(), this.endDateAsIso()).subscribe(node => {
       this.selectedEndpointNode = node;
       this.loading = false;
       this.changeDetectorRef.detectChanges();

@@ -1,2 +1,3 @@
 snmpResponseId,text,endpointId,groupId,script,dateticks
-9d7ba65b5e151a005638a469dd80d2c2,C:\snmp-tracer\snmp-server\scripts>node --version;v12.21.0,1,1,1_1_versions.bat,1653514834050
+ee672060c0f4674092c2d81633246207,C:\snmp-tracer\snmp-server\scripts>npm --version;6.14.11,1,2,1_2_versions.bat,1653770685947
+b49194839da2c1ded293602f2304f532,C:\snmp-tracer\snmp-server\scripts>npm --version;6.14.11,1,2,1_2_versions.bat,1653770865962

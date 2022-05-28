@@ -13,14 +13,18 @@ export interface SNMPEndpoint {
 }
 
 export interface GroupMatch {
+  id?: string;
   original: string;
   result: string;
+  script: string;
 }
 
 export interface GroupBetween {
+  id?: string;
   from: number;
   to: number;
   result: string;
+  script: string;
 }
 
 export interface SNMPNode {
@@ -28,10 +32,13 @@ export interface SNMPNode {
 }
 
 export interface NodeResponse {
+  id: string;
   oid: string;
   group: string;
+  groupId: string;
   value: string;
   dateticks: number;
+  scriptOutput: string;
 }
 
 export class Status {
