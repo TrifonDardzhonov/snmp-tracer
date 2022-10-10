@@ -1,4 +1,4 @@
-const express = require("express")
+const express = require("express");
 const database = require("./database/database");
 const snmpListener = require("./snmp/snmpListener");
 const bodyParser = require("body-parser");
@@ -85,5 +85,33 @@ app.route("/scriptsOutputs")
             res.json(outputs);
         });
     });
+
+const multer = require('multer')
+const PATH = './scripts';
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, PATH);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
+let upload = multer({
+    storage: storage
+});
+
+app.post('/snmpEndpoint/upload', upload.single('file'), function (req, res) {
+    if (!req.file) {
+        console.log("No file is available!");
+        return res.send({
+            success: false
+        });
+    } else {
+        console.log('File is available!');
+        return res.send({
+            success: true
+        });
+    }
+});
 
 listener.start();

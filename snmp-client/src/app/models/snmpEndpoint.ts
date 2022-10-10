@@ -13,18 +13,20 @@ export interface SNMPEndpoint {
 }
 
 export interface GroupMatch {
-  id?: string;
+  id?: number;
   original: string;
   result: string;
   script: string;
+  file: File;
 }
 
 export interface GroupBetween {
-  id?: string;
+  id?: number;
   from: number;
   to: number;
   result: string;
   script: string;
+  file: File;
 }
 
 export interface SNMPNode {

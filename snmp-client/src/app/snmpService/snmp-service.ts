@@ -29,7 +29,8 @@ export class SNMPService {
 
   setStatus(endpoint: SNMPEndpoint, status: Status): Observable<boolean> {
     return this.http.post<boolean>(this.baseUrl + 'snmpEndpoint/setStatus', {
-      endpoint: endpoint, status: status
+      endpoint: endpoint,
+      status: status
     });
   }
 
@@ -40,6 +41,32 @@ export class SNMPService {
       snmpResponseId: snmpResponseId,
     });
   }
+
+  upload(endpointId: number, groupId: number, file: File | null): Observable<string> {
+    if (!file) {
+      throw new Error("File is missing!");
+    }
+
+    file = this.renameFile(file, `${endpointId}_${groupId}_${file.name}`);
+
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+
+    return new Observable(subs => {
+      this.http.post<string>(this.baseUrl + 'snmpEndpoint/upload', formData)
+        .subscribe(() => {
+          subs.next(file?.name);
+          subs.complete();
+        });
+    });
+  }
+
+  renameFile(originalFile: File, newName: string) {
+    return new File([originalFile], newName, {
+        type: originalFile.type,
+        lastModified: originalFile.lastModified,
+    });
+}
 
   private get baseUrl(): string {
     return 'http://localhost:3000/';

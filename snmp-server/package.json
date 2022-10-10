@@ -16,6 +16,7 @@
     "dgram": "1.0.1",
     "express": "4.16.3",
     "fast-csv": "2.4.1",
+    "multer": "^1.4.5-lts.1",
     "shelljs": "0.8.5",
     "snmp-native": "1.1.2"
   }

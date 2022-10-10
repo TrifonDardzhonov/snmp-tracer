@@ -40,8 +40,32 @@ export class SNMPEndpointFormComponent {
 
   addEndpoint() {
     this.snmpService.addSNMPEndpoint(this.endpoint).subscribe(endpoint => {
+      this.uploadAndUpdateFile(
+        endpoint.id as number, 
+        this.endpoint.groupingBetween, 
+        endpoint.groupingBetween);
+      this.uploadAndUpdateFile(
+        endpoint.id as number, 
+        this.endpoint.groupingMatch, 
+        endpoint.groupingMatch);
       this.addedSNMPEndpoint.emit(endpoint);
       this.endpoint = SNMPEndpointFormComponent.emptyEndpoint();
+    });
+  }
+
+  private uploadAndUpdateFile(
+    endpointId: number,
+    files: { file: File | undefined}[],
+    groups: { id?: number, script: string}[]): void {
+      groups.forEach((group, index) => {
+      const file = files[index].file;
+      if (!!file) {
+        this.snmpService.upload(
+          endpointId as number, 
+          group.id as number, 
+          file)
+        .subscribe((script) => group.script = script);
+      }
     });
   }
 
@@ -52,6 +76,10 @@ export class SNMPEndpointFormComponent {
       this.endpointData = endpointData;
       this.loading = false;
     });
+  }
+
+  selectFile(group: any, target: any): void {
+    group.file = target.files[0];
   }
 
   static emptyEndpoint() {

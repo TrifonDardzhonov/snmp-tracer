@@ -112,7 +112,7 @@ export class AppComponent {
     this.endDate = undefined;
   }
 
-  public hasScript(groupId: string): boolean {
+  public hasScript(groupId: string | undefined): boolean {
     return this.endpoints.some(endpoint =>
       endpoint.groupingBetween?.some(group => group.id == groupId && group.script.length > 0) ||
       endpoint.groupingMatch?.some(group => group.id == groupId && group.script.length > 0)
