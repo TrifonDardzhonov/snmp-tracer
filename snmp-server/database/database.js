@@ -32,6 +32,12 @@ const database = function () {
                     resolve(success);
                 });
             });
+        }, updateGroupScript(scripts) {
+            return new Promise((resolve) => {
+                endpoints.updateGroupScript(scripts).then(success => {
+                    resolve(success);
+                });
+            });
         }, scriptsOutputs(startDate, endDate, endpointId, groupId, snmpResponseId) {
             return new Promise((resolve) => {
                 scriptsOutputs.read(startDate, endDate, endpointId, groupId, snmpResponseId).then(outputs => {

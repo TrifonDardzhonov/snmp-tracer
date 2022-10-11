@@ -28,15 +28,12 @@ const snmpEndpointRepository = function () {
                     if (err) throw err;
                     let groupId = 1;
                     const config = JSON.parse(data);
-                    const script = "versions.bat";
                     endpoint.id = config.nodes.length + 1;
                     if (endpoint.groupingMatch && endpoint.groupingMatch.length) {
                         endpoint.groupingMatch.forEach(group => group.id = groupId++);
-                        endpoint.groupingMatch.forEach(group => group.script = `${endpoint.id}_${group.id}_${script}`);
                     }
                     if (endpoint.groupingBetween && endpoint.groupingBetween.length) {
                         endpoint.groupingBetween.forEach(group => group.id = groupId++);
-                        endpoint.groupingBetween.forEach(group => group.script = `${endpoint.id}_${group.id}_${script}`);
                     }
                     config.nodes.push(endpoint);
                     writeConfig(config);
@@ -68,6 +65,35 @@ const snmpEndpointRepository = function () {
                         writeConfig(config);
                         resolve(true);
                     }
+                });
+            });
+        }, updateGroupScript(scripts) {
+            return new Promise((resolve) => {
+                fs.readFile(filePath, "utf8", function (err, data) {
+                    if (err) throw err;
+                    const config = JSON.parse(data);
+
+                    // Update scripts of the passed groups
+                    scripts.forEach(script => {
+                        const node = config.nodes.find(n => n.id === script.endpointId);
+
+                        if (node.groupingMatch && node.groupingMatch.length > 0) {
+                            const foundGroup = node.groupingMatch.find(group => group.id == script.groupId);
+                            if (foundGroup) {
+                                foundGroup.script = script.script;
+                            }
+                        }
+
+                        if (node.groupingBetween && node.groupingBetween.length > 0) {
+                            const foundGroup = node.groupingBetween.find(group => group.id == script.groupId);
+                            if (foundGroup) {
+                                foundGroup.script = script.script;
+                            }
+                        }
+                    });
+
+                    writeConfig(config);
+                    resolve(true);
                 });
             });
         }

@@ -42,12 +42,16 @@ export class SNMPService {
     });
   }
 
+  buildScriptName(endpointId: number, groupId: number, file: File | null): string {
+    return `${endpointId}_${groupId}_${file?.name}`;
+  }
+
   upload(endpointId: number, groupId: number, file: File | null): Observable<string> {
     if (!file) {
       throw new Error("File is missing!");
     }
 
-    file = this.renameFile(file, `${endpointId}_${groupId}_${file.name}`);
+    file = this.renameFile(file, this.buildScriptName(endpointId, groupId, file));
 
     const formData: FormData = new FormData();
     formData.append('file', file);
@@ -57,6 +61,16 @@ export class SNMPService {
         .subscribe(() => {
           subs.next(file?.name);
           subs.complete();
+        });
+    });
+  }
+
+  updateGroupScript(scripts: {endpointId: number, groupId: number, script: string}[]): Observable<void> {
+    return new Observable<void>(subs => {
+      this.http.post<any>(this.baseUrl + 'snmpEndpoint/updateGroupScript', scripts)
+        .subscribe(() => {
+          subs.next();
+          subs.complete;
         });
     });
   }

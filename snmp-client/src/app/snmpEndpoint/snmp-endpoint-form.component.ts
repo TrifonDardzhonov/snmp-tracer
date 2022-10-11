@@ -40,33 +40,48 @@ export class SNMPEndpointFormComponent {
 
   addEndpoint() {
     this.snmpService.addSNMPEndpoint(this.endpoint).subscribe(endpoint => {
-      this.uploadAndUpdateFile(
+      const scripts: {endpointId: number, groupId: number, script: string}[] = [];
+
+      scripts.push(...this.upload(
         endpoint.id as number, 
         this.endpoint.groupingBetween, 
-        endpoint.groupingBetween);
-      this.uploadAndUpdateFile(
+        endpoint.groupingBetween));
+      scripts.push(...this.upload(
         endpoint.id as number, 
         this.endpoint.groupingMatch, 
-        endpoint.groupingMatch);
-      this.addedSNMPEndpoint.emit(endpoint);
-      this.endpoint = SNMPEndpointFormComponent.emptyEndpoint();
+        endpoint.groupingMatch));
+
+      this.snmpService.updateGroupScript(scripts).subscribe(() => {
+        this.addedSNMPEndpoint.emit(endpoint);
+        this.endpoint = SNMPEndpointFormComponent.emptyEndpoint();
+      });
     });
   }
 
-  private uploadAndUpdateFile(
+  private upload(
     endpointId: number,
     files: { file: File | undefined}[],
-    groups: { id?: number, script: string}[]): void {
+    groups: { id?: number, script: string}[]): {endpointId: number, groupId: number, script: string}[] {
+      const scripts: {endpointId: number, groupId: number, script: string}[] = [];
       groups.forEach((group, index) => {
-      const file = files[index].file;
-      if (!!file) {
-        this.snmpService.upload(
-          endpointId as number, 
-          group.id as number, 
-          file)
-        .subscribe((script) => group.script = script);
-      }
-    });
+        const file = files[index].file;
+        if (!!file) {
+          // Populate the script info
+          scripts.push({
+            endpointId: endpointId as number, 
+            groupId: group.id as number,
+            script: this.snmpService.buildScriptName(endpointId as number, group.id as number, file)
+          });
+
+          // Upload the file
+          this.snmpService.upload(
+            endpointId as number, 
+            group.id as number, 
+            file)
+          .subscribe((script) => group.script = script);
+        }
+      });
+    return scripts;
   }
 
   test() {

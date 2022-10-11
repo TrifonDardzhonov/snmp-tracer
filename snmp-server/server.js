@@ -67,6 +67,13 @@ app.route("/snmpEndpoint/setStatus")
         });
     });
 
+app.route("/snmpEndpoint/updateGroupScript")
+    .post(function (req, res) {
+        db.updateGroupScript(req.body).then((success) => {
+            res.json(success);
+        });
+    });
+
 app.route("/snmpEndpoints/test")
     .post(function (req, res) {
         // send one snmp request and return the data
