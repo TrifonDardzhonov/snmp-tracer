@@ -28,6 +28,7 @@ button {
 .grouping {
   margin-top: 10px;
   position: relative;
+  text-align: center;
 }
 
 .remove-btn {
@@ -74,4 +75,18 @@ button {
   100% {
     transform: rotate(1800deg);
   }
+}
+
+input[type="file"]{
+  width: 100px;
+  color: transparent;
+  cursor: pointer;
+}
+
+.file-name {
+  font-weight: bold;
+  text-align: center;
+  font-size: large;
+  word-break: break-word;
+  color: aliceblue;
 }

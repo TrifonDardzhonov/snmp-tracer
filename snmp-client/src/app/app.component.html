@@ -45,6 +45,9 @@
             <div>
               <strong>Result: </strong>{{match.result}}
             </div>
+            <div *ngIf="match.script">
+              <strong>Script: </strong>{{match.script}}
+            </div>
           </div>
           <div *ngFor="let between of endpoint.groupingBetween" class="new-group">
             <div>
@@ -55,6 +58,9 @@
             </div>
             <div>
               <strong>Result: </strong>{{between.result}}
+            </div>
+            <div *ngIf="between.script">
+              <strong>Script: </strong>{{between.script}}
             </div>
           </div>
         </div>

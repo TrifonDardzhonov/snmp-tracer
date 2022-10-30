@@ -37,6 +37,7 @@
       <input [(ngModel)]="group.original" class="col-md-12" placeholder="Original" type="text"/>
       <input [(ngModel)]="group.result" class="col-md-12" placeholder="Result" type="text"/>
       <input type="file" (change)="selectFile(group, $event.target)" />
+      <div *ngIf="group.file" class="file-name">{{group.file.name}}</div>
       <div (click)="removeMatchingGroup(i)" class="remove-btn">X</div>
     </div>
     <button (click)="addBetweenGroup()" class="btn btn-primary col-md-12">Add Between Group</button>
@@ -45,6 +46,7 @@
       <input [(ngModel)]="group.to" class="col-md-12" placeholder="To" type="number"/>
       <input [(ngModel)]="group.result" class="col-md-12" placeholder="Result" type="text"/>
       <input type="file" (change)="selectFile(group, $event.target)" />
+      <div *ngIf="group.file" class="file-name">{{group.file.name}}</div>
       <div (click)="removeBetweenGroup(i)" class="remove-btn">X</div>
     </div>
   </div>
