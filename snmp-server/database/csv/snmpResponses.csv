@@ -1,6 +1,0 @@
-id,endpointId,oid,host,port,community,value,groupId,group,dateticks
-6fe48380be47d636d7c12c219c8cf87d,1,"1,3,4,1,2,5,2",demo.com,161,public,10,,Unknown,1653770625211
-ee672060c0f4674092c2d81633246207,1,"1,3,4,1,2,5,2",demo.com,161,public,6,2,four to six,1653770685213
-982497dfb232302245a1ded2f65bcf5c,1,"1,3,4,1,2,5,2",demo.com,161,public,9,,Unknown,1653770745224
-3eea4fe178d0efb0246fa624ea36ce5c,1,"1,3,4,1,2,5,2",demo.com,161,public,8,,Unknown,1653770805234
-b49194839da2c1ded293602f2304f532,1,"1,3,4,1,2,5,2",demo.com,161,public,5,2,four to six,1653770865237
