@@ -2,5 +2,6 @@ snmp-client/node_modules/
 snmp-client/.angular/
 snmp-server/node_modules/
 snmp-server/db.csv
+snmp-server/database/csv
 .idea/
 .vscode/
