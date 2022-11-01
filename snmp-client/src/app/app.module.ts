@@ -8,11 +8,12 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpClientModule} from "@angular/common/http";
 import {SNMPService} from "./snmpService/snmp-service";
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from "ng-pick-datetime";
+import {CsvService} from './snmpService/csv-service';
 
 @NgModule({
   declarations: [AppComponent, PieChartComponent, SNMPEndpointFormComponent],
   imports: [BrowserModule, FormsModule, BrowserAnimationsModule, HttpClientModule, OwlDateTimeModule, OwlNativeDateTimeModule],
-  providers: [SNMPService],
+  providers: [SNMPService, CsvService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

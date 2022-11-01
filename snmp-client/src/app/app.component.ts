@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/co
 import {ChartSettings} from './models/chartSettings';
 import {SNMPService} from './snmpService/snmp-service';
 import {NodeResponse, SNMPEndpoint, SNMPNode, Status} from './models/snmpEndpoint';
+import {CsvService} from './snmpService/csv-service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,10 @@ export class AppComponent {
   public endDate: Date | undefined;
   public endDateRequested: Date | undefined;
 
-  constructor(private snmpService: SNMPService, private changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    private snmpService: SNMPService, 
+    private csvService: CsvService,
+    private changeDetectorRef: ChangeDetectorRef) {
     this.initDateRangeState();
     this.snmpService.snmpEndpoints().subscribe(endpoints => {
       this.endpoints = endpoints;
@@ -148,5 +152,9 @@ export class AppComponent {
 
   private endDateAsIso() {
     return this.endDate ? this.endDate.toISOString() : (new Date()).toISOString();
+  }
+
+  public downloadAsCsv(): void {
+    this.csvService.exportResponses(this.filteredResponses);
   }
 }
