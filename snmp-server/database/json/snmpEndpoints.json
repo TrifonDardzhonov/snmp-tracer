@@ -1,1 +1,1 @@
-{"nodes":[{"id":1,"friendlyName":"loren ipsum","description":"this data is so cool","oid":[1,3,4,5,2,1],"host":"demo.test.com","port":161,"community":"public","status":{"id":1,"name":"Active"},"supportGrouping":true,"groupingMatch":[{"original":"2","result":"two","file":{},"id":1,"script":"1_1_1_1_versions.bat"}],"groupingBetween":[{"from":4,"to":5,"file":{},"result":"four to five","id":2,"script":"1_2_1_2_versions.bat"}]}]}
+{"nodes":[]}
