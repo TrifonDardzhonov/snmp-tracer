@@ -136,8 +136,14 @@
           <strong>Script output</strong>
         </div>
       </div>
-      <div [style.background-color]="response.group !== 'Unknown' ? 'lightgray' : null" *ngFor="let response of filteredResponses" class="row-data">
-        <div class="col-md-3">{{response.dateticks | date:'medium'}}</div>
+      <div [style.background-color]="response.group !== 'Unknown' ? 'lightgray' : null" *ngFor="let response of filteredResponses; let i = index" class="row-data">
+        <div class="col-md-3">
+          <ng-container *ngIf="filteredResponses.length >= 2">
+            <strong *ngIf="i === 0">(Newest)</strong>
+            <strong *ngIf="i === (filteredResponses.length - 1)">(Oldest)</strong>
+          </ng-container>
+          {{response.dateticks | date:'medium'}}
+        </div>
         <div class="col-md-3">
           <span *ngIf="response.group !== 'Unknown'">{{response.group}}</span>
         </div>

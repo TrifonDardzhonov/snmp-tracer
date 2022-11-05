@@ -143,6 +143,7 @@ export class AppComponent {
     }
 
     this.loading = true;
+    this.filteredResponses = [];
     this.startDateRequested = this.startDate;
     this.endDateRequested = this.endDate || new Date();
     this.snmpService.snmpEndPointResponses(this.selectedEndpoint as SNMPEndpoint, (this.startDate as Date).toISOString(), this.endDateAsIso()).subscribe(node => {
