@@ -34,6 +34,11 @@ export class ScriptUploadService {
         return scripts;
     }
 
+    originalScriptName(endpointId: number, groupId: number, script: string): string {
+        const prefix: string = this.scriptPrefix(endpointId, groupId);
+        return script.slice(script.indexOf(prefix) + prefix.length);
+    }
+
     private upload(endpointId: number, groupId: number, file: File | null): Observable<string> {
         if (!file) {
             throw new Error("File is missing!");
@@ -54,7 +59,11 @@ export class ScriptUploadService {
     }
 
     private buildScriptName(endpointId: number, groupId: number, file: File | null): string {
-        return `${endpointId}_${groupId}_${file?.name}`;
+        return `${this.scriptPrefix(endpointId, groupId)}${file?.name}`;
+    }
+
+    private scriptPrefix(endpointId: number, groupId: number): string {
+        return `${endpointId}_${groupId}_`;
     }
 
     private renameFile(originalFile: File, newName: string) {

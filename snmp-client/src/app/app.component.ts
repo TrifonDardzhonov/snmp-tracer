@@ -3,6 +3,7 @@ import { ChartSettings } from './models/chartSettings';
 import { SNMPService } from './snmpService/snmp-service';
 import { NodeResponse, SNMPEndpoint, SNMPNode, Status } from './models/snmpEndpoint';
 import { CsvService } from './snmpService/csv-service';
+import { ScriptUploadService } from './snmpService/script-upload-service';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent {
   constructor(
     private snmpService: SNMPService,
     private csvService: CsvService,
+    private scriptUploadService: ScriptUploadService,
     private changeDetectorRef: ChangeDetectorRef) {
     this.initDateRangeState();
     this.snmpService.snmpEndpoints().subscribe(endpoints => {
@@ -156,5 +158,9 @@ export class AppComponent {
 
   public downloadAsCsv(): void {
     this.csvService.exportResponses(this.filteredResponses);
+  }
+
+  public originalScriptName(endpointId: number | undefined, groupId: number | undefined, script: string): string {
+    return this.scriptUploadService.originalScriptName(endpointId as number, groupId as number, script);
   }
 }

@@ -46,7 +46,7 @@
               <strong>Result: </strong>{{match.result}}
             </div>
             <div *ngIf="match.script">
-              <strong>Script: </strong>{{match.script}}
+              <strong>Script: </strong>{{originalScriptName(endpoint.id, match.id, match.script)}}
             </div>
           </div>
           <div *ngFor="let between of endpoint.groupingBetween" class="new-group">
@@ -60,7 +60,7 @@
               <strong>Result: </strong>{{between.result}}
             </div>
             <div *ngIf="between.script">
-              <strong>Script: </strong>{{between.script}}
+              <strong>Script: </strong>{{originalScriptName(endpoint.id, between.id, between.script)}}
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@
         </div>
       </div>
     </div>
-    <button *ngIf="filteredResponses.length && !loading" class="btn btn-primary" (click)="downloadAsCsv()">Download as CSV</button>
+    <button *ngIf="filteredResponses.length && !loading" class="btn btn-primary" (click)="downloadAsCsv()">Export as CSV</button>
     <div *ngIf="filteredResponses.length && !loading" class="col-md-12 detail-review-table">
       <div class="row-data">
         <div class="col-md-3">
@@ -136,7 +136,7 @@
           <strong>Script output</strong>
         </div>
       </div>
-      <div *ngFor="let response of filteredResponses" class="row-data">
+      <div [style.background-color]="response.group !== 'Unknown' ? 'lightgray' : null" *ngFor="let response of filteredResponses" class="row-data">
         <div class="col-md-3">{{response.dateticks | date:'medium'}}</div>
         <div class="col-md-3">
           <span *ngIf="response.group !== 'Unknown'">{{response.group}}</span>
