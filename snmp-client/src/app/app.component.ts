@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
-import {ChartSettings} from './models/chartSettings';
-import {SNMPService} from './snmpService/snmp-service';
-import {NodeResponse, SNMPEndpoint, SNMPNode, Status} from './models/snmpEndpoint';
-import {CsvService} from './snmpService/csv-service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChartSettings } from './models/chartSettings';
+import { SNMPService } from './snmpService/snmp-service';
+import { NodeResponse, SNMPEndpoint, SNMPNode, Status } from './models/snmpEndpoint';
+import { CsvService } from './snmpService/csv-service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +28,7 @@ export class AppComponent {
   public endDateRequested: Date | undefined;
 
   constructor(
-    private snmpService: SNMPService, 
+    private snmpService: SNMPService,
     private csvService: CsvService,
     private changeDetectorRef: ChangeDetectorRef) {
     this.initDateRangeState();

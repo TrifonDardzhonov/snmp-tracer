@@ -5,7 +5,7 @@ import { NodeResponse } from "../models/snmpEndpoint";
 export class CsvService {
     exportResponses(filteredResponses: NodeResponse[]): void {
         const header: string = "Date,Group,Value";
-        const csv: string[] = filteredResponses.map(response => 
+        const csv: string[] = filteredResponses.map(response =>
             `${new Date(Number(response.dateticks)).toString()},${response.group},${response.value}`);
         this.downloadFile([header].concat(...csv).join('\r\n'));
     }

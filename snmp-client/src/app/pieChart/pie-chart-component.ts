@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {ChartSettings} from '../models/chartSettings';
+import { ChartSettings } from '../models/chartSettings';
 
 @Component({
   selector: 'app-pie-chart', template: `

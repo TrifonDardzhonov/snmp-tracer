@@ -120,7 +120,7 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-primary" (click)="downloadAsCsv()">Download as CSV</button>
+    <button *ngIf="filteredResponses.length && !loading" class="btn btn-primary" (click)="downloadAsCsv()">Download as CSV</button>
     <div *ngIf="filteredResponses.length && !loading" class="col-md-12 detail-review-table">
       <div class="row-data">
         <div class="col-md-3">
