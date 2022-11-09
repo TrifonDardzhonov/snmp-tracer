@@ -3,8 +3,8 @@ import * as Highcharts from 'highcharts';
 import { ChartSettings } from '../models/chartSettings';
 
 @Component({
-  selector: 'app-pie-chart', template: `
-    <div [attr.id]="'pie-container'"></div>`
+  selector: 'app-pie-chart', 
+  template: `<div [attr.id]="'pie-container'"></div>`
 })
 export class PieChartComponent implements AfterViewInit {
 
