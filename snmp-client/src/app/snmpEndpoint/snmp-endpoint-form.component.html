@@ -55,10 +55,12 @@
   <button (click)="test()" class="btn btn-primary col-md-12">Extract Subtree</button>
   <button (click)="addEndpoint()" class="btn btn-primary col-md-12">Add</button>
 
-  <div *ngIf="endpointData.length" id="test-results-box">
-    <p *ngFor="let node of endpointData">
+  <div id="test-results-box">
+    <p style="border-bottom: 1px solid black;" *ngFor="let node of endpointData">
       <span style="display: block;"><strong>OID</strong> {{node.oid}}</span>
+      <span style="display: block;"><strong>Name</strong> {{node.name}}</span>
       <span style="display: block;"><strong>Value</strong> {{node.value}}</span>
+      <span style="display: block;"><strong>Description</strong> {{node.description}}</span>
     </p>
   </div>
   <div *ngIf="loading" class="lds-hourglass"></div>

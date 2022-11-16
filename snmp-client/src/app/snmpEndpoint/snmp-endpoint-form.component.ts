@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { GroupBetween, GroupMatch, SNMPEndpoint, Status } from '../models/snmpEndpoint';
 import { ScriptUploadService } from '../snmpService/script-upload-service';
 import { SNMPService } from '../snmpService/snmp-service';
@@ -15,7 +15,10 @@ export class SNMPEndpointFormComponent {
   public endpointData: any[] = [];
   public loading = false;
 
-  constructor(private snmpService: SNMPService, private scriptUploadService: ScriptUploadService) { }
+  constructor(
+    private snmpService: SNMPService, 
+    private scriptUploadService: ScriptUploadService,
+    private changeDetectorRef: ChangeDetectorRef) { }
 
   toggleGrouping() {
     this.endpoint.supportGrouping = !this.endpoint?.supportGrouping;
@@ -65,6 +68,7 @@ export class SNMPEndpointFormComponent {
     this.snmpService.testSNMPEndpoint(this.endpoint).subscribe(endpointData => {
       this.endpointData = endpointData;
       this.loading = false;
+      this.changeDetectorRef.detectChanges();
     });
   }
 
