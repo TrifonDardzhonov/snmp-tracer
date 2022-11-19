@@ -24,7 +24,10 @@ function mockExtractSubtree(node) {
     Object.keys(mib).forEach(key => {
         const obj = mib[key];
 
-        if (obj.oid !== undefined && obj.syntax !== undefined && obj.syntax.type === "Integer32") {
+        if (obj.oid !== undefined && 
+            obj.syntax !== undefined && 
+            obj.syntax.type === "Integer32") {
+
             if (obj.oid.startsWith(node.oid.join("."))) {
                 varbinds.push({
                     oid: obj.oid.split(".").join(","),
@@ -33,6 +36,7 @@ function mockExtractSubtree(node) {
                     description: obj.description
                 });
             }
+
         }
     });
     return Promise.resolve(varbinds);
@@ -40,7 +44,8 @@ function mockExtractSubtree(node) {
 
 const snmpClient = function () {
     return {
-        extractSubtree: mockExtractSubtree
+        // extractSubtree: extractSubtree,  // use snmp-native
+        extractSubtree: mockExtractSubtree, // use mock data
     }
 };
 

@@ -19,7 +19,7 @@ function start() {
 
 function visitNodes() {
     visitEachNode();
-    setTimeout(visitNodes, seconds(60));
+    setTimeout(visitNodes, seconds(20));
 }
 
 function seconds(sec) {
