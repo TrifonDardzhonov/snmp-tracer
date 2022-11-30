@@ -4,7 +4,7 @@ export interface SNMPEndpoint {
   description: string;
   oid: string;
   host: string;
-  port: number;
+  port: number | undefined;
   community: string;
   status: Status;
   supportGrouping: boolean;

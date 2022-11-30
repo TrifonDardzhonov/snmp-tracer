@@ -43,6 +43,9 @@ export class SNMPEndpointFormComponent {
   }
 
   addEndpoint() {
+    if (!this.isFormValid) {
+      return;
+    }
     this.snmpService.addSNMPEndpoint(this.endpoint).subscribe(endpoint => {
       const scripts: { endpointId: number, groupId: number, script: string }[] = [];
 
@@ -63,6 +66,10 @@ export class SNMPEndpointFormComponent {
   }
 
   test() {
+    if (!this.isFormValid) {
+      return;
+    }
+
     this.endpointData.length = 0;
     this.loading = true;
     this.snmpService.testSNMPEndpoint(this.endpoint).subscribe(endpointData => {
@@ -76,6 +83,25 @@ export class SNMPEndpointFormComponent {
     group.file = target.files[0];
   }
 
+  get isFormValid(): boolean {
+    if (this.endpoint.friendlyName == '') {
+      return false;
+    }
+    if (this.endpoint.host == '') {
+      return false;
+    }
+    if (!this.endpoint.port || this.endpoint.port < 0 || this.endpoint.port > 65535) {
+      return false;
+    }
+    if (this.endpoint.oid == '') {
+      return false;
+    }
+    if (this.endpoint.community == '') {
+      return false;
+    }
+    return true;
+  }
+
   static emptyEndpoint() {
     return {
       id: undefined,
@@ -83,7 +109,7 @@ export class SNMPEndpointFormComponent {
       description: '',
       oid: '',
       host: '',
-      port: 0,
+      port: undefined,
       community: '',
       status: Status.Active,
       supportGrouping: false,

@@ -1,4 +1,5 @@
 <div class="col-md-12" id="endpoint-form">
+  <div *ngIf="!isFormValid" style="color: white; background-color: red;">Please fill out all required fields.</div>
   <div>
     <h5>Add new endpoint</h5>
   </div>
@@ -16,7 +17,7 @@
   </div>
   <div class="col-md-12">
     <label class="col-md-12 no-hor-padding" for="port">Port*</label>
-    <input [(ngModel)]="endpoint.port" class="col-md-12" id="port" placeholder="161"/>
+    <input [(ngModel)]="endpoint.port" class="col-md-12" id="port" type="number" min="0" max="65535" placeholder="161"/>
   </div>
   <div class="col-md-12">
     <label class="col-md-12 no-hor-padding" for="oid">OID*</label>
@@ -52,8 +53,8 @@
       <div (click)="removeBetweenGroup(i)" class="remove-btn">X</div>
     </div>
   </div>
-  <button (click)="test()" class="btn btn-primary col-md-12">Extract Subtree</button>
-  <button (click)="addEndpoint()" class="btn btn-primary col-md-12">Add</button>
+  <button [attr.disabled]="!isFormValid ? '' : null" (click)="test()" class="btn btn-primary col-md-12">Extract Subtree</button>
+  <button [attr.disabled]="!isFormValid ? '' : null" (click)="addEndpoint()" class="btn btn-primary col-md-12">Add</button>
 
   <div id="test-results-box">
     <p style="border-bottom: 1px solid black;" *ngFor="let node of endpointData">

@@ -112,6 +112,7 @@ export class AppComponent {
     this.filteredResponses = this.selectedEndpointNode?.responses.filter(response => {
       return !group || response.group === group;
     }).sort((a, b) => b.dateticks - a.dateticks) || [];
+    this.changeDetectorRef.detectChanges();
   }
 
   public removeEndDate() {
@@ -120,8 +121,8 @@ export class AppComponent {
 
   public hasScript(groupId: string | undefined): boolean {
     return this.endpoints.some(endpoint =>
-      endpoint.groupingBetween?.some(group => group.id == groupId && group.script.length > 0) ||
-      endpoint.groupingMatch?.some(group => group.id == groupId && group.script.length > 0)
+      endpoint.groupingBetween?.some(group => group?.id == groupId && group?.script?.length > 0) ||
+      endpoint.groupingMatch?.some(group => group?.id == groupId && group?.script?.length > 0)
     );
   }
 
@@ -148,6 +149,13 @@ export class AppComponent {
     this.endDateRequested = this.endDate || new Date();
     this.snmpService.snmpEndPointResponses(this.selectedEndpoint as SNMPEndpoint, (this.startDate as Date).toISOString(), this.endDateAsIso()).subscribe(node => {
       this.selectedEndpointNode = node;
+
+      if (this.selectedEndpoint && 
+          !this.selectedEndpoint?.groupingBetween?.length && 
+          !this.selectedEndpoint?.groupingMatch?.length) {
+        this.filteredResponses = node.responses;
+      }
+
       this.loading = false;
       this.changeDetectorRef.detectChanges();
     });
